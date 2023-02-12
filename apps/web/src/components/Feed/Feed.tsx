@@ -5,7 +5,7 @@ const messages = [
     id: 1,
     subject: 'Velit placeat sit ducimus non sed',
     sender: 'Anatoly Yakovenko',
-    votes: '26',
+    upvotes: '26',
     community: 'Solana',
     time: '1d ago',
     datetime: '2023-02-12T16:35',
@@ -16,7 +16,7 @@ const messages = [
     id: 2,
     subject: 'Velit placeat sit ducimus non sed',
     sender: 'Raj Gokal',
-    votes: '38',
+    upvotes: '38',
     community: 'Solana',
     time: '1d ago',
     datetime: '2023-02-12T15:24',
@@ -27,7 +27,7 @@ const messages = [
     id: 3,
     subject: 'Velit placeat sit ducimus non sed',
     sender: 'Austin Federa',
-    votes: '42',
+    upvotes: '42',
     community: 'Solana',
     time: '1d ago',
     datetime: '2023-02-12T14:13',
@@ -52,7 +52,7 @@ export default function Feed() {
                 <ChevronUpIcon className="h-5 w-5 text-orange-400" aria-hidden="true" />
               </div>
               <div className="flex justify-center">
-                <span className="text-xs text-gray-500 py-1">{message.votes}</span>
+                <span className="text-xs text-gray-500 py-1">{message.upvotes}</span>
               </div>
               <div>
                 <span className="sr-only">Downvote</span>
