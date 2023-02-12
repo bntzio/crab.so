@@ -1,7 +1,46 @@
 module.exports = {
-  extends: ["next", "turbo", "prettier"],
-  rules: {
-    "@next/next/no-html-link-for-pages": "off",
-    "react/jsx-key": "off",
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', 'import', 'unused-imports'],
+  env: {
+    node: true,
+    jest: true,
   },
-};
+  globals: {
+    JSX: true,
+  },
+  extends: [
+    'standard',
+    'standard-react',
+    'prettier',
+    'eslint:recommended',
+    'plugin:prettier/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript',
+  ],
+  rules: {
+    'no-unused-vars': 'off',
+    'no-use-before-define': 'off',
+    'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
+    'react/no-unused-vars': 'off',
+    'react/jsx-uses-vars': 1,
+    'react/jsx-uses-react': 1,
+    'react/react-in-jsx-scope': 0,
+    'react/prop-types': 0,
+    'import/prefer-default-export': 0,
+    'import/order': ['error', { 'newlines-between': 'always', alphabetize: { order: 'asc' } }],
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+      },
+    ],
+    '@typescript-eslint/explicit-function-return-type': 0,
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+  },
+}
