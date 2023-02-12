@@ -13,11 +13,13 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md}\" --ignore-path .gitignore",
+    "prepare": "husky install"
   },
-  "dependencies": {},
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.1",
     "prettier": "latest",
     "turbo": "latest"
   },
