@@ -1,9 +1,12 @@
 import { UserGroupIcon } from '@heroicons/react/24/outline'
+import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { Button } from 'ui'
 
 import { Feed } from '@/components/Feed'
 
 export default function Index() {
+  const { setVisible } = useWalletModal()
+
   return (
     <main>
       <section className="mt-4">
@@ -13,7 +16,7 @@ export default function Index() {
               🦀
             </span>
           </p>
-          <Button>
+          <Button onClick={() => setVisible(true)}>
             <UserGroupIcon className="h-5 w-5 text-white mr-2" aria-hidden="true" />
             Create a community
           </Button>
@@ -23,7 +26,9 @@ export default function Index() {
             Crab is a community-driven, open-source, decentralized network for thriving communities in Web3
           </h1>
           <div className="flex flex-col items-start space-y-3">
-            <Button buttonType="slate">Join the network</Button>
+            <Button buttonType="slate" onClick={() => setVisible(true)}>
+              Join the network
+            </Button>
             <p className="text-xs">
               or{' '}
               <a
