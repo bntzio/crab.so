@@ -8,21 +8,20 @@ export default function Index() {
     <main>
       <section className="mt-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-black font-normal">
-            <span aria-label="crab" role="img" className="mr-3">
+          <p className="text-black font-normal text-2xl">
+            <span aria-label="crab" role="img">
               🦀
             </span>
-            <span>the front page of web3</span>
-          </h1>
+          </p>
           <Button>
             <UserGroupIcon className="h-5 w-5 text-white mr-2" aria-hidden="true" />
             Create a community
           </Button>
         </div>
         <div className="flex flex-col space-y-6 py-20">
-          <h2 className="text-xl font-medium leading-normal">
-            Crab is a community-driven, open-source, decentralized network for thriving communities around the world.
-          </h2>
+          <h1 className="text-xl font-medium leading-normal">
+            Crab is a community-driven, open-source, decentralized network for thriving communities in Web3
+          </h1>
           <div className="flex flex-col items-start space-y-3">
             <Button buttonType="slate">Join the network</Button>
             <p className="text-xs">
