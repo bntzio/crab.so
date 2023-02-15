@@ -6,8 +6,8 @@ import { Button } from 'ui'
 import { Feed } from '@/components/Feed'
 
 export default function Index() {
-  const { connected } = useWallet()
   const { setVisible } = useWalletModal()
+  const { connected, disconnect } = useWallet()
 
   return (
     <main>
@@ -18,10 +18,14 @@ export default function Index() {
               🦀
             </span>
           </p>
-          {!connected && (
+          {!connected ? (
             <Button onClick={() => setVisible(true)}>
               <UserGroupIcon className="h-5 w-5 text-white mr-2" aria-hidden="true" />
               Create a community
+            </Button>
+          ) : (
+            <Button buttonType="slate" onClick={async () => await disconnect()}>
+              Disconnect
             </Button>
           )}
         </div>
