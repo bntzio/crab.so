@@ -1,12 +1,7 @@
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
-import {
-  GlowWalletAdapter,
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-  BackpackWalletAdapter,
-} from '@solana/wallet-adapter-wallets'
+import { GlowWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { clusterApiUrl } from '@solana/web3.js'
 import { useMemo, ReactNode } from 'react'
 
@@ -18,15 +13,7 @@ const WalletAdapter = ({ children }: Props) => {
   const network = WalletAdapterNetwork.Mainnet
   const endpoint = useMemo(() => clusterApiUrl(network), [network])
 
-  const wallets = useMemo(
-    () => [
-      new GlowWalletAdapter(),
-      new PhantomWalletAdapter(),
-      new SolflareWalletAdapter(),
-      new BackpackWalletAdapter(),
-    ],
-    [],
-  )
+  const wallets = useMemo(() => [new GlowWalletAdapter(), new SolflareWalletAdapter()], [])
 
   return (
     <ConnectionProvider endpoint={endpoint}>
