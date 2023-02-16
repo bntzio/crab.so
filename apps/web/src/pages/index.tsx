@@ -4,7 +4,7 @@ import { ProtocolOptions, SocialProtocol } from '@spling/social-protocol'
 import { useRef, useEffect } from 'react'
 import { Button } from 'ui'
 
-import { Navbar, Feed } from '@/components'
+import { Feed } from '@/components'
 
 export default function Index() {
   const wallet = useWallet()
@@ -34,8 +34,7 @@ export default function Index() {
 
   return (
     <main>
-      <section className="mt-4">
-        <Navbar />
+      <section>
         {!connected && (
           <div className="flex flex-col space-y-6 py-20">
             <h1 className="text-xl font-medium leading-normal">

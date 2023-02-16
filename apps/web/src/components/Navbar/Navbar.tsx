@@ -10,7 +10,7 @@ export default function Navbar() {
   const { connected, disconnect } = useWallet()
 
   return (
-    <div className="flex justify-between items-center">
+    <nav className="flex justify-between items-center">
       <p className="text-black font-normal text-2xl">
         <span aria-label="crab" role="img">
           🦀
@@ -29,6 +29,6 @@ export default function Navbar() {
           </Button>
         </div>
       )}
-    </div>
+    </nav>
   )
 }
