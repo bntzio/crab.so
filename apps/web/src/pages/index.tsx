@@ -1,7 +1,6 @@
 import { UserGroupIcon } from '@heroicons/react/24/outline'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
-import { Keypair } from '@solana/web3.js'
 import { ProtocolOptions, SocialProtocol } from '@spling/social-protocol'
 import { useRef, useEffect } from 'react'
 import { Button } from 'ui'
@@ -9,9 +8,11 @@ import { Button } from 'ui'
 import { Feed } from '@/components/Feed'
 
 export default function Index() {
+  const wallet = useWallet()
   const { setVisible } = useWalletModal()
-  const { connected, disconnect, wallet } = useWallet()
   const socialProtocolRef = useRef<SocialProtocol | null>(null)
+
+  const { connected, disconnect } = wallet
 
   useEffect(() => {
     async function init() {
@@ -20,9 +21,7 @@ export default function Index() {
         useIndexer: true,
       } as ProtocolOptions
 
-      const keyPair = Keypair.generate()
-
-      const socialProtocol: SocialProtocol = await new SocialProtocol(keyPair, null, options).init()
+      const socialProtocol: SocialProtocol = await new SocialProtocol(wallet, null, options).init()
 
       socialProtocolRef.current = socialProtocol
 
@@ -31,7 +30,7 @@ export default function Index() {
       console.log(groups)
     }
 
-    if (wallet) init()
+    if (wallet?.publicKey) init()
   }, [wallet])
 
   return (
