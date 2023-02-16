@@ -1,36 +1,32 @@
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
-import { ProtocolOptions, SocialProtocol } from '@spling/social-protocol'
-import { useRef, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Button } from 'ui'
 
 import { Feed } from '@/components'
+import { useSplingStore } from '@/stores'
 
 export default function Index() {
   const wallet = useWallet()
   const { setVisible } = useWalletModal()
-  const socialProtocolRef = useRef<SocialProtocol | null>(null)
+  const { startSocialProtocol, socialProtocol } = useSplingStore()
 
   const { connected } = wallet
 
   useEffect(() => {
-    async function init() {
-      const options = {
-        rpcUrl: 'https://api.mainnet-beta.solana.com/',
-        useIndexer: true,
-      } as ProtocolOptions
+    if (wallet?.publicKey) startSocialProtocol({ wallet })
+  }, [wallet, startSocialProtocol])
 
-      const socialProtocol: SocialProtocol = await new SocialProtocol(wallet, null, options).init()
-
-      socialProtocolRef.current = socialProtocol
-
-      const groups = await socialProtocolRef.current?.getAllGroups()
-
-      console.log(groups)
+  useEffect(() => {
+    async function getGroups() {
+      if (socialProtocol) {
+        const allGroups = await socialProtocol.getAllGroups()
+        console.log(allGroups)
+      }
     }
 
-    if (wallet?.publicKey) init()
-  }, [wallet])
+    getGroups()
+  }, [socialProtocol])
 
   return (
     <main>
