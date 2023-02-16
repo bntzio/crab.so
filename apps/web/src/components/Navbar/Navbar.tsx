@@ -1,6 +1,7 @@
 import { UserGroupIcon } from '@heroicons/react/24/outline'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Button } from 'ui'
 
@@ -11,11 +12,11 @@ export default function Navbar() {
 
   return (
     <nav className="flex justify-between items-center">
-      <p className="text-black font-normal text-2xl">
+      <Link href="/" className="text-black font-normal text-2xl">
         <span aria-label="crab" role="img">
           🦀
         </span>
-      </p>
+      </Link>
       {!connected ? (
         <Button onClick={() => setVisible(true)}>
           <UserGroupIcon className="h-5 w-5 text-white mr-2" aria-hidden="true" />
