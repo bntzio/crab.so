@@ -2,6 +2,7 @@ import { UserGroupIcon } from '@heroicons/react/24/outline'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { ProtocolOptions, SocialProtocol } from '@spling/social-protocol'
+import { useRouter } from 'next/router'
 import { useRef, useEffect } from 'react'
 import { Button } from 'ui'
 
@@ -9,6 +10,7 @@ import { Feed } from '@/components/Feed'
 
 export default function Index() {
   const wallet = useWallet()
+  const router = useRouter()
   const { setVisible } = useWalletModal()
   const socialProtocolRef = useRef<SocialProtocol | null>(null)
 
@@ -48,9 +50,12 @@ export default function Index() {
               Create a community
             </Button>
           ) : (
-            <Button buttonType="slate" onClick={async () => await disconnect()}>
-              Disconnect
-            </Button>
+            <div className="space-x-4">
+              <Button onClick={async () => router.push('/c/new')}>Create a Community</Button>
+              <Button buttonType="slate" onClick={async () => await disconnect()}>
+                Disconnect
+              </Button>
+            </div>
           )}
         </div>
         {!connected && (

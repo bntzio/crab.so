@@ -61,6 +61,7 @@ importers:
       '@solana/wallet-adapter-wallets': ^0.19.11
       '@solana/web3.js': ^1.73.2
       '@spling/social-protocol': ^1.5.6
+      '@tailwindcss/forms': ^0.5.3
       '@tailwindcss/line-clamp': ^0.4.2
       '@types/node': ^17.0.12
       '@types/react': ^18.0.22
@@ -84,7 +85,7 @@ importers:
       '@solana/wallet-adapter-react-ui': 0.9.27_hywbkour6qqmkzgfql3wbr3nwm
       '@solana/wallet-adapter-wallets': 0.19.11_hywbkour6qqmkzgfql3wbr3nwm
       '@solana/web3.js': 1.73.2
-      '@spling/social-protocol': 1.5.6_vm6xsh2mngivwvb3hf4vppcd7q_onqnqwb3ubg5opvemcqf7c2qhy
+      '@spling/social-protocol': 1.5.6_lmmlpqioy3zrrf67tyff72ml2e_onqnqwb3ubg5opvemcqf7c2qhy
       graphql: 16.6.0
       next: 13.1.6_pjwopsidmaokadturxaafygjp4
       react: 18.2.0
@@ -93,6 +94,7 @@ importers:
     devDependencies:
       '@babel/core': 7.20.12
       '@heroicons/react': 2.0.15_react@18.2.0
+      '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.6
       '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.6
       '@types/node': 17.0.45
       '@types/react': 18.0.27
@@ -1754,7 +1756,7 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /@spling/social-protocol/1.5.6_vm6xsh2mngivwvb3hf4vppcd7q_onqnqwb3ubg5opvemcqf7c2qhy:
+  /@spling/social-protocol/1.5.6_lmmlpqioy3zrrf67tyff72ml2e_onqnqwb3ubg5opvemcqf7c2qhy:
     resolution: {integrity: sha512-D9eVb/XeIBxPhkllR6xA4rc5bSEf7BG7uMUrsXirlqoXGakOM+yI/izaQ6hXi1I3mhEChdLiassE1+iwrH1y3g==}
     dependencies:
       '@project-serum/anchor': 0.26.0
@@ -1922,6 +1924,15 @@ packages:
     dependencies:
       tslib: 2.5.0
     dev: false
+
+  /@tailwindcss/forms/0.5.3_tailwindcss@3.2.6:
+    resolution: {integrity: sha512-y5mb86JUoiUgBjY/o6FJSFZSEttfb3Q5gllE4xoKjAAD+vBrnIhE4dViwUuow3va8mpH4s9jyUbUbrRGoRdc2Q==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
+    dependencies:
+      mini-svg-data-uri: 1.4.4
+      tailwindcss: 3.2.6_postcss@8.4.21
+    dev: true
 
   /@tailwindcss/line-clamp/0.4.2_tailwindcss@3.2.6:
     resolution: {integrity: sha512-HFzAQuqYCjyy/SX9sLGB1lroPzmcnWv1FHkIpmypte10hptf4oPUfucryMKovZh2u0uiS9U5Ty3GghWfEJGwVw==}
@@ -5416,6 +5427,11 @@ packages:
   /mimic-fn/4.0.0:
     resolution: {integrity: sha512-vqiC06CuhBTUdZH+RYl8sFrL096vA45Ok5ISO6sE/Mr1jRbGH4Csnhi8f3wKVl7x8mO4Au7Ir9D3Oyv1VYMFJw==}
     engines: {node: '>=12'}
+    dev: true
+
+  /mini-svg-data-uri/1.4.4:
+    resolution: {integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==}
+    hasBin: true
     dev: true
 
   /minimalistic-assert/1.0.1:
