@@ -1,21 +1,35 @@
 import '@/styles/globals.css'
 import '@solana/wallet-adapter-react-ui/styles.css'
+import { useWallet } from '@solana/wallet-adapter-react'
 import type { AppProps } from 'next/app'
+import { useEffect } from 'react'
 
 import { WalletAdapter, Navbar } from '@/components'
 import { MainLayout } from '@/layouts/MainLayout'
+import { useSplingStore } from '@/stores'
 
-function App({ Component, pageProps }: AppProps) {
+function CrabApp({ Component, pageProps }: AppProps) {
   return (
     <MainLayout>
       <WalletAdapter>
-        <div className="mt-4">
+        <App>
           <Navbar />
           <Component {...pageProps} />
-        </div>
+        </App>
       </WalletAdapter>
     </MainLayout>
   )
 }
 
-export default App
+const App = ({ children }: { children: React.ReactNode }) => {
+  const wallet = useWallet()
+  const { startSocialProtocol } = useSplingStore()
+
+  useEffect(() => {
+    if (wallet?.publicKey) startSocialProtocol({ wallet })
+  }, [wallet, startSocialProtocol])
+
+  return <div className="mt-4">{children}</div>
+}
+
+export default CrabApp

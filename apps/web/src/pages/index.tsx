@@ -9,13 +9,9 @@ import { useSplingStore } from '@/stores'
 export default function Index() {
   const wallet = useWallet()
   const { setVisible } = useWalletModal()
-  const { startSocialProtocol, socialProtocol } = useSplingStore()
+  const { socialProtocol } = useSplingStore()
 
   const { connected } = wallet
-
-  useEffect(() => {
-    if (wallet?.publicKey) startSocialProtocol({ wallet })
-  }, [wallet, startSocialProtocol])
 
   useEffect(() => {
     async function getGroups() {
