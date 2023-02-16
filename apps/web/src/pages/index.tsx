@@ -1,13 +1,38 @@
 import { UserGroupIcon } from '@heroicons/react/24/outline'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import { Keypair } from '@solana/web3.js'
+import { ProtocolOptions, SocialProtocol } from '@spling/social-protocol'
+import { useRef, useEffect } from 'react'
 import { Button } from 'ui'
 
 import { Feed } from '@/components/Feed'
 
 export default function Index() {
   const { setVisible } = useWalletModal()
-  const { connected, disconnect } = useWallet()
+  const { connected, disconnect, wallet } = useWallet()
+  const socialProtocolRef = useRef<SocialProtocol | null>(null)
+
+  useEffect(() => {
+    async function init() {
+      const options = {
+        rpcUrl: 'https://api.mainnet-beta.solana.com/',
+        useIndexer: true,
+      } as ProtocolOptions
+
+      const keyPair = Keypair.generate()
+
+      const socialProtocol: SocialProtocol = await new SocialProtocol(keyPair, null, options).init()
+
+      socialProtocolRef.current = socialProtocol
+
+      const groups = await socialProtocolRef.current?.getAllGroups()
+
+      console.log(groups)
+    }
+
+    if (wallet) init()
+  }, [wallet])
 
   return (
     <main>
