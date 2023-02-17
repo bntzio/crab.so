@@ -9,20 +9,20 @@ import { useSplingStore } from '@/stores'
 export default function Index() {
   const wallet = useWallet()
   const { setVisible } = useWalletModal()
-  const { socialProtocol } = useSplingStore()
+  const { getAllGroups } = useSplingStore()
 
   const { connected } = wallet
 
   useEffect(() => {
     async function getGroups() {
-      if (socialProtocol) {
-        const allGroups = await socialProtocol.getAllGroups()
+      setTimeout(async () => {
+        const allGroups = await getAllGroups()
         console.log(allGroups)
-      }
+      }, 1000)
     }
 
     getGroups()
-  }, [socialProtocol])
+  }, [getAllGroups])
 
   return (
     <main>
