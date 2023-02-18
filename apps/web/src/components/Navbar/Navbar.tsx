@@ -32,6 +32,17 @@ export default function Navbar() {
     checkAccount()
   }, [socialProtocol, publicKey])
 
+  const renderNavButtons = () => {
+    switch (router.pathname) {
+      case '/':
+        if (isRegistered) return <Button onClick={async () => router.push('/')}>Create a community</Button>
+        else return <Button onClick={async () => router.push('/signup')}>Create your account</Button>
+      default:
+        if (!isRegistered) return <Button onClick={async () => router.push('/signup')}>Create your account</Button>
+        return null
+    }
+  }
+
   return (
     <nav className="flex justify-between items-center">
       <Link href="/" className="text-black font-normal text-2xl">
@@ -46,11 +57,7 @@ export default function Navbar() {
         </Button>
       ) : (
         <div className="space-x-4">
-          {isRegistered ? (
-            <Button onClick={async () => router.push('/c/new')}>Create a Community</Button>
-          ) : (
-            <Button onClick={async () => router.push('/signup')}>Create your account</Button>
-          )}
+          {renderNavButtons()}
           <Button buttonType="slate" onClick={async () => await disconnect()}>
             Disconnect
           </Button>
