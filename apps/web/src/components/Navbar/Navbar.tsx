@@ -3,12 +3,34 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 import { Button } from 'ui'
+
+import { useSplingStore } from '@/stores'
 
 export default function Navbar() {
   const router = useRouter()
   const { setVisible } = useWalletModal()
-  const { connected, disconnect } = useWallet()
+  const { socialProtocol } = useSplingStore()
+  const { connected, disconnect, publicKey } = useWallet()
+  const [isRegistered, setIsRegistered] = useState<boolean | undefined>()
+
+  useEffect(() => {
+    async function checkAccount() {
+      if (publicKey) {
+        const currentUser = await socialProtocol?.getUserByPublicKey(publicKey)
+        console.log('currentUser', currentUser)
+
+        if (currentUser) {
+          setIsRegistered(true)
+        } else {
+          setIsRegistered(false)
+        }
+      }
+    }
+
+    checkAccount()
+  }, [socialProtocol, publicKey])
 
   return (
     <nav className="flex justify-between items-center">
@@ -24,7 +46,11 @@ export default function Navbar() {
         </Button>
       ) : (
         <div className="space-x-4">
-          <Button onClick={async () => router.push('/c/new')}>Create a Community</Button>
+          {isRegistered ? (
+            <Button onClick={async () => router.push('/c/new')}>Create a Community</Button>
+          ) : (
+            <Button onClick={async () => router.push('/signup')}>Create your account</Button>
+          )}
           <Button buttonType="slate" onClick={async () => await disconnect()}>
             Disconnect
           </Button>

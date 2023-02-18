@@ -24,10 +24,6 @@ export default function Index() {
         if (wallet?.publicKey) {
           const user = await socialProtocol?.getUserByPublicKey(wallet.publicKey)
           console.log('my user', user)
-
-          if (!user) {
-            router.push('/signup')
-          }
         }
       }, 1200)
     }
