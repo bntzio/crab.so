@@ -2,17 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const heliusApiKey = process.env.HELIUS_API_KEY
 
-export async function middleware(request: NextRequest): Promise<Response | undefined> {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (pathname === '/api/rpc') {
-    const url = new URL('https://rpc.helius.xyz')
+    const url = new URL('https://rpc.helius.xyz', request.url)
 
     if (heliusApiKey) url.searchParams.set('api-key', heliusApiKey)
 
-    const res = NextResponse.rewrite(url, request)
+    const response = NextResponse.rewrite(url)
 
-    return res
+    return response
   }
 }
 
