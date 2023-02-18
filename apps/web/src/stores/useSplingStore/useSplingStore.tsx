@@ -8,8 +8,10 @@ interface SplingStore {
   getAllGroups: () => Promise<Group[]>
 }
 
+const isProd = process.env.NODE_ENV === 'production'
+
 const socialProtocolOptions = {
-  rpcUrl: 'https://api.mainnet-beta.solana.com/',
+  rpcUrl: isProd ? 'https://crab.so/api/rpc' : 'http://localhost:3000/api/rpc',
   useIndexer: true,
 } as ProtocolOptions
 
