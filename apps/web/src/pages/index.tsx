@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { Button } from 'ui'
 
-import { Feed } from '@/components'
+import { Feed, CreateCommunityModal } from '@/components'
 import { useSplingStore } from '@/stores'
 
 export default function Index() {
@@ -57,6 +57,7 @@ export default function Index() {
         )}
       </section>
       <div className={!connected ? 'mt-0' : 'mt-16'}>
+        <CreateCommunityModal />
         <div className="mb-5">
           <p className="text-black font-medium items-center flex">
             <span aria-label="crab" role="img" className="mr-3">
