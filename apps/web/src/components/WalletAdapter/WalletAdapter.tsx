@@ -15,7 +15,7 @@ const WalletAdapter = ({ children }: Props) => {
   const wallets = useMemo(() => [new GlowWalletAdapter(), new SolflareWalletAdapter()], [])
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
+    <ConnectionProvider endpoint={endpoint} config={{ commitment: 'max' }}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
