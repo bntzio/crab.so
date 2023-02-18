@@ -37,7 +37,7 @@ export default function Navbar() {
     switch (router.pathname) {
       case '/':
         if (isRegistered)
-          return <Button onClick={async () => setActiveModal('create-community')}>Create a community</Button>
+          return <Button onClick={async () => setActiveModal('createCommunity')}>Create a community</Button>
         else return <Button onClick={async () => router.push('/signup')}>Create your account</Button>
       default:
         if (!isRegistered) return <Button onClick={async () => router.push('/signup')}>Create your account</Button>

@@ -58,7 +58,7 @@ export default function Index() {
         )}
       </section>
       <div className={!connected ? 'mt-0' : 'mt-16'}>
-        <CreateCommunityModal isOpen={activeModal === 'create-community'} />
+        <CreateCommunityModal isOpen={activeModal === 'createCommunity'} />
         <div className="mb-5">
           <p className="text-black font-medium items-center flex">
             <span aria-label="crab" role="img" className="mr-3">

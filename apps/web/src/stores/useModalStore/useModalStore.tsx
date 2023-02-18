@@ -1,8 +1,10 @@
 import { create, UseBoundStore, StoreApi } from 'zustand'
 
+type Modal = 'createCommunity'
+
 interface ModalStore {
-  activeModal: string | null
-  setActiveModal: (modal: string | null) => void
+  activeModal: Modal | null
+  setActiveModal: (modal: Modal | null) => void
 }
 
 const useModalStore: UseBoundStore<StoreApi<ModalStore>> = create(set => ({
