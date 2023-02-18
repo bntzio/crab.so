@@ -1,18 +1,17 @@
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import { GlowWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
-import { clusterApiUrl } from '@solana/web3.js'
 import { useMemo, ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
 }
 
-const WalletAdapter = ({ children }: Props) => {
-  const network = WalletAdapterNetwork.Mainnet
-  const endpoint = useMemo(() => clusterApiUrl(network), [network])
+const isProd = process.env.NODE_ENV === 'production'
 
+const endpoint = isProd ? 'https://crab.so' : 'http://localhost:3000'
+
+const WalletAdapter = ({ children }: Props) => {
   const wallets = useMemo(() => [new GlowWalletAdapter(), new SolflareWalletAdapter()], [])
 
   return (
