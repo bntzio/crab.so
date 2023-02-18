@@ -47,7 +47,7 @@ export default function Navbar() {
 
   return (
     <nav className="flex justify-between items-center">
-      <Link href="/" className="text-black font-normal text-2xl">
+      <Link href="/" className="text-black font-normal text-3xl">
         <span aria-label="crab" role="img">
           🦀
         </span>
