@@ -2,7 +2,7 @@ import clsx from 'clsx'
 
 const baseStyles = {
   solid:
-    'inline-flex items-center rounded-md border border-transparent px-3 py-2 text-sm font-medium leading-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2',
+    'inline-flex items-center rounded-md border border-transparent px-3 py-2 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2',
 }
 
 const variantStyles = {
