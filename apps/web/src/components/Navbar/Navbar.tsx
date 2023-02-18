@@ -6,12 +6,13 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { Button } from 'ui'
 
-import { useSplingStore } from '@/stores'
+import { useSplingStore, useModalStore } from '@/stores'
 
 export default function Navbar() {
   const router = useRouter()
   const { setVisible } = useWalletModal()
   const { socialProtocol } = useSplingStore()
+  const { setActiveModal } = useModalStore()
   const { connected, disconnect, publicKey } = useWallet()
   const [isRegistered, setIsRegistered] = useState<boolean | undefined>()
 
@@ -35,7 +36,8 @@ export default function Navbar() {
   const renderNavButtons = () => {
     switch (router.pathname) {
       case '/':
-        if (isRegistered) return <Button onClick={async () => router.push('/')}>Create a community</Button>
+        if (isRegistered)
+          return <Button onClick={async () => setActiveModal('create-community')}>Create a community</Button>
         else return <Button onClick={async () => router.push('/signup')}>Create your account</Button>
       default:
         if (!isRegistered) return <Button onClick={async () => router.push('/signup')}>Create your account</Button>

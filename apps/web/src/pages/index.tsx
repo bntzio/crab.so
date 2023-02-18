@@ -5,12 +5,13 @@ import { useEffect } from 'react'
 import { Button } from 'ui'
 
 import { Feed, CreateCommunityModal } from '@/components'
-import { useSplingStore } from '@/stores'
+import { useSplingStore, useModalStore } from '@/stores'
 
 export default function Index() {
   const wallet = useWallet()
   const router = useRouter()
   const { setVisible } = useWalletModal()
+  const { activeModal } = useModalStore()
   const { getAllGroups, socialProtocol } = useSplingStore()
 
   const { connected } = wallet
@@ -57,7 +58,7 @@ export default function Index() {
         )}
       </section>
       <div className={!connected ? 'mt-0' : 'mt-16'}>
-        <CreateCommunityModal />
+        <CreateCommunityModal isOpen={activeModal === 'create-community'} />
         <div className="mb-5">
           <p className="text-black font-medium items-center flex">
             <span aria-label="crab" role="img" className="mr-3">

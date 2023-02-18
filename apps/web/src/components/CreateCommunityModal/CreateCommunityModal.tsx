@@ -3,14 +3,14 @@ import { UserGroupIcon } from '@heroicons/react/24/outline'
 import { Fragment, useRef, useState } from 'react'
 import { Button } from 'ui'
 
-import { useSplingStore } from '@/stores'
+import { useSplingStore, useModalStore } from '@/stores'
 import { fileToBase64 } from '@/utils'
 
-export default function CreateCommunityModal() {
-  const [open, setOpen] = useState(true)
+export default function CreateCommunityModal({ isOpen }: { isOpen: boolean }) {
   const [file, setFile] = useState<File>()
   const inputFile = useRef<HTMLInputElement | null>(null)
   const { socialProtocol } = useSplingStore()
+  const { setActiveModal } = useModalStore()
   const cancelButtonRef = useRef(null)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -39,7 +39,7 @@ export default function CreateCommunityModal() {
         const group = await socialProtocol?.createGroup(name, bio, avatar, metadata)
         console.log('created group: ', group)
         alert('Group created!') // TODO: Render success toast
-        setOpen(false)
+        setActiveModal(null)
       } catch (e) {
         console.log(e) // TODO: Render error toast
       }
@@ -52,8 +52,15 @@ export default function CreateCommunityModal() {
   }
 
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
+    <Transition.Root show={isOpen} as={Fragment}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        initialFocus={cancelButtonRef}
+        onClose={() => {
+          setActiveModal(null)
+        }}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -188,7 +195,7 @@ export default function CreateCommunityModal() {
                     <Button
                       type="button"
                       buttonType="slate"
-                      onClick={() => setOpen(false)}
+                      onClick={() => setActiveModal(null)}
                       className="w-full justify-center"
                     >
                       Create Community
