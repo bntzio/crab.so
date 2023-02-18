@@ -26,6 +26,8 @@ export default function CreateCommunityModal({ isOpen }: { isOpen: boolean }) {
       slug: formData.get('slug') as string,
     }
 
+    if (!name || !file || !bio || !metadata) return alert('Please fill out all the fields.')
+
     const encoded = await fileToBase64(file)
 
     if (encoded && typeof encoded === 'string') {
@@ -192,12 +194,7 @@ export default function CreateCommunityModal({ isOpen }: { isOpen: boolean }) {
                     </div>
                   </div>
                   <div className="mt-5 sm:mt-12">
-                    <Button
-                      type="button"
-                      buttonType="slate"
-                      onClick={() => setActiveModal(null)}
-                      className="w-full justify-center"
-                    >
+                    <Button type="submit" buttonType="slate" className="w-full justify-center">
                       Create Community
                     </Button>
                   </div>
