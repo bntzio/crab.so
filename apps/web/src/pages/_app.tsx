@@ -26,7 +26,11 @@ const App = ({ children }: { children: React.ReactNode }) => {
   const { startSocialProtocol } = useSplingStore()
 
   useEffect(() => {
-    if (wallet?.publicKey) startSocialProtocol({ wallet })
+    async function start() {
+      await startSocialProtocol({ wallet })
+    }
+
+    if (wallet?.publicKey) start()
   }, [wallet, startSocialProtocol])
 
   return <div className="mt-4">{children}</div>

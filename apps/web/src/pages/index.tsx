@@ -1,5 +1,6 @@
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { Button } from 'ui'
 
@@ -8,21 +9,31 @@ import { useSplingStore } from '@/stores'
 
 export default function Index() {
   const wallet = useWallet()
+  const router = useRouter()
   const { setVisible } = useWalletModal()
-  const { getAllGroups } = useSplingStore()
+  const { getAllGroups, socialProtocol } = useSplingStore()
 
   const { connected } = wallet
 
   useEffect(() => {
-    async function getGroups() {
+    async function fetchProtocolInfo() {
       setTimeout(async () => {
         const allGroups = await getAllGroups()
-        console.log(allGroups)
-      }, 1000)
+        console.log('all groups', allGroups)
+
+        if (wallet?.publicKey) {
+          const user = await socialProtocol?.getUserByPublicKey(wallet.publicKey)
+          console.log('my user', user)
+
+          if (!user) {
+            router.push('/signup')
+          }
+        }
+      }, 1200)
     }
 
-    getGroups()
-  }, [getAllGroups])
+    fetchProtocolInfo()
+  }, [wallet, socialProtocol, getAllGroups, router])
 
   return (
     <main>

@@ -1,0 +1,437 @@
+diff --git a/dist/methods/group/create-group.js b/dist/methods/group/create-group.js
+index 274c7151af0574d438aaadd5b12e19c3217ef19c..c2d43098ff5a12c9595ad3a8cef3ff0aff1bf2c4 100644
+--- a/dist/methods/group/create-group.js
++++ b/dist/methods/group/create-group.js
+@@ -61,20 +61,7 @@ async function createGroup(name, bio, avatar, metadata = null) {
+         // Generate avatar file to upload.
+         if (avatar !== null) {
+             fileSizeSummarized += avatar.size;
+-            if (!constants_1.isBrowser) {
+-                const RNFS = require('react-native-fs');
+-                const readedFile = await RNFS.readFile(avatar.uri, 'base64');
+-                filesToUpload.push({
+-                    uri: avatar.uri,
+-                    name: `group-avatar.${avatar?.type.split('/')[1]}`,
+-                    type: avatar.type,
+-                    size: avatar.size,
+-                    file: Buffer.from(readedFile, 'base64'),
+-                });
+-            }
+-            else {
+-                filesToUpload.push(new File([(0, helpers_1.convertDataUriToBlob)(avatar.base64)], `group-avatar.${avatar?.type.split('/')[1]}`));
+-            }
++            filesToUpload.push(new File([(0, helpers_1.convertDataUriToBlob)(avatar.base64)], `group-avatar.${avatar?.type.split('/')[1]}`));
+         }
+         // Find spling pda.
+         const [SplingPDA] = anchor_1.web3.PublicKey.findProgramAddressSync([anchor.utils.bytes.utf8.encode('spling')], constants_1.programId);
+@@ -95,31 +82,10 @@ async function createGroup(name, bio, avatar, metadata = null) {
+             license: null,
+             metadata: metadataObject
+         };
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            const groupJSONPath = `${RNFS.DocumentDirectoryPath}/group.json`;
+-            await RNFS.writeFile(groupJSONPath, JSON.stringify(groupJson), 'utf8');
+-            const statResult = await RNFS.stat(groupJSONPath);
+-            const file = await RNFS.readFile(groupJSONPath, 'utf8');
+-            filesToUpload.push({
+-                uri: `file://${groupJSONPath}`,
+-                type: 'application/json',
+-                file: Buffer.from(file, 'utf8'),
+-                name: 'group.json',
+-                size: statResult.size,
+-            });
+-        }
+-        else {
+-            const fileToSave = new Blob([JSON.stringify(groupJson)], { type: 'application/json' });
+-            filesToUpload.push(new File([fileToSave], 'group.json'));
+-        }
++        const fileToSave = new Blob([JSON.stringify(groupJson)], { type: 'application/json' });
++        filesToUpload.push(new File([fileToSave], 'group.json'));
+         // Upload all files to shadow drive once.
+         await this.shadowDrive.uploadFiles(account.publicKey, !constants_1.isBrowser ? filesToUpload : filesToUpload);
+-        // Remove created .json file on mobile device.
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            RNFS.unlink(`${RNFS.DocumentDirectoryPath}/group.json`);
+-        }
+         // Find the group profile pda.
+         const [GroupProfilePDA] = anchor_1.web3.PublicKey.findProgramAddressSync([anchor.utils.bytes.utf8.encode('group_profile'), this.wallet.publicKey.toBuffer()], constants_1.programId);
+         // Find bank pda.
+diff --git a/dist/methods/group/update-group.js b/dist/methods/group/update-group.js
+index 3516dd84b8ae71554acc5941263d4422a6bffa57..fe9eae05d2c1dd0c6e67f167ed05431b2953979d 100644
+--- a/dist/methods/group/update-group.js
++++ b/dist/methods/group/update-group.js
+@@ -64,20 +64,7 @@ async function updateGroup(name = null, avatar = null, biography = null, metadat
+         // Generate avatar file to upload.
+         let groupAvatarFile = null;
+         if (avatar !== null) {
+-            if (!constants_1.isBrowser) {
+-                const RNFS = require('react-native-fs');
+-                const readedFile = await RNFS.readFile(avatar.uri, 'base64');
+-                groupAvatarFile = {
+-                    uri: avatar.uri,
+-                    name: `group-avatar.${avatar.type.split('/')[1]}`,
+-                    type: avatar.type,
+-                    size: avatar.size,
+-                    file: Buffer.from(readedFile, 'base64'),
+-                };
+-            }
+-            else {
+-                groupAvatarFile = new File([(0, helpers_1.convertDataUriToBlob)(avatar.base64)], `group-avatar.${avatar.type.split('/')[1]}`);
+-            }
++            groupAvatarFile = new File([(0, helpers_1.convertDataUriToBlob)(avatar.base64)], `group-avatar.${avatar.type.split('/')[1]}`);
+         }
+         if (groupAvatarFile != null) {
+             // Edit avatar image from shadow drive.
+@@ -108,30 +95,12 @@ async function updateGroup(name = null, avatar = null, biography = null, metadat
+             groupProfileJson.metadata = metadataObject;
+         }
+         let groupFile;
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            const profileJSONPath = `${RNFS.DocumentDirectoryPath}/group.json`;
+-            await RNFS.writeFile(profileJSONPath, JSON.stringify(groupProfileJson), 'utf8');
+-            const statResult = await RNFS.stat(profileJSONPath);
+-            const file = await RNFS.readFile(profileJSONPath, 'utf8');
+-            groupFile = {
+-                uri: `file://${profileJSONPath}`,
+-                type: 'application/json',
+-                file: Buffer.from(file, 'utf8'),
+-                name: 'group.json',
+-                size: statResult.size,
+-            };
+-        }
+-        else {
+-            const fileToSave = new Blob([JSON.stringify(groupProfileJson)], { type: 'application/json' });
+-            groupFile = new File([fileToSave], 'group.json');
+-        }
+-        // Edit current group.json from 
++
++        const fileToSave = new Blob([JSON.stringify(groupProfileJson)], { type: 'application/json' });
++        groupFile = new File([fileToSave], 'group.json');
++        // Edit current group.json from
+         await this.shadowDrive.editFile(groupChain.shdw, `${constants_1.shadowDriveDomain}${groupChain.shdw.toString()}/group.json`, !constants_1.isBrowser ? groupFile : groupFile, 'v2');
+-        if (groupFile !== null && !constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            RNFS.unlink(`${RNFS.DocumentDirectoryPath}/group.json`);
+-        }
++
+         return Promise.resolve({
+             timestamp: groupChain.timestamp,
+             publicKey: groupChain.publicKey,
+diff --git a/dist/methods/post/create-post.js b/dist/methods/post/create-post.js
+index 71d07a637d336c75876bb386f9294feee01fe57d..a0b96cc0a1f95014f6036d3f537241f9b088d69c 100644
+--- a/dist/methods/post/create-post.js
++++ b/dist/methods/post/create-post.js
+@@ -77,45 +77,14 @@ async function createPost(groupId, title = null, text = null, files = null, tag
+         for (let index = 0; index < files.length; index++) {
+             const file = files[index];
+             fileSizeSummarized += file.size;
+-            if (!constants_1.isBrowser) {
+-                const RNFS = require('react-native-fs');
+-                const readedFile = await RNFS.readFile(file.uri, 'base64');
+-                filesToUpload.push({
+-                    uri: file.uri,
+-                    name: `${PostPDA.toString()}-${index + 1}.${file?.type.split('/')[1]}`,
+-                    type: file.type,
+-                    size: file.size,
+-                    file: Buffer.from(readedFile, 'base64'),
+-                });
+-            }
+-            else {
+-                filesToUpload.push(new File([(0, helpers_1.convertDataUriToBlob)(file.base64)], `${PostPDA.toString()}-${index + 1}.${file?.type.split('/')[1]}`));
+-            }
++            filesToUpload.push(new File([(0, helpers_1.convertDataUriToBlob)(file.base64)], `${PostPDA.toString()}-${index + 1}.${file?.type.split('/')[1]}`));
+         }
+         // Create text tile to upload.
+         let postTextFile;
+         if (text !== null) {
+-            if (!constants_1.isBrowser) {
+-                const RNFS = require('react-native-fs');
+-                const postTextPath = `${RNFS.DocumentDirectoryPath}/${PostPDA.toString()}.txt`;
+-                await RNFS.writeFile(postTextPath, text, 'utf8');
+-                const statResult = await RNFS.stat(postTextPath);
+-                const file = await RNFS.readFile(postTextPath, 'utf8');
+-                postTextFile = {
+-                    uri: `file://${postTextPath}`,
+-                    type: 'text/plain',
+-                    file: Buffer.from(file, 'utf8'),
+-                    name: `${PostPDA.toString()}.txt`,
+-                    size: statResult.size,
+-                };
+-                fileSizeSummarized += postTextFile.size;
+-                filesToUpload.push(postTextFile);
+-            }
+-            else {
+-                postTextFile = new File([new Blob([text], { type: 'text/plain' })], `${PostPDA.toString()}.txt`);
+-                fileSizeSummarized += postTextFile.size;
+-                filesToUpload.push(postTextFile);
+-            }
++            postTextFile = new File([new Blob([text], { type: 'text/plain' })], `${PostPDA.toString()}.txt`);
++            fileSizeSummarized += postTextFile.size;
++            filesToUpload.push(postTextFile);
+         }
+         // Find/Create shadow drive account.
+         const account = await (0, helpers_1.getOrCreateShadowDriveAccount)(this.shadowDrive, fileSizeSummarized);
+@@ -131,39 +100,12 @@ async function createPost(groupId, title = null, text = null, files = null, tag
+             license: null,
+             metadata: metadataObject
+         };
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            const postJSONPath = `${RNFS.DocumentDirectoryPath}/${PostPDA.toString()}.json`;
+-            await RNFS.writeFile(postJSONPath, JSON.stringify(postJson), 'utf8');
+-            const statResult = await RNFS.stat(postJSONPath);
+-            const file = await RNFS.readFile(postJSONPath, 'utf8');
+-            const profileFile = {
+-                uri: `file://${postJSONPath}`,
+-                type: 'application/json',
+-                file: Buffer.from(file, 'utf8'),
+-                name: `${PostPDA.toString()}.json`,
+-                size: statResult.size,
+-            };
+-            filesToUpload.push(profileFile);
+-        }
+-        else {
+-            const fileToSave = new Blob([JSON.stringify(postJson)], { type: 'application/json' });
+-            const postJSONFile = new File([fileToSave], `${PostPDA.toString()}.json`);
+-            filesToUpload.push(postJSONFile);
+-        }
++
++        const fileToSave = new Blob([JSON.stringify(postJson)], { type: 'application/json' });
++        const postJSONFile = new File([fileToSave], `${PostPDA.toString()}.json`);
++        filesToUpload.push(postJSONFile);
+         // Upload all files to shadow drive once.
+         const uploadResult = await this.shadowDrive.uploadFiles(account.publicKey, !constants_1.isBrowser ? filesToUpload : filesToUpload);
+-        // Clear files from device if its react native.
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            // Remove post text file from device.
+-            if (postTextFile != null) {
+-                RNFS.unlink(`${RNFS.DocumentDirectoryPath}/${PostPDA.toString()}.txt`);
+-            }
+-            // Remove post json file from device.
+-            const postJSONPath = `${RNFS.DocumentDirectoryPath}/${PostPDA.toString()}.json`;
+-            RNFS.unlink(postJSONPath);
+-        }
+         // Throw error if one file was failing while uploading to cancel post creation process.
+         if (uploadResult.upload_errors.length > 0) {
+             for (let index = 0; index < uploadResult.finalized_locations.length; index++) {
+diff --git a/dist/methods/post/reply/create-post-reply.js b/dist/methods/post/reply/create-post-reply.js
+index 0b26f840ac51523025a81c8356ba2e6cf7a083a4..3df6d45d763d257c5c072d449439be1b864e5ab5 100644
+--- a/dist/methods/post/reply/create-post-reply.js
++++ b/dist/methods/post/reply/create-post-reply.js
+@@ -69,24 +69,7 @@ async function createPostReply(postId, text, metadata = null) {
+         let fileSizeSummarized = 1024;
+         const filesToUpload = [];
+         // Create text file to upload.
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            const replyTextPath = `${RNFS.DocumentDirectoryPath}/${ReplyPDA.toString()}.txt`;
+-            await RNFS.writeFile(replyTextPath, text, 'utf8');
+-            const statResult = await RNFS.stat(replyTextPath);
+-            const file = await RNFS.readFile(replyTextPath, 'utf8');
+-            fileSizeSummarized += statResult.size;
+-            filesToUpload.push({
+-                uri: `file://${replyTextPath}`,
+-                type: 'text/plain',
+-                file: Buffer.from(file, 'utf8'),
+-                name: `${ReplyPDA.toString()}.txt`,
+-                size: statResult.size,
+-            });
+-        }
+-        else {
+-            filesToUpload.push(new File([new Blob([text], { type: 'text/plain' })], `${ReplyPDA.toString()}.txt`));
+-        }
++        filesToUpload.push(new File([new Blob([text], { type: 'text/plain' })], `${ReplyPDA.toString()}.txt`));
+         // Generate the reply json to upload.
+         const replyJson = {
+             timestamp: timestamp,
+@@ -95,34 +78,12 @@ async function createPostReply(postId, text, metadata = null) {
+             text: `${ReplyPDA.toString()}.txt`,
+             metadata: metadataObject
+         };
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            const replyJSONPath = `${RNFS.DocumentDirectoryPath}/${ReplyPDA.toString()}.json`;
+-            await RNFS.writeFile(replyJSONPath, JSON.stringify(replyJson), 'utf8');
+-            const statResult = await RNFS.stat(replyJSONPath);
+-            const file = await RNFS.readFile(replyJSONPath, 'utf8');
+-            filesToUpload.push({
+-                uri: `file://${replyJSONPath}`,
+-                type: 'application/json',
+-                file: Buffer.from(file, 'utf8'),
+-                name: `${ReplyPDA.toString()}.json`,
+-                size: statResult.size,
+-            });
+-        }
+-        else {
+-            const fileToSave = new Blob([JSON.stringify(replyJson)], { type: 'application/json' });
+-            filesToUpload.push(new File([fileToSave], `${ReplyPDA.toString()}.json`));
+-        }
++        const fileToSave = new Blob([JSON.stringify(replyJson)], { type: 'application/json' });
++        filesToUpload.push(new File([fileToSave], `${ReplyPDA.toString()}.json`));
+         // Find/Create shadow drive account.
+         const account = await (0, helpers_1.getOrCreateShadowDriveAccount)(this.shadowDrive, fileSizeSummarized);
+         // Upload all files to shadow drive once.
+         await this.shadowDrive.uploadFiles(account.publicKey, !constants_1.isBrowser ? filesToUpload : filesToUpload);
+-        // Remove created device files if necessary.
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            RNFS.unlink(`${RNFS.DocumentDirectoryPath}/${ReplyPDA.toString()}.txt`);
+-            RNFS.unlink(`${RNFS.DocumentDirectoryPath}/${ReplyPDA.toString()}.json`);
+-        }
+         // Find bank pda.
+         const [BankPDA] = anchor_1.web3.PublicKey.findProgramAddressSync([anchor.utils.bytes.utf8.encode('b')], constants_1.programId);
+         // Submit the post to the anchor program.
+diff --git a/dist/methods/user/create-user.js b/dist/methods/user/create-user.js
+index 5f7827c9f3dbab1d50782c5e39821e7f677e0915..c4d8e574956ee0af6a1c20b3fb95c983f45aa7c3 100644
+--- a/dist/methods/user/create-user.js
++++ b/dist/methods/user/create-user.js
+@@ -60,20 +60,7 @@ async function createUser(nickname, avatar, biography, metadata = null) {
+         const filesToUpload = [];
+         if (avatar !== null) {
+             fileSizeSummarized += avatar.size;
+-            if (!constants_1.isBrowser) {
+-                const RNFS = require('react-native-fs');
+-                const readedFile = await RNFS.readFile(avatar.uri, 'base64');
+-                filesToUpload.push({
+-                    uri: avatar.uri,
+-                    name: `profile-avatar.${avatar.type.split('/')[1]}`,
+-                    type: avatar.type,
+-                    size: avatar.size,
+-                    file: Buffer.from(readedFile, 'base64'),
+-                });
+-            }
+-            else {
+-                filesToUpload.push(new File([(0, helpers_1.convertDataUriToBlob)(avatar.base64)], `profile-avatar.${avatar.type.split('/')[1]}`));
+-            }
++            filesToUpload.push(new File([(0, helpers_1.convertDataUriToBlob)(avatar.base64)], `profile-avatar.${avatar.type.split('/')[1]}`));
+         }
+         // Find spling pda.
+         const [SplingPDA] = anchor_1.web3.PublicKey.findProgramAddressSync([anchor.utils.bytes.utf8.encode('spling')], constants_1.programId);
+@@ -95,35 +82,14 @@ async function createUser(nickname, avatar, biography, metadata = null) {
+             license: null,
+             metadata: metadataObject
+         };
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            const profileJSONPath = `${RNFS.DocumentDirectoryPath}/profile.json`;
+-            await RNFS.writeFile(profileJSONPath, JSON.stringify(userProfileJson), 'utf8');
+-            const statResult = await RNFS.stat(profileJSONPath);
+-            const file = await RNFS.readFile(profileJSONPath, 'utf8');
+-            filesToUpload.push({
+-                uri: `file://${profileJSONPath}`,
+-                type: 'application/json',
+-                file: Buffer.from(file, 'utf8'),
+-                name: 'profile.json',
+-                size: statResult.size,
+-            });
+-        }
+-        else {
+-            const fileToSave = new Blob([JSON.stringify(userProfileJson)], { type: 'application/json' });
+-            filesToUpload.push(new File([fileToSave], 'profile.json'));
+-        }
++        const fileToSave = new Blob([JSON.stringify(userProfileJson)], { type: 'application/json' });
++        filesToUpload.push(new File([fileToSave], 'profile.json'));
+         // Find the user profile pda.
+         const [UserProfilePDA] = anchor_1.web3.PublicKey.findProgramAddressSync([anchor.utils.bytes.utf8.encode('user_profile'), this.wallet.publicKey.toBuffer()], constants_1.programId);
+         // Find bank pda.
+         const [BankPDA] = anchor_1.web3.PublicKey.findProgramAddressSync([anchor.utils.bytes.utf8.encode('b')], constants_1.programId);
+         // Upload all files to shadow drive once.
+         await this.shadowDrive.uploadFiles(account.publicKey, !constants_1.isBrowser ? filesToUpload : filesToUpload);
+-        // Remove created .json file on mobile device.
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            RNFS.unlink(`${RNFS.DocumentDirectoryPath}/profile.json`);
+-        }
+         const transactionCosts = this.tokenAccount !== null ? new anchor.BN(6458000) : null;
+         await submitUserProfileToAnchorProgram(this.anchorProgram, this.wallet.publicKey, account.publicKey, this.tokenAccount, SplingPDA, UserProfilePDA, BankPDA, transactionCosts);
+         // Fetch the user profile from the anchor program.
+diff --git a/dist/methods/user/update-user.js b/dist/methods/user/update-user.js
+index 415442ca204185db7b8782a61efacac24bd85526..6b733457ae61bf0987f776e69dc416f4608c32ec 100644
+--- a/dist/methods/user/update-user.js
++++ b/dist/methods/user/update-user.js
+@@ -64,20 +64,7 @@ async function updateUser(nickname = null, avatar = null, biography = null, meta
+         // Generate avatar file to upload.
+         let userAvatarFile = null;
+         if (avatar !== null) {
+-            if (!constants_1.isBrowser) {
+-                const RNFS = require('react-native-fs');
+-                const readedFile = await RNFS.readFile(avatar.uri, 'base64');
+-                userAvatarFile = {
+-                    uri: avatar.uri,
+-                    name: `profile-avatar.${avatar.type.split('/')[1]}`,
+-                    type: avatar.type,
+-                    size: avatar.size,
+-                    file: Buffer.from(readedFile, 'base64'),
+-                };
+-            }
+-            else {
+-                userAvatarFile = new File([(0, helpers_1.convertDataUriToBlob)(avatar.base64)], `profile-avatar.${avatar.type.split('/')[1]}`);
+-            }
++            userAvatarFile = new File([(0, helpers_1.convertDataUriToBlob)(avatar.base64)], `profile-avatar.${avatar.type.split('/')[1]}`);
+         }
+         if (userAvatarFile != null) {
+             // Edit avatar image from shadow drive.
+@@ -108,30 +95,9 @@ async function updateUser(nickname = null, avatar = null, biography = null, meta
+             userProfileJson.metadata = metadataObject;
+         }
+         let profileFile;
+-        if (!constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            const profileJSONPath = `${RNFS.DocumentDirectoryPath}/profile.json`;
+-            await RNFS.writeFile(profileJSONPath, JSON.stringify(userProfileJson), 'utf8');
+-            const statResult = await RNFS.stat(profileJSONPath);
+-            const file = await RNFS.readFile(profileJSONPath, 'utf8');
+-            profileFile = {
+-                uri: `file://${profileJSONPath}`,
+-                type: 'application/json',
+-                file: Buffer.from(file, 'utf8'),
+-                name: 'profile.json',
+-                size: statResult.size,
+-            };
+-        }
+-        else {
+-            const fileToSave = new Blob([JSON.stringify(userProfileJson)], { type: 'application/json' });
+-            profileFile = new File([fileToSave], 'profile.json');
+-        }
+-        // Edit current profile.json from 
+-        await this.shadowDrive.editFile(userChain.shdw, `${constants_1.shadowDriveDomain}${userChain.shdw.toString()}/profile.json`, !constants_1.isBrowser ? profileFile : profileFile, 'v2');
+-        if (profileFile !== null && !constants_1.isBrowser) {
+-            const RNFS = require('react-native-fs');
+-            RNFS.unlink(`${RNFS.DocumentDirectoryPath}/profile.json`);
+-        }
++        const fileToSave = new Blob([JSON.stringify(userProfileJson)], { type: 'application/json' });
++        profileFile = new File([fileToSave], 'profile.json');
++
+         return Promise.resolve({
+             timestamp: userChain.timestamp,
+             publicKey: userChain.publicKey,
+diff --git a/dist/utils/constants.js b/dist/utils/constants.js
+index ab666ed19cb386a32835e2d6e6bb611795a9c850..0c0ad4bef41314c2924189db09ea8f37a9f3afab 100644
+--- a/dist/utils/constants.js
++++ b/dist/utils/constants.js
+@@ -2,7 +2,7 @@
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.SPLING_TOKEN_ACCOUNT_RECEIVER = exports.SPLING_TOKEN_ADDRESS = exports.SHDW_TOKEN_ADDRESS = exports.INDEXER_GRAPH_QL_ENDPOINT = exports.shadowDriveDomain = exports.programId = exports.isBrowser = void 0;
+ const anchor_1 = require("@project-serum/anchor");
+-exports.isBrowser = typeof document !== 'undefined';
++exports.isBrowser = true;
+ exports.programId = new anchor_1.web3.PublicKey('D2mvyNuzAKFAsfmwgZpt6hCL45LJQw1Y965z6dnV15hZ');
+ exports.shadowDriveDomain = 'https://shdw-drive.genesysgo.net/';
+ exports.INDEXER_GRAPH_QL_ENDPOINT = 'https://knowing-dodo-22.hasura.app/v1/graphql';
+diff --git a/package.json b/package.json
+index 062de99e151d6bb8fc52f413af902658f3e4ff7e..080becc8e122f8e65b9c6c18ee085cf1bfe2edbc 100644
+--- a/package.json
++++ b/package.json
+@@ -71,8 +71,5 @@
+     "dayjs": "^1.11.4",
+     "graphql-request": "^5.0.0",
+     "react-native-shadow-drive": "^3.1.7"
+-  },
+-  "optionalDependencies": {
+-    "react-native-fs": "^2.20.0"
+   }
+ }
