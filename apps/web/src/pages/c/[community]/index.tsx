@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Button } from 'ui'
 
+import { PostForm } from '@/components'
 import { communities } from '@/pages/c'
 
 export const posts = [
@@ -26,13 +27,18 @@ export default function Community() {
 
   return (
     <main>
-      <h1 className="text-xl font-medium">Welcome to {communities.find(c => c.slug === community)?.name}</h1>
+      <section className="flex items-center space-x-6 mt-8">
+        <h1 className="text-xl font-medium">Welcome to {communities.find(c => c.slug === community)?.name}</h1>
+        <div>
+          <Button buttonType="slate">
+            <Link href="/c">See more communities</Link>
+          </Button>
+        </div>
+      </section>
 
-      <div className="mt-6">
-        <Button buttonType="slate">
-          <Link href="/c">See more communities</Link>
-        </Button>
-      </div>
+      <section className="my-10">
+        <PostForm />
+      </section>
 
       <div className="mt-6">
         <ul className="space-y-1">
