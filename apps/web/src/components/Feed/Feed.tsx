@@ -12,7 +12,7 @@ export default function Feed() {
   useEffect(() => {
     async function fetchProtocolInfo() {
       setTimeout(async () => {
-        const allGroupPosts = await socialProtocol?.getAllPosts(24, 20, 10)
+        const allGroupPosts = await socialProtocol?.getAllPosts(27)
 
         console.log('all group posts', allGroupPosts)
 
@@ -25,7 +25,7 @@ export default function Feed() {
 
   const renderPosts = () => {
     return posts.map(post => (
-      <Link key={post.publicKey.toString()} href={post.metadata.slug}>
+      <Link key={post.publicKey.toString()} href={'#'}>
         <li className="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 hover:bg-gray-50">
           <div className="flex justify-between space-x-3 items-center">
             <div className="mb-1 mr-1">

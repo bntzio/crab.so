@@ -14,6 +14,7 @@ import { Fragment, useState } from 'react'
 import { Button } from 'ui'
 
 import { classNames } from '@/helpers'
+import { useSplingStore } from '@/stores'
 
 const postTypes = [
   { name: 'Announcement', value: 'announcement', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
@@ -40,6 +41,25 @@ const postTypes = [
 
 export default function PostForm() {
   const [postType, setPostType] = useState(postTypes[postTypes.length - 1])
+  const { socialProtocol } = useSplingStore()
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const formData = new FormData(e.target as HTMLFormElement)
+
+    const title = formData.get('title') as string
+    const body = formData.get('body') as string
+
+    if (!title || !body) return alert('Please fill out all the fields.')
+
+    try {
+      const post = await socialProtocol?.createPost(27, title, body, [])
+      console.log(post)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   return (
     <div className="flex items-start space-x-4">
@@ -47,15 +67,30 @@ export default function PostForm() {
         <img className="inline-block h-10 w-10 rounded-full" src="/images/0xPegasus.png" alt="0xPegasus's Avatar" />
       </div>
       <div className="min-w-0 flex-1">
-        <form action="#" className="relative">
+        <form className="relative" onSubmit={handleSubmit}>
+          <div className="mb-2">
+            <label htmlFor="title" className="sr-only">
+              Add the title of your post
+            </label>
+            <div>
+              <input
+                type="text"
+                name="title"
+                id="title"
+                className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
+                placeholder="Add a title"
+              />
+            </div>
+          </div>
+
           <div className="overflow-hidden rounded-lg border border-gray-300 shadow-sm focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500">
-            <label htmlFor="comment" className="sr-only">
-              Add your contribution
+            <label htmlFor="body" className="sr-only">
+              Add the body of your post
             </label>
             <textarea
               rows={3}
-              name="comment"
-              id="comment"
+              name="body"
+              id="body"
               className="block w-full resize-none border-0 py-3 focus:ring-0 sm:text-sm"
               placeholder="Add your contribution..."
               defaultValue={''}
