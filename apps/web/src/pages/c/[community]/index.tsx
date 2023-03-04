@@ -1,7 +1,9 @@
+import { UserPlusIcon } from '@heroicons/react/20/solid'
 import { Group, Post } from '@spling/social-protocol'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import { Button } from 'ui'
 
 import { PostCard, PostForm } from '@/components'
 import { useSplingStore } from '@/stores'
@@ -60,6 +62,12 @@ export default function Community() {
             <div className="-space-y-1">
               <h1 className="text-lg font-medium mr-1 text-gray-800">{communityData.name}</h1>
               <h2 className="text-gray-600">{communityData.bio}</h2>
+            </div>
+            <div>
+              <Button className="h-7">
+                <UserPlusIcon className="w-4 h-4 mr-2 text-white" />
+                <span className="text-xs">Join Community</span>
+              </Button>
             </div>
           </div>
         </div>
