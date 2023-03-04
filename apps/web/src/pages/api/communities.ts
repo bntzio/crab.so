@@ -15,6 +15,12 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
 
   const groups = await socialProtocol.getAllGroups()
 
+  groups.forEach(group => {
+    if (group.metadata?.slug) {
+      console.log(group)
+    }
+  })
+
   const pks = data.map(community => community.public_key)
 
   const communities = groups.filter(group => pks.includes(group.publicKey.toString()))
