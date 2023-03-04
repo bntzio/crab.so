@@ -1,10 +1,11 @@
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { Button } from 'ui'
 
-import { Feed, CreateCommunityModal } from '@/components'
+import { Feed, CommunityShowcase, CreateCommunityModal } from '@/components'
 import { supabase } from '@/lib'
 import { useSplingStore, useModalStore } from '@/stores'
 
@@ -34,7 +35,7 @@ export default function Index() {
   }, [wallet, socialProtocol, getAllGroups, router])
 
   useEffect(() => {
-    async function fetchDatabase() {
+    async function getCommunities() {
       const { data, error } = await supabase.from('communities').select('*')
 
       if (error) return error
@@ -42,7 +43,7 @@ export default function Index() {
       console.log('Crab communities', data)
     }
 
-    fetchDatabase()
+    getCommunities()
   }, [])
 
   return (
@@ -70,16 +71,9 @@ export default function Index() {
           </div>
         )}
       </section>
-      <div className={!connected ? 'mt-0' : 'mt-16'}>
+      <div className={clsx(!connected ? 'mt-0' : 'mt-16', 'space-y-12')}>
         <CreateCommunityModal isOpen={activeModal === 'createCommunity'} />
-        <div className="mb-5">
-          <p className="text-black font-medium items-center flex">
-            <span aria-label="crab" role="img" className="mr-3">
-              ✍️
-            </span>
-            <span>recent posts</span>
-          </p>
-        </div>
+        <CommunityShowcase />
         <Feed />
       </div>
     </main>

@@ -74,8 +74,13 @@ export default function Feed() {
   }
 
   return (
-    <ul role="list" className="divide-y divide-gray-200">
-      {posts.length === 0 ? <li className="text-gray-500">No posts yet!</li> : renderPosts()}
-    </ul>
+    <section>
+      <div className="mb-4">
+        <p className="text-gray-600 font-medium text-sm">Latest posts</p>
+      </div>
+      <ul role="list" className="divide-y divide-gray-200">
+        {posts.length === 0 ? <li className="text-gray-500">No posts yet!</li> : renderPosts()}
+      </ul>
+    </section>
   )
 }
