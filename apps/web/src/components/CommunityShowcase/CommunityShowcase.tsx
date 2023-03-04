@@ -21,7 +21,7 @@ const CommunityShowcase = () => {
 
   const renderCommunities = () => {
     return communities.map(community => (
-      <div className="flex flex-col justify-center items-center p-3 space-y-2">
+      <div className="flex flex-col justify-center items-center p-3 space-y-2" key={community.groupId}>
         <Image src="/images/genesysgo.png" alt={community.name} width={66} height={66} />
         <div className="space-y-1 flex flex-col items-center">
           <h4 className="text-gray-500 font-normal">{community.name}</h4>
