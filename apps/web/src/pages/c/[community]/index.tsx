@@ -1,31 +1,21 @@
-import { Group } from '@spling/social-protocol'
-import Link from 'next/link'
+import { Group, Post } from '@spling/social-protocol'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
-import { PostForm } from '@/components'
-
-export const posts = [
-  {
-    slug: 'first-post',
-    title: 'First Post',
-  },
-  {
-    slug: 'second-post',
-    title: 'Second Post',
-  },
-  {
-    slug: 'third-post',
-    title: 'Third Post',
-  },
-]
+import { PostCard, PostForm } from '@/components'
+import { useSplingStore } from '@/stores'
 
 export default function Community() {
   const router = useRouter()
   // TODO: Manage state in a store
   const [communities, setCommunities] = useState<Group[]>([])
+  const [posts, setPosts] = useState<Post[]>([])
+  const { socialProtocol } = useSplingStore()
 
   const { community } = router.query
+
+  const communityData = communities.find(c => c.metadata?.slug === community)
 
   useEffect(() => {
     async function fetchCommunities() {
@@ -38,34 +28,51 @@ export default function Community() {
     fetchCommunities()
   }, [])
 
-  const communityData = communities.find(c => c.metadata?.slug === community)
+  useEffect(() => {
+    async function fetchPosts() {
+      const posts = await socialProtocol?.getAllPosts(communityData?.groupId as number)
+
+      if (posts) setPosts(posts)
+    }
+
+    if (communityData) fetchPosts()
+  }, [communityData, socialProtocol])
 
   if (communities.length === 0 || !communityData) {
     return <div>Loading...</div>
   }
 
   return (
-    <main>
-      <section className="flex items-center space-x-6 mt-8">
-        <h1 className="text-xl font-medium">{communityData.name}</h1>
-      </section>
+    <main className="mt-16">
+      <div className="flex flex-col space-y-6">
+        <div className="flex items-start space-x-4">
+          <div className="mt-1">
+            <Image
+              src={communityData.avatar as string}
+              alt={communityData.name}
+              width={44}
+              height={44}
+              style={{ width: '44px', height: '44px' }}
+              className="rounded-full bg-cover bg-no-repeat"
+            />
+          </div>
+          <div className="space-y-2">
+            <div className="-space-y-1">
+              <h1 className="text-lg font-medium mr-1 text-gray-800">{communityData.name}</h1>
+              <h2 className="text-gray-600">{communityData.bio}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <section className="my-10">
-        <PostForm />
+        <PostForm groupId={communityData.groupId} />
       </section>
 
       <div className="mt-6">
         <ul className="space-y-1">
           {posts.map(post => (
-            <li key={post.slug}>
-              <Link
-                href="/c/[community]/[post]"
-                as={`/c/${community}/${post.slug}`}
-                className="text-blue-500 hover:underline"
-              >
-                {post.title}
-              </Link>
-            </li>
+            <PostCard post={post} />
           ))}
         </ul>
       </div>

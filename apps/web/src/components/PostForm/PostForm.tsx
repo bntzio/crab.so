@@ -39,7 +39,11 @@ const postTypes = [
   { name: 'Normal', value: null, icon: XMarkIcon, iconColor: 'text-gray-400', bgColor: 'bg-transparent' },
 ]
 
-export default function PostForm() {
+interface Props {
+  groupId: number
+}
+
+export default function PostForm({ groupId }: Props) {
   const [postType, setPostType] = useState(postTypes[postTypes.length - 1])
   const { socialProtocol } = useSplingStore()
 
@@ -54,7 +58,7 @@ export default function PostForm() {
     if (!title || !body) return alert('Please fill out all the fields.')
 
     try {
-      const post = await socialProtocol?.createPost(27, title, body, [])
+      const post = await socialProtocol?.createPost(groupId, title, body, [])
       console.log(post)
     } catch (e) {
       console.log(e)
