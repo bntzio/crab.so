@@ -44,13 +44,13 @@ export default function Feed() {
             </div>
 
             <div className="min-w-0 flex-1 -mt-1">
-              <a href="#" className="block focus:outline-none">
-                <span className="absolute inset-0" aria-hidden="true" />
-                <p className="truncate text-sm font-medium text-gray-900">{post.title}</p>
-                <p className="truncate text-sm text-gray-500">
-                  {post.user.nickname} on {post.groupId}
-                </p>
-              </a>
+              {/* <a href="#" className="block focus:outline-none"> */}
+              <span className="absolute inset-0" aria-hidden="true" />
+              <p className="truncate text-sm font-medium text-gray-900">{post.title}</p>
+              <p className="truncate text-sm text-gray-500">
+                {post.user.nickname} on {post.groupId}
+              </p>
+              {/* </a> */}
             </div>
 
             <time
