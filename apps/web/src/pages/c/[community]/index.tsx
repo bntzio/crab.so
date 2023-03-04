@@ -25,7 +25,7 @@ export default function Community() {
 
   useEffect(() => {
     async function fetchUser() {
-      if (!communityData || !wallet.publicKey) return
+      if (!wallet.publicKey) return
 
       const user = await socialProtocol?.getUserByPublicKey(wallet.publicKey)
 
@@ -33,7 +33,7 @@ export default function Community() {
     }
 
     if (!user) fetchUser()
-  }, [communityData, socialProtocol, wallet, user])
+  }, [socialProtocol, wallet, user])
 
   useEffect(() => {
     async function fetchCommunities() {
