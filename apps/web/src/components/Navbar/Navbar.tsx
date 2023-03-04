@@ -52,19 +52,24 @@ export default function Navbar() {
           🦀
         </span>
       </Link>
-      {!connected ? (
-        <Button onClick={() => setVisible(true)}>
-          <UserGroupIcon className="h-5 w-5 text-white mr-2" aria-hidden="true" />
-          Create a community
+      <div className="flex space-x-6">
+        <Button buttonType="slate">
+          <Link href="/c">See more communities</Link>
         </Button>
-      ) : (
-        <div className="space-x-4">
-          {renderNavButtons()}
-          <Button buttonType="slate" onClick={async () => await disconnect()}>
-            Disconnect
+        {!connected ? (
+          <Button onClick={() => setVisible(true)}>
+            <UserGroupIcon className="h-5 w-5 text-white mr-2" aria-hidden="true" />
+            Create a community
           </Button>
-        </div>
-      )}
+        ) : (
+          <div className="space-x-4">
+            {renderNavButtons()}
+            <Button buttonType="slate" onClick={async () => await disconnect()}>
+              Disconnect
+            </Button>
+          </div>
+        )}
+      </div>
     </nav>
   )
 }

@@ -2,7 +2,6 @@ import { Group } from '@spling/social-protocol'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import { Button } from 'ui'
 
 import { PostForm } from '@/components'
 
@@ -48,12 +47,7 @@ export default function Community() {
   return (
     <main>
       <section className="flex items-center space-x-6 mt-8">
-        <h1 className="text-xl font-medium">Welcome to {communityData.name}</h1>
-        <div>
-          <Button buttonType="slate">
-            <Link href="/c">See more communities</Link>
-          </Button>
-        </div>
+        <h1 className="text-xl font-medium">{communityData.name}</h1>
       </section>
 
       <section className="my-10">
