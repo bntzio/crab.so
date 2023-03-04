@@ -1,9 +1,10 @@
+import { Group } from '@spling/social-protocol'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 const CommunityShowcase = () => {
-  const [communities, setCommunities] = useState<any[]>([])
+  const [communities, setCommunities] = useState<Group[]>([])
 
   useEffect(() => {
     async function getCommunities() {
