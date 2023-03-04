@@ -6,7 +6,6 @@ import { useEffect } from 'react'
 import { Button } from 'ui'
 
 import { Feed, CommunityShowcase, CreateCommunityModal } from '@/components'
-import { supabase } from '@/lib'
 import { useSplingStore, useModalStore } from '@/stores'
 
 export default function Index() {
@@ -33,18 +32,6 @@ export default function Index() {
 
     fetchProtocolInfo()
   }, [wallet, socialProtocol, getAllGroups, router])
-
-  useEffect(() => {
-    async function getCommunities() {
-      const { data, error } = await supabase.from('communities').select('*')
-
-      if (error) return error
-
-      console.log('Crab communities', data)
-    }
-
-    getCommunities()
-  }, [])
 
   return (
     <main>
