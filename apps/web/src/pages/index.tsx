@@ -61,7 +61,7 @@ export default function Index() {
       <div className={clsx(!connected ? 'mt-0' : 'mt-16', 'space-y-12')}>
         <CreateCommunityModal isOpen={activeModal === 'createCommunity'} />
         <CommunityShowcase />
-        <Feed />
+        {connected && <Feed />}
       </div>
     </main>
   )
