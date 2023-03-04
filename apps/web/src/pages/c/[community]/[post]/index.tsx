@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Button } from 'ui'
 
-import { communities } from '@/pages/c/'
 import { posts } from '@/pages/c/[community]'
 
 export default function Post() {
@@ -22,7 +21,7 @@ export default function Post() {
       <div className="mt-6">
         <Button buttonType="slate">
           <Link href="/c/[community]" as={`/c/${community}`}>
-            Back to {communities.find(c => c.slug === community)?.name}
+            Back to community
           </Link>
         </Button>
       </div>
