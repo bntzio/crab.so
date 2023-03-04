@@ -23,7 +23,7 @@ export default function Feed() {
   }, [socialProtocol])
 
   const renderPosts = () => {
-    return posts.map(post => <PostCard post={post} />)
+    return posts.map(post => <PostCard key={post.publicKey.toString()} post={post} />)
   }
 
   return (
