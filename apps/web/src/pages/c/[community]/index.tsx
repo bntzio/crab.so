@@ -1,5 +1,6 @@
-import { UserPlusIcon } from '@heroicons/react/20/solid'
-import { Group, Post } from '@spling/social-protocol'
+import { UserPlusIcon, UserMinusIcon } from '@heroicons/react/20/solid'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { Group, Post, User } from '@spling/social-protocol'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -9,15 +10,30 @@ import { PostCard, PostForm } from '@/components'
 import { useSplingStore } from '@/stores'
 
 export default function Community() {
+  const wallet = useWallet()
   const router = useRouter()
   // TODO: Manage state in a store
   const [communities, setCommunities] = useState<Group[]>([])
   const [posts, setPosts] = useState<Post[]>([])
   const { socialProtocol } = useSplingStore()
+  // TODO: Manage state in a store
+  const [user, setUser] = useState<User>()
 
   const { community } = router.query
 
   const communityData = communities.find(c => c.metadata?.slug === community)
+
+  useEffect(() => {
+    async function fetchUser() {
+      if (!communityData || !wallet.publicKey) return
+
+      const user = await socialProtocol?.getUserByPublicKey(wallet.publicKey)
+
+      if (user) setUser(user)
+    }
+
+    if (!user) fetchUser()
+  }, [communityData, socialProtocol, wallet, user])
 
   useEffect(() => {
     async function fetchCommunities() {
@@ -47,6 +63,21 @@ export default function Community() {
       if (!communityData) throw new Error('Community not found')
 
       await socialProtocol?.joinGroup(communityData.groupId)
+
+      window.alert('You have joined the community! :)')
+    } catch (e) {
+      // TODO: Handle error
+      console.error(e)
+    }
+  }
+
+  const handleLeaveGroup = async () => {
+    try {
+      if (!communityData) throw new Error('Community not found')
+
+      await socialProtocol?.leaveGroup(communityData.groupId)
+
+      window.alert('You have left the community :(')
     } catch (e) {
       // TODO: Handle error
       console.error(e)
@@ -75,10 +106,17 @@ export default function Community() {
               <h2 className="text-gray-600">{communityData.bio}</h2>
             </div>
             <div>
-              <Button className="h-7" onClick={handleJoinGroup}>
-                <UserPlusIcon className="w-4 h-4 mr-2 text-white" />
-                <span className="text-xs">Join Community</span>
-              </Button>
+              {user?.groups?.includes(communityData.groupId) ? (
+                <Button className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400" onClick={handleLeaveGroup}>
+                  <UserMinusIcon className="w-4 h-4 mr-2 text-white" />
+                  <span className="text-xs">Leave Community</span>
+                </Button>
+              ) : (
+                <Button className="h-7" onClick={handleJoinGroup}>
+                  <UserPlusIcon className="w-4 h-4 mr-2 text-white" />
+                  <span className="text-xs">Join Community</span>
+                </Button>
+              )}
             </div>
           </div>
         </div>
