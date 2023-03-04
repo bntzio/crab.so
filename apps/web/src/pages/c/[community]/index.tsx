@@ -32,17 +32,28 @@ export default function Community() {
 
   useEffect(() => {
     async function fetchPosts() {
-      const posts = await socialProtocol?.getAllPosts(communityData?.groupId as number)
+      if (!communityData) return
+
+      const posts = await socialProtocol?.getAllPosts(communityData.groupId)
 
       if (posts) setPosts(posts)
     }
 
-    if (communityData) fetchPosts()
+    fetchPosts()
   }, [communityData, socialProtocol])
 
-  if (communities.length === 0 || !communityData) {
-    return <div>Loading...</div>
+  const handleJoinGroup = async () => {
+    try {
+      if (!communityData) throw new Error('Community not found')
+
+      await socialProtocol?.joinGroup(communityData.groupId)
+    } catch (e) {
+      // TODO: Handle error
+      console.error(e)
+    }
   }
+
+  if (communities.length === 0 || !communityData) return <div>Loading...</div>
 
   return (
     <main className="mt-16">
@@ -64,7 +75,7 @@ export default function Community() {
               <h2 className="text-gray-600">{communityData.bio}</h2>
             </div>
             <div>
-              <Button className="h-7">
+              <Button className="h-7" onClick={handleJoinGroup}>
                 <UserPlusIcon className="w-4 h-4 mr-2 text-white" />
                 <span className="text-xs">Join Community</span>
               </Button>
