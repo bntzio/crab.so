@@ -1,18 +1,19 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-import { supabase } from '@/lib'
-
 const CommunityShowcase = () => {
   const [communities, setCommunities] = useState<any[]>([])
 
   useEffect(() => {
     async function getCommunities() {
-      const { data, error } = await supabase.from('communities').select('*').limit(6)
+      try {
+        const response = await fetch('/api/communities')
+        const data = await response.json()
 
-      if (error) return error
-
-      setCommunities(data)
+        setCommunities(data)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     getCommunities()
