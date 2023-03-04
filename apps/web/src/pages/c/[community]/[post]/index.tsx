@@ -2,16 +2,16 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Button } from 'ui'
 
-import { posts } from '@/pages/c/[community]'
-
 export default function Post() {
   const router = useRouter()
 
   const { community, post } = router.query
 
+  console.log(post)
+
   return (
     <main>
-      <h1 className="text-xl font-medium">{posts.find(p => p.slug === post)?.title}</h1>
+      <h1 className="text-xl font-medium">Title Here</h1>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, nisl nec ultricies lacinia, nisl nisl
         aliquet nisl, nec tincidunt nisl nisl et nisl. Sed tincidunt, nisl nec ultricies lacinia, nisl nisl aliquet
