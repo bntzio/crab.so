@@ -84,7 +84,7 @@ export default function Community() {
     }
   }
 
-  if (communities.length === 0 || !communityData) return <div>Loading...</div>
+  if (communities.length === 0 || !communityData || !user) return <div>Loading...</div>
 
   return (
     <main className="mt-16">
@@ -106,7 +106,7 @@ export default function Community() {
               <h2 className="text-gray-600">{communityData.bio}</h2>
             </div>
             <div>
-              {user?.groups?.includes(communityData.groupId) ? (
+              {user.groups.includes(communityData.groupId) ? (
                 <Button className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400" onClick={handleLeaveGroup}>
                   <UserMinusIcon className="w-4 h-4 mr-2 text-white" />
                   <span className="text-xs">Leave Community</span>
