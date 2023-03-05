@@ -41,7 +41,7 @@ export default function Feed() {
   }, [user])
 
   const renderPosts = () => {
-    return posts.map(post => <PostCard key={post.publicKey.toString()} post={post} />)
+    return posts.map(post => <PostCard key={post.publicKey.toString()} post={post} community={post.user.nickname} />)
   }
 
   return (

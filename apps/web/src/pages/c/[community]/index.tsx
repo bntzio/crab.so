@@ -129,7 +129,7 @@ export default function Community() {
       <div className="mt-6">
         <ul className="space-y-1">
           {posts.map(post => (
-            <PostCard key={post.publicKey.toString()} post={post} />
+            <PostCard key={post.publicKey.toString()} post={post} community={communityData.name} />
           ))}
         </ul>
       </div>
