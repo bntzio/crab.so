@@ -1,9 +1,9 @@
 lockfileVersion: 5.4
 
 patchedDependencies:
-  '@spling/social-protocol@1.5.7':
-    hash: rhmdkv75wf7ahtgh2a42dmjm5m
-    path: patches/@spling__social-protocol@1.5.7.patch
+  '@spling/social-protocol@1.5.9':
+    hash: ux6bkybeyylxn5s2k3vygmyuk4
+    path: patches/@spling__social-protocol@1.5.9.patch
 
 importers:
 
@@ -19,36 +19,7 @@ importers:
       husky: 8.0.3
       lint-staged: 13.1.1
       prettier: 2.8.4
-      turbo: 1.8.2
-
-  apps/docs:
-    specifiers:
-      '@babel/core': ^7.0.0
-      '@types/node': ^17.0.12
-      '@types/react': ^18.0.22
-      '@types/react-dom': ^18.0.7
-      eslint: 7.32.0
-      eslint-config-custom: workspace:*
-      next: ^13.1.1
-      react: 18.2.0
-      react-dom: 18.2.0
-      tsconfig: workspace:*
-      typescript: ^4.5.3
-      ui: workspace:*
-    dependencies:
-      next: 13.1.6_pjwopsidmaokadturxaafygjp4
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      ui: link:../../packages/ui
-    devDependencies:
-      '@babel/core': 7.20.12
-      '@types/node': 17.0.45
-      '@types/react': 18.0.27
-      '@types/react-dom': 18.0.10
-      eslint: 7.32.0
-      eslint-config-custom: link:../../packages/eslint-config-custom
-      tsconfig: link:../../packages/tsconfig
-      typescript: 4.9.5
+      turbo: 1.8.3
 
   apps/web:
     specifiers:
@@ -61,7 +32,7 @@ importers:
       '@solana/wallet-adapter-react-ui': ^0.9.27
       '@solana/wallet-adapter-wallets': ^0.19.11
       '@solana/web3.js': ^1.73.2
-      '@spling/social-protocol': ^1.5.7
+      '@spling/social-protocol': ^1.5.9
       '@supabase/supabase-js': ^2.10.0
       '@tailwindcss/forms': ^0.5.3
       '@tailwindcss/line-clamp': ^0.4.2
@@ -90,7 +61,7 @@ importers:
       '@solana/wallet-adapter-react-ui': 0.9.27_hywbkour6qqmkzgfql3wbr3nwm
       '@solana/wallet-adapter-wallets': 0.19.11_hywbkour6qqmkzgfql3wbr3nwm
       '@solana/web3.js': 1.73.2
-      '@spling/social-protocol': 1.5.7_rhmdkv75wf7ahtgh2a42dmjm5m_onqnqwb3ubg5opvemcqf7c2qhy
+      '@spling/social-protocol': 1.5.9_ux6bkybeyylxn5s2k3vygmyuk4_onqnqwb3ubg5opvemcqf7c2qhy
       '@supabase/supabase-js': 2.10.0
       clsx: 1.2.1
       graphql: 16.6.0
@@ -1826,8 +1797,8 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /@spling/social-protocol/1.5.7_rhmdkv75wf7ahtgh2a42dmjm5m_onqnqwb3ubg5opvemcqf7c2qhy:
-    resolution: {integrity: sha512-Mlm1WWm4wgvivWAmJw0P29PCS8rk/I16ZnPVPOxRmvs0LVyUyDPY4X7KFrkoxfOKTMRdVtw+6RxYvkqM1fZSiw==}
+  /@spling/social-protocol/1.5.9_ux6bkybeyylxn5s2k3vygmyuk4_onqnqwb3ubg5opvemcqf7c2qhy:
+    resolution: {integrity: sha512-xn+DfX9w31vj5VfAS+QdoeEVBn8d9uWEA+9ZK6uA8Z4488ghTgAnigwBNGFRHLY6KufzkWrXi7va7uU7ew5Qtg==}
     dependencies:
       '@project-serum/anchor': 0.26.0
       '@solana/spl-token': 0.3.7_@solana+web3.js@1.73.2
@@ -1836,7 +1807,7 @@ packages:
       bs58: 5.0.0
       dayjs: 1.11.7
       graphql-request: 5.1.0_graphql@16.6.0
-      react-native-shadow-drive: 3.1.7_react@18.2.0
+      react-native-shadow-drive: 3.1.8_react@18.2.0
     optionalDependencies:
       react-native-fs: 2.20.0
     transitivePeerDependencies:
@@ -6625,8 +6596,8 @@ packages:
     dev: false
     optional: true
 
-  /react-native-shadow-drive/3.1.7_react@18.2.0:
-    resolution: {integrity: sha512-YIiKPisn4CBSEGOTgNTtqRGLQ/vsYKcYn/2t0fnxf8RqPMqZM+3a1xOvoO+AVmHuuDy39Ri39A4aCl3TmSVyCQ==}
+  /react-native-shadow-drive/3.1.8_react@18.2.0:
+    resolution: {integrity: sha512-g8xryruMcVRJ1dCiuic8UbMWMyJjb5CQdjFljRlxjQw3qHqjDVxq4yp8YkGAn7h958psSfqw+J+CMOt9qA5Ckg==}
     peerDependencies:
       react: ^17.0.0 || ^18
     dependencies:
@@ -7350,65 +7321,65 @@ packages:
       typescript: 4.9.5
     dev: false
 
-  /turbo-darwin-64/1.8.2:
-    resolution: {integrity: sha512-j77U0uOeppENexFsIvvzExADSqMBEeCHnm+6LSNQfaajHSrbUVSTsuD6ZMYHamT6bslc+ZZm21jdecWkwZFBbw==}
+  /turbo-darwin-64/1.8.3:
+    resolution: {integrity: sha512-bLM084Wr17VAAY/EvCWj7+OwYHvI9s/NdsvlqGp8iT5HEYVimcornCHespgJS/yvZDfC+mX9EQkn3V2JmYgGGw==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.8.2:
-    resolution: {integrity: sha512-1NoAvjlwt2wycsAFJouauy9epn9DptSMy6BoGqxJVc4jiibsLepp9qYc4f1/ln0zjd3FR1IvhGOiBfdpqMN7hg==}
+  /turbo-darwin-arm64/1.8.3:
+    resolution: {integrity: sha512-4oZjXtzakopMK110kue3z/hqu3WLv+eDLZOX1NGdo49gqca9BeD8GbH+sXpAp6tqyeuzpss+PIliVYuyt7LgbA==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.8.2:
-    resolution: {integrity: sha512-TcT3CRYnBYA46kLGGbGC2jDyCEAvMgVpUdpIZGTmod48EKpZaEfVgTkpa4GJde8W68yRFogPZjPVL3yJHFpXSA==}
+  /turbo-linux-64/1.8.3:
+    resolution: {integrity: sha512-uvX2VKotf5PU14FCxJA5iHItPQno2JWzerMd+g3/h/Asay6dvxvtVjc39MQeGT0H5njSvzVKFkT+3/5q8lgOEg==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.8.2:
-    resolution: {integrity: sha512-Mb9+KBy4YJzPMZ6WGoMzMVZ6EtueCSvOvgmNpVFgkwbtabfBuaBOvN+irtg4RRSWvJQTDTziLABieocEEXZImQ==}
+  /turbo-linux-arm64/1.8.3:
+    resolution: {integrity: sha512-E1p+oH3XKMaPS4rqWhYsL4j2Pzc0d/9P5KU7Kn1kqVLo2T3iRA7n2KVULEieUNE0nTH+aIJPXYXOpqCI5wFJaA==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.8.2:
-    resolution: {integrity: sha512-/+R5ikRrw2w2w38JtNPubGLIQHgUC70m783DI9aPgaM5c8P5D/Y0k6HgjuC/uXgiaz2h3R7p7YWlr+2/E0bqyA==}
+  /turbo-windows-64/1.8.3:
+    resolution: {integrity: sha512-cnzAytHtoLXd0J7aNzRpZFpL/GTjcBmkvAPlbOdf/Pl1iwS4qzGrudZQ+OM1lmLgLIfBPIavsGHBknTwTNib4A==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64/1.8.2:
-    resolution: {integrity: sha512-s07viz5nXSx4kyiksuPM4FGLRkoaGMaw0BpwFjdRQsl1p+WclUN1IPdokVPKOmFpu5pNCVYlG/raP/mXAEzDCg==}
+  /turbo-windows-arm64/1.8.3:
+    resolution: {integrity: sha512-ulIiItNm2w/zYJdD5/oAzjzNns1IjbpweRzpsE8tLXaWwo6+fnXXkyloUug0IUhcd2k6fJXfoiDZfygqpOVuXg==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.8.2:
-    resolution: {integrity: sha512-G/uJx6bZK5RwTWHsRN/MP0MvXFznmCaL3MQXdSf+OG/q0o8GE7+yivyyWEplWI1Asc8AEN909A/wlIkoz2FKTg==}
+  /turbo/1.8.3:
+    resolution: {integrity: sha512-zGrkU1EuNFmkq6iky6LcMqD4h0OLE8XysVFxQWRIZbcTNnf0XAycbsbeEyiJpiWeqb7qtg2bVuY9EYcNoNhVuQ==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.8.2
-      turbo-darwin-arm64: 1.8.2
-      turbo-linux-64: 1.8.2
-      turbo-linux-arm64: 1.8.2
-      turbo-windows-64: 1.8.2
-      turbo-windows-arm64: 1.8.2
+      turbo-darwin-64: 1.8.3
+      turbo-darwin-arm64: 1.8.3
+      turbo-linux-64: 1.8.3
+      turbo-linux-arm64: 1.8.3
+      turbo-windows-64: 1.8.3
+      turbo-windows-arm64: 1.8.3
     dev: true
 
   /tweetnacl/1.0.3:

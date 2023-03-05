@@ -59,7 +59,7 @@ index 274c7151af0574d438aaadd5b12e19c3217ef19c..c2d43098ff5a12c9595ad3a8cef3ff0a
          const [GroupProfilePDA] = anchor_1.web3.PublicKey.findProgramAddressSync([anchor.utils.bytes.utf8.encode('group_profile'), this.wallet.publicKey.toBuffer()], constants_1.programId);
          // Find bank pda.
 diff --git a/dist/methods/group/update-group.js b/dist/methods/group/update-group.js
-index 3516dd84b8ae71554acc5941263d4422a6bffa57..fe9eae05d2c1dd0c6e67f167ed05431b2953979d 100644
+index 3516dd84b8ae71554acc5941263d4422a6bffa57..80e9166e4c9ef7f63d819bb2202e616d79948d9d 100644
 --- a/dist/methods/group/update-group.js
 +++ b/dist/methods/group/update-group.js
 @@ -64,20 +64,7 @@ async function updateGroup(name = null, avatar = null, biography = null, metadat
@@ -84,7 +84,7 @@ index 3516dd84b8ae71554acc5941263d4422a6bffa57..fe9eae05d2c1dd0c6e67f167ed05431b
          }
          if (groupAvatarFile != null) {
              // Edit avatar image from shadow drive.
-@@ -108,30 +95,12 @@ async function updateGroup(name = null, avatar = null, biography = null, metadat
+@@ -108,30 +95,10 @@ async function updateGroup(name = null, avatar = null, biography = null, metadat
              groupProfileJson.metadata = metadataObject;
          }
          let groupFile;
@@ -107,7 +107,6 @@ index 3516dd84b8ae71554acc5941263d4422a6bffa57..fe9eae05d2c1dd0c6e67f167ed05431b
 -            groupFile = new File([fileToSave], 'group.json');
 -        }
 -        // Edit current group.json from 
-+
 +        const fileToSave = new Blob([JSON.stringify(groupProfileJson)], { type: 'application/json' });
 +        groupFile = new File([fileToSave], 'group.json');
 +        // Edit current group.json from
@@ -116,33 +115,33 @@ index 3516dd84b8ae71554acc5941263d4422a6bffa57..fe9eae05d2c1dd0c6e67f167ed05431b
 -            const RNFS = require('react-native-fs');
 -            RNFS.unlink(`${RNFS.DocumentDirectoryPath}/group.json`);
 -        }
-+
          return Promise.resolve({
              timestamp: groupChain.timestamp,
              publicKey: groupChain.publicKey,
 diff --git a/dist/methods/post/create-post.js b/dist/methods/post/create-post.js
-index 71d07a637d336c75876bb386f9294feee01fe57d..a0b96cc0a1f95014f6036d3f537241f9b088d69c 100644
+index a87ae7da6883239f4fa66e44324770464a51a453..95b7e8f777ef4bf29aee9a486329ebd66fae51a2 100644
 --- a/dist/methods/post/create-post.js
 +++ b/dist/methods/post/create-post.js
-@@ -77,45 +77,14 @@ async function createPost(groupId, title = null, text = null, files = null, tag
-         for (let index = 0; index < files.length; index++) {
-             const file = files[index];
-             fileSizeSummarized += file.size;
--            if (!constants_1.isBrowser) {
--                const RNFS = require('react-native-fs');
--                const readedFile = await RNFS.readFile(file.uri, 'base64');
--                filesToUpload.push({
--                    uri: file.uri,
--                    name: `${PostPDA.toString()}-${index + 1}.${file?.type.split('/')[1]}`,
--                    type: file.type,
--                    size: file.size,
--                    file: Buffer.from(readedFile, 'base64'),
--                });
--            }
--            else {
--                filesToUpload.push(new File([(0, helpers_1.convertDataUriToBlob)(file.base64)], `${PostPDA.toString()}-${index + 1}.${file?.type.split('/')[1]}`));
--            }
-+            filesToUpload.push(new File([(0, helpers_1.convertDataUriToBlob)(file.base64)], `${PostPDA.toString()}-${index + 1}.${file?.type.split('/')[1]}`));
+@@ -78,46 +78,15 @@ async function createPost(groupId, title = null, text = null, files = null, tag
+             for (let index = 0; index < files.length; index++) {
+                 const file = files[index];
+                 fileSizeSummarized += file.size;
+-                if (!constants_1.isBrowser) {
+-                    const RNFS = require('react-native-fs');
+-                    const readedFile = await RNFS.readFile(file.uri, 'base64');
+-                    filesToUpload.push({
+-                        uri: file.uri,
+-                        name: `${PostPDA.toString()}-${index + 1}.${file?.type.split('/')[1]}`,
+-                        type: file.type,
+-                        size: file.size,
+-                        file: Buffer.from(readedFile, 'base64'),
+-                    });
+-                }
+-                else {
+-                    filesToUpload.push(new File([(0, helpers_1.convertDataUriToBlob)(file.base64)], `${PostPDA.toString()}-${index + 1}.${file?.type.split('/')[1]}`));
+-                }
++                filesToUpload.push(new File([(0, helpers_1.convertDataUriToBlob)(file.base64)], `${PostPDA.toString()}-${index + 1}.${file?.type.split('/')[1]}`));
+             }
          }
          // Create text tile to upload.
          let postTextFile;
@@ -174,7 +173,7 @@ index 71d07a637d336c75876bb386f9294feee01fe57d..a0b96cc0a1f95014f6036d3f537241f9
          }
          // Find/Create shadow drive account.
          const account = await (0, helpers_1.getOrCreateShadowDriveAccount)(this.shadowDrive, fileSizeSummarized);
-@@ -131,39 +100,12 @@ async function createPost(groupId, title = null, text = null, files = null, tag
+@@ -133,39 +102,11 @@ async function createPost(groupId, title = null, text = null, files = null, tag
              license: null,
              metadata: metadataObject
          };
@@ -198,7 +197,6 @@ index 71d07a637d336c75876bb386f9294feee01fe57d..a0b96cc0a1f95014f6036d3f537241f9
 -            const postJSONFile = new File([fileToSave], `${PostPDA.toString()}.json`);
 -            filesToUpload.push(postJSONFile);
 -        }
-+
 +        const fileToSave = new Blob([JSON.stringify(postJson)], { type: 'application/json' });
 +        const postJSONFile = new File([fileToSave], `${PostPDA.toString()}.json`);
 +        filesToUpload.push(postJSONFile);
@@ -350,7 +348,7 @@ index 5f7827c9f3dbab1d50782c5e39821e7f677e0915..c4d8e574956ee0af6a1c20b3fb95c983
          await submitUserProfileToAnchorProgram(this.anchorProgram, this.wallet.publicKey, account.publicKey, this.tokenAccount, SplingPDA, UserProfilePDA, BankPDA, transactionCosts);
          // Fetch the user profile from the anchor program.
 diff --git a/dist/methods/user/update-user.js b/dist/methods/user/update-user.js
-index 415442ca204185db7b8782a61efacac24bd85526..6b733457ae61bf0987f776e69dc416f4608c32ec 100644
+index 415442ca204185db7b8782a61efacac24bd85526..47b53caf6a9c8d5a2dce5fc788992f04b869d2c2 100644
 --- a/dist/methods/user/update-user.js
 +++ b/dist/methods/user/update-user.js
 @@ -64,20 +64,7 @@ async function updateUser(nickname = null, avatar = null, biography = null, meta
@@ -375,7 +373,7 @@ index 415442ca204185db7b8782a61efacac24bd85526..6b733457ae61bf0987f776e69dc416f4
          }
          if (userAvatarFile != null) {
              // Edit avatar image from shadow drive.
-@@ -108,30 +95,9 @@ async function updateUser(nickname = null, avatar = null, biography = null, meta
+@@ -108,30 +95,10 @@ async function updateUser(nickname = null, avatar = null, biography = null, meta
              userProfileJson.metadata = metadataObject;
          }
          let profileFile;
@@ -398,38 +396,25 @@ index 415442ca204185db7b8782a61efacac24bd85526..6b733457ae61bf0987f776e69dc416f4
 -            profileFile = new File([fileToSave], 'profile.json');
 -        }
 -        // Edit current profile.json from 
--        await this.shadowDrive.editFile(userChain.shdw, `${constants_1.shadowDriveDomain}${userChain.shdw.toString()}/profile.json`, !constants_1.isBrowser ? profileFile : profileFile, 'v2');
++        const fileToSave = new Blob([JSON.stringify(userProfileJson)], { type: 'application/json' });
++        profileFile = new File([fileToSave], 'profile.json');
++        // Edit current profile.json from
+         await this.shadowDrive.editFile(userChain.shdw, `${constants_1.shadowDriveDomain}${userChain.shdw.toString()}/profile.json`, !constants_1.isBrowser ? profileFile : profileFile, 'v2');
 -        if (profileFile !== null && !constants_1.isBrowser) {
 -            const RNFS = require('react-native-fs');
 -            RNFS.unlink(`${RNFS.DocumentDirectoryPath}/profile.json`);
 -        }
-+        const fileToSave = new Blob([JSON.stringify(userProfileJson)], { type: 'application/json' });
-+        profileFile = new File([fileToSave], 'profile.json');
-+
          return Promise.resolve({
              timestamp: userChain.timestamp,
              publicKey: userChain.publicKey,
-diff --git a/dist/utils/constants.js b/dist/utils/constants.js
-index ab666ed19cb386a32835e2d6e6bb611795a9c850..0c0ad4bef41314c2924189db09ea8f37a9f3afab 100644
---- a/dist/utils/constants.js
-+++ b/dist/utils/constants.js
-@@ -2,7 +2,7 @@
- Object.defineProperty(exports, "__esModule", { value: true });
- exports.SPLING_TOKEN_ACCOUNT_RECEIVER = exports.SPLING_TOKEN_ADDRESS = exports.SHDW_TOKEN_ADDRESS = exports.INDEXER_GRAPH_QL_ENDPOINT = exports.shadowDriveDomain = exports.programId = exports.isBrowser = void 0;
- const anchor_1 = require("@project-serum/anchor");
--exports.isBrowser = typeof document !== 'undefined';
-+exports.isBrowser = true;
- exports.programId = new anchor_1.web3.PublicKey('D2mvyNuzAKFAsfmwgZpt6hCL45LJQw1Y965z6dnV15hZ');
- exports.shadowDriveDomain = 'https://shdw-drive.genesysgo.net/';
- exports.INDEXER_GRAPH_QL_ENDPOINT = 'https://knowing-dodo-22.hasura.app/v1/graphql';
 diff --git a/package.json b/package.json
-index 062de99e151d6bb8fc52f413af902658f3e4ff7e..080becc8e122f8e65b9c6c18ee085cf1bfe2edbc 100644
+index 447751b36edaa78fc70e9c389b33a6ea085ca811..78edfc8ef2c8a03bb17a4c6635fdbba61f2d039e 100644
 --- a/package.json
 +++ b/package.json
 @@ -71,8 +71,5 @@
      "dayjs": "^1.11.4",
      "graphql-request": "^5.0.0",
-     "react-native-shadow-drive": "^3.1.7"
+     "react-native-shadow-drive": "^3.1.8"
 -  },
 -  "optionalDependencies": {
 -    "react-native-fs": "^2.20.0"

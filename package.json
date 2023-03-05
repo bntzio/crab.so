@@ -27,7 +27,7 @@
   "packageManager": "pnpm@7.1.0",
   "pnpm": {
     "patchedDependencies": {
-      "@spling/social-protocol@1.5.7": "patches/@spling__social-protocol@1.5.7.patch"
+      "@spling/social-protocol@1.5.9": "patches/@spling__social-protocol@1.5.9.patch"
     }
   }
 }
