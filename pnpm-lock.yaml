@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 patchedDependencies:
   '@spling/social-protocol@1.5.9':
-    hash: ux6bkybeyylxn5s2k3vygmyuk4
+    hash: kst7debn4brhpolbuw4x2g3lr4
     path: patches/@spling__social-protocol@1.5.9.patch
 
 importers:
@@ -61,7 +61,7 @@ importers:
       '@solana/wallet-adapter-react-ui': 0.9.27_hywbkour6qqmkzgfql3wbr3nwm
       '@solana/wallet-adapter-wallets': 0.19.11_hywbkour6qqmkzgfql3wbr3nwm
       '@solana/web3.js': 1.73.2
-      '@spling/social-protocol': 1.5.9_ux6bkybeyylxn5s2k3vygmyuk4_onqnqwb3ubg5opvemcqf7c2qhy
+      '@spling/social-protocol': 1.5.9_kst7debn4brhpolbuw4x2g3lr4_onqnqwb3ubg5opvemcqf7c2qhy
       '@supabase/supabase-js': 2.10.0
       clsx: 1.2.1
       graphql: 16.6.0
@@ -1797,7 +1797,7 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /@spling/social-protocol/1.5.9_ux6bkybeyylxn5s2k3vygmyuk4_onqnqwb3ubg5opvemcqf7c2qhy:
+  /@spling/social-protocol/1.5.9_kst7debn4brhpolbuw4x2g3lr4_onqnqwb3ubg5opvemcqf7c2qhy:
     resolution: {integrity: sha512-xn+DfX9w31vj5VfAS+QdoeEVBn8d9uWEA+9ZK6uA8Z4488ghTgAnigwBNGFRHLY6KufzkWrXi7va7uU7ew5Qtg==}
     dependencies:
       '@project-serum/anchor': 0.26.0

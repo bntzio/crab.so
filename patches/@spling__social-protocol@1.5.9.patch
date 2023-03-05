@@ -407,6 +407,19 @@ index 415442ca204185db7b8782a61efacac24bd85526..47b53caf6a9c8d5a2dce5fc788992f04
          return Promise.resolve({
              timestamp: userChain.timestamp,
              publicKey: userChain.publicKey,
+diff --git a/dist/utils/constants.js b/dist/utils/constants.js
+index ab666ed19cb386a32835e2d6e6bb611795a9c850..0c0ad4bef41314c2924189db09ea8f37a9f3afab 100644
+--- a/dist/utils/constants.js
++++ b/dist/utils/constants.js
+@@ -2,7 +2,7 @@
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.SPLING_TOKEN_ACCOUNT_RECEIVER = exports.SPLING_TOKEN_ADDRESS = exports.SHDW_TOKEN_ADDRESS = exports.INDEXER_GRAPH_QL_ENDPOINT = exports.shadowDriveDomain = exports.programId = exports.isBrowser = void 0;
+ const anchor_1 = require("@project-serum/anchor");
+-exports.isBrowser = typeof document !== 'undefined';
++exports.isBrowser = true;
+ exports.programId = new anchor_1.web3.PublicKey('D2mvyNuzAKFAsfmwgZpt6hCL45LJQw1Y965z6dnV15hZ');
+ exports.shadowDriveDomain = 'https://shdw-drive.genesysgo.net/';
+ exports.INDEXER_GRAPH_QL_ENDPOINT = 'https://knowing-dodo-22.hasura.app/v1/graphql';
 diff --git a/package.json b/package.json
 index 447751b36edaa78fc70e9c389b33a6ea085ca811..78edfc8ef2c8a03bb17a4c6635fdbba61f2d039e 100644
 --- a/package.json
