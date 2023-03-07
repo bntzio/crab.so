@@ -8,7 +8,7 @@ import { useSplingStore } from '@/stores'
 export default function Profile() {
   const wallet = useWallet()
   const router = useRouter()
-  const { getAllGroups, socialProtocol } = useSplingStore()
+  const { socialProtocol } = useSplingStore()
   // TODO: Manage state in a store
   const [user, setUser] = useState<User>()
   const [communities, setCommunities] = useState<Group[]>()
