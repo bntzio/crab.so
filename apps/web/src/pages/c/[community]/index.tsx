@@ -1,12 +1,13 @@
 import { UserPlusIcon, UserMinusIcon } from '@heroicons/react/20/solid'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Group, Post, User } from '@spling/social-protocol'
+import { Group, User } from '@spling/social-protocol'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { Button } from 'ui'
 
 import { PostCard, PostForm } from '@/components'
+import { PostWithGroup } from '@/components/Feed'
 import { useSplingStore } from '@/stores'
 
 export default function Community() {
@@ -14,7 +15,7 @@ export default function Community() {
   const router = useRouter()
   // TODO: Manage state in a store
   const [communities, setCommunities] = useState<Group[]>([])
-  const [posts, setPosts] = useState<Post[]>([])
+  const [posts, setPosts] = useState<PostWithGroup[]>([])
   const { socialProtocol } = useSplingStore()
   // TODO: Manage state in a store
   const [user, setUser] = useState<User>()
@@ -52,7 +53,14 @@ export default function Community() {
 
       const posts = await socialProtocol?.getAllPosts(communityData.groupId)
 
-      if (posts) setPosts(posts)
+      const postsWithGroup = posts?.map(post => ({
+        ...post,
+        group: {
+          name: communityData.name,
+        },
+      }))
+
+      if (postsWithGroup) setPosts(postsWithGroup)
     }
 
     fetchPosts()
@@ -129,7 +137,7 @@ export default function Community() {
       <div className="mt-6">
         <ul className="space-y-1">
           {posts.map(post => (
-            <PostCard key={post.publicKey.toString()} post={post} community={communityData.name} />
+            <PostCard key={post.publicKey.toString()} post={post} />
           ))}
         </ul>
       </div>

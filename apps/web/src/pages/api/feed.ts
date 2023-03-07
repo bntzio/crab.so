@@ -20,8 +20,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const feed = []
 
   for (const group of user.groups) {
+    const g = await socialProtocol.getGroup(group)
+
     const posts = await socialProtocol.getAllPosts(group)
-    feed.push(...posts)
+
+    if (!g) return feed.push(...posts)
+
+    const postsWithGroup = posts.map(post => ({
+      ...post,
+      group: {
+        name: g.name,
+      },
+    }))
+
+    feed.push(...postsWithGroup)
   }
 
   res.status(200).json(feed)

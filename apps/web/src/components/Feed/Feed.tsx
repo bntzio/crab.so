@@ -5,9 +5,15 @@ import { useState, useEffect } from 'react'
 import { PostCard } from '@/components'
 import { useSplingStore } from '@/stores'
 
+export interface PostWithGroup extends Post {
+  group?: {
+    name: string
+  }
+}
+
 export default function Feed() {
   const wallet = useWallet()
-  const [posts, setPosts] = useState<Post[]>([])
+  const [posts, setPosts] = useState<PostWithGroup[]>([])
   const { socialProtocol } = useSplingStore()
   // TODO: Manage state in a store
   const [user, setUser] = useState<User>()
@@ -41,7 +47,7 @@ export default function Feed() {
   }, [user])
 
   const renderPosts = () => {
-    return posts.map(post => <PostCard key={post.publicKey.toString()} post={post} community={post.user.nickname} />)
+    return posts.map(post => <PostCard key={post.publicKey.toString()} post={post} />)
   }
 
   return (

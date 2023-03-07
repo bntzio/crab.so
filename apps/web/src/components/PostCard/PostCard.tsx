@@ -1,13 +1,13 @@
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid'
-import { Post } from '@spling/social-protocol'
 import Link from 'next/link'
 
+import { PostWithGroup } from '@/components/Feed'
+
 interface Props {
-  post: Post
-  community: string
+  post: PostWithGroup
 }
 
-const PostCard = ({ post, community }: Props) => {
+const PostCard = ({ post }: Props) => {
   return (
     <Link key={post.publicKey.toString()} href={'#'}>
       <li className="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 hover:bg-gray-50">
@@ -32,7 +32,7 @@ const PostCard = ({ post, community }: Props) => {
             <span className="absolute inset-0" aria-hidden="true" />
             <p className="truncate text-sm font-medium text-gray-900">{post.title}</p>
             <p className="truncate text-sm text-gray-500">
-              {post.user.nickname} on {community}
+              {post.user.nickname} {post?.group ? `on ${post.group.name}` : ''}
             </p>
             {/* </a> */}
           </div>
