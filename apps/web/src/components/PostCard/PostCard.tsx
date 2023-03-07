@@ -43,11 +43,7 @@ const PostCard = ({ post }: Props) => {
         </div>
 
         <div className="mt-1">
-          <p className="text-sm text-gray-600 line-clamp-2">
-            Doloremque dolorem maiores assumenda dolorem facilis. Velit vel in a rerum natus facere. Enim rerum eaque
-            qui facilis. Numquam laudantium sed id dolores omnis in. Eos reiciendis deserunt maiores et accusamus quod
-            dolor.
-          </p>
+          <p className="text-sm text-gray-600 line-clamp-2 text-ellipsis">{post.text}</p>
         </div>
       </li>
     </Link>
