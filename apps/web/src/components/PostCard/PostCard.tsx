@@ -1,5 +1,6 @@
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 import { PostWithGroup } from '@/components/Feed'
 import { useSplingStore } from '@/stores'
@@ -11,6 +12,7 @@ interface Props {
 const PostCard = ({ post }: Props) => {
   const router = useRouter()
   const { socialProtocol } = useSplingStore()
+  const [votes, setVotes] = useState(post.likes.length)
 
   const handleNavigate = () => router.push(`/c/${router.query.community}/${post.publicKey.toString()}`)
 
@@ -19,6 +21,7 @@ const PostCard = ({ post }: Props) => {
 
     try {
       await socialProtocol?.likePost(post.publicKey)
+      setVotes(prevState => prevState + 1)
     } catch (e) {
       console.error(e)
     }
@@ -35,7 +38,7 @@ const PostCard = ({ post }: Props) => {
               <ChevronUpIcon className="h-5 w-5 text-orange-400" aria-hidden="true" />
             </div>
             <div className="flex justify-center">
-              <span className="text-xs font-medium text-gray-500 py-1">{post.likes.length}</span>
+              <span className="text-xs font-medium text-gray-500 py-1">{votes}</span>
             </div>
             <div className="rounded-full p-[2px]" onClick={handleVoteDownvote}>
               <span className="sr-only">Downvote</span>
