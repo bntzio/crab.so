@@ -24,12 +24,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const posts = await socialProtocol.getAllPosts(group)
 
-    if (!g) return feed.push(...posts)
+    if (!g || !g.metadata?.slug) return feed.push(...posts)
 
     const postsWithGroup = posts.map(post => ({
       ...post,
       group: {
         name: g.name,
+        slug: g.metadata.slug,
       },
     }))
 

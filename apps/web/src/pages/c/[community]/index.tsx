@@ -49,7 +49,7 @@ export default function Community() {
 
   useEffect(() => {
     async function fetchPosts() {
-      if (!communityData) return
+      if (!communityData || !communityData.metadata?.slug) return
 
       const posts = await socialProtocol?.getAllPosts(communityData.groupId)
 
@@ -57,6 +57,7 @@ export default function Community() {
         ...post,
         group: {
           name: communityData.name,
+          slug: communityData.metadata.slug,
         },
       }))
 

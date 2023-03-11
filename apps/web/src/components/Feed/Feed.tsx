@@ -8,6 +8,7 @@ import { useUserStore } from '@/stores'
 export interface PostWithGroup extends Post {
   group?: {
     name: string
+    slug: string
   }
 }
 

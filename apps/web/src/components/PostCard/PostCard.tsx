@@ -23,7 +23,8 @@ const PostCard = ({ post }: Props) => {
     }
   }, [user, post])
 
-  const handleNavigate = () => router.push(`/c/${router.query.community}/${post.publicKey.toString()}`)
+  const handleNavigate = () =>
+    router.push(`/c/${router.query?.community || post.group?.slug}/${post.publicKey.toString()}`)
 
   const handleVoteDownvote = async (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     ev.stopPropagation()
