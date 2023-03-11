@@ -10,6 +10,7 @@ import {
   PresentationChartLineIcon,
 } from '@heroicons/react/20/solid'
 import { PaperClipIcon, ChatBubbleBottomCenterTextIcon } from '@heroicons/react/24/outline'
+import { Post } from '@spling/social-protocol'
 import { Fragment, useState } from 'react'
 import { Button } from 'ui'
 
@@ -41,9 +42,10 @@ const postTypes = [
 
 interface Props {
   groupId: number
+  onPublished: (post: Post) => void
 }
 
-export default function PostForm({ groupId }: Props) {
+export default function PostForm({ groupId, onPublished }: Props) {
   const { user } = useUserStore()
   const { socialProtocol } = useSplingStore()
   const [postType, setPostType] = useState(postTypes[postTypes.length - 1])
@@ -60,7 +62,8 @@ export default function PostForm({ groupId }: Props) {
 
     try {
       const post = await socialProtocol?.createPost(groupId, title, body, [])
-      console.log(post)
+
+      if (post) onPublished(post)
     } catch (e) {
       console.log(e)
     }

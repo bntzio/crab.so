@@ -1,5 +1,6 @@
 import { UserPlusIcon, UserMinusIcon } from '@heroicons/react/20/solid'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { Post } from '@spling/social-protocol'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -84,6 +85,21 @@ export default function Community() {
     }
   }
 
+  const handlePublishedPost = (post: Post) => {
+    if (communityData) {
+      setPosts([
+        {
+          ...post,
+          group: {
+            name: communityData.name,
+            slug: communityData.metadata.slug,
+          },
+        },
+        ...posts,
+      ])
+    }
+  }
+
   if (communities.length === 0 || !communityData || !user || joined === null) return <div>Loading...</div>
 
   return (
@@ -126,7 +142,7 @@ export default function Community() {
       </div>
 
       <section className="my-10">
-        <PostForm groupId={communityData.groupId} />
+        <PostForm groupId={communityData.groupId} onPublished={handlePublishedPost} />
       </section>
 
       <div className="mt-6">
