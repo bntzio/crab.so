@@ -1,9 +1,13 @@
 import { ChevronUpIcon } from '@heroicons/react/24/solid'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
 import { PostWithGroup } from '@/components/Feed'
 import { useSplingStore, useUserStore } from '@/stores'
+
+dayjs.extend(relativeTime)
 
 interface Props {
   post: PostWithGroup
@@ -41,6 +45,10 @@ const PostCard = ({ post }: Props) => {
     }
   }
 
+  const now = dayjs()
+  const unix = dayjs(post.timestamp * 1000)
+  const publishedAt = dayjs(unix).from(now)
+
   return (
     <div className="hover:cursor-pointer" onClick={handleNavigate}>
       <li className="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 hover:bg-gray-50">
@@ -69,8 +77,8 @@ const PostCard = ({ post }: Props) => {
             {/* </a> */}
           </div>
 
-          <time dateTime={post.timestamp.toString()} className="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
-            {post.timestamp.toString()}
+          <time dateTime={unix.toISOString()} className="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
+            {publishedAt}
           </time>
         </div>
 

@@ -1,6 +1,8 @@
 import { ChevronUpIcon } from '@heroicons/react/24/solid'
 import { PublicKey } from '@solana/web3.js'
 import { Post, Reply } from '@spling/social-protocol'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -8,6 +10,8 @@ import { Button } from 'ui'
 
 import { ReplyForm } from '@/components'
 import { useSplingStore, useUserStore } from '@/stores'
+
+dayjs.extend(relativeTime)
 
 export default function PostPage() {
   const router = useRouter()
@@ -77,23 +81,31 @@ export default function PostPage() {
     if (replies === null) return <div>Loading comments...</div>
     if (replies?.length === 0) return <div>There are no comments.</div>
 
-    return replies.map(reply => (
-      <div key={reply.publicKey.toString()} className="flex space-x-3 border-b border-gray-200/90 py-6">
-        <img
-          className="inline-block h-10 w-10 rounded-full border p-[1px]"
-          // TODO: Add a default avatar as fallback
-          src={reply.user.avatar || '/images/0xPegasus.png'}
-          alt={`${reply.user.nickname} avatar`}
-        />
-        <div className="flex flex-col space-y-1 justify-center">
-          <div className="flex items-center text-xs space-x-1">
-            <p className="font-medium">{reply.user.nickname}</p>
-            <time>at {reply.timestamp}</time>
+    return replies.map(reply => {
+      const now = dayjs()
+      const unix = dayjs(reply.timestamp * 1000)
+      const publishedAt = dayjs(unix).from(now)
+
+      return (
+        <div key={reply.publicKey.toString()} className="flex space-x-3 border-b border-gray-200/90 py-6">
+          <img
+            className="inline-block h-10 w-10 rounded-full border p-[1px]"
+            // TODO: Add a default avatar as fallback
+            src={reply.user.avatar || '/images/0xPegasus.png'}
+            alt={`${reply.user.nickname} avatar`}
+          />
+          <div className="flex flex-col space-y-1 justify-center">
+            <div className="flex items-center text-xs space-x-1">
+              <p className="font-medium mr-[1px]">{reply.user.nickname}</p>
+              <time dateTime={unix.toISOString()} className="text-gray-600/90">
+                {publishedAt}
+              </time>
+            </div>
+            <p className="text-sm text-gray-800">{reply.text}</p>
           </div>
-          <p className="text-sm text-gray-800">{reply.text}</p>
         </div>
-      </div>
-    ))
+      )
+    })
   }
 
   if (!post) return <div>Loading...</div>
