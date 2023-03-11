@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 import { WalletAdapter, Navbar } from '@/components'
 import { MainLayout } from '@/layouts/MainLayout'
-import { useSplingStore } from '@/stores'
+import { useSplingStore, useUserStore } from '@/stores'
 
 function CrabApp({ Component, pageProps }: AppProps) {
   return (
@@ -23,15 +23,29 @@ function CrabApp({ Component, pageProps }: AppProps) {
 
 const App = ({ children }: { children: React.ReactNode }) => {
   const wallet = useWallet()
+  const { setUser } = useUserStore()
   const { socialProtocol, startSocialProtocol } = useSplingStore()
 
   useEffect(() => {
     async function start() {
+      if (!wallet?.publicKey) return
       await startSocialProtocol({ wallet })
     }
 
-    if (wallet?.publicKey) start()
+    start()
   }, [wallet, startSocialProtocol])
+
+  useEffect(() => {
+    async function saveCurrentUser() {
+      if (!socialProtocol || !wallet?.publicKey) return
+
+      const currentUser = await socialProtocol.getUserByPublicKey(wallet.publicKey)
+
+      if (currentUser) setUser(currentUser)
+    }
+
+    saveCurrentUser()
+  }, [socialProtocol, wallet, setUser])
 
   if (!socialProtocol) return null
 

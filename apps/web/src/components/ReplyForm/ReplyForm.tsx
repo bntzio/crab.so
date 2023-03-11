@@ -1,12 +1,13 @@
 import { PaperClipIcon } from '@heroicons/react/24/outline'
 
-import { useSplingStore } from '@/stores'
+import { useSplingStore, useUserStore } from '@/stores'
 
 interface Props {
   postId: number
 }
 
 export default function ReplyForm({ postId }: Props) {
+  const { user } = useUserStore()
   const { socialProtocol } = useSplingStore()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,14 +26,12 @@ export default function ReplyForm({ postId }: Props) {
     }
   }
 
+  console.log(user)
+
   return (
     <div className="flex items-start space-x-4">
       <div className="flex-shrink-0">
-        <img
-          className="inline-block h-10 w-10 rounded-full"
-          src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          alt=""
-        />
+        <img className="inline-block h-10 w-10 rounded-full" src={user?.avatar || '/images/0xPegasus.png'} alt="" />
       </div>
       <div className="min-w-0 flex-1">
         <form onSubmit={handleSubmit}>

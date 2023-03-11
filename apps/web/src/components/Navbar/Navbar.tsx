@@ -6,32 +6,23 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { Button } from 'ui'
 
-import { useSplingStore, useModalStore } from '@/stores'
+import { useModalStore, useUserStore } from '@/stores'
 
 export default function Navbar() {
   const router = useRouter()
+  const { user } = useUserStore()
   const { setVisible } = useWalletModal()
-  const { socialProtocol } = useSplingStore()
   const { setActiveModal } = useModalStore()
-  const { connected, disconnect, publicKey } = useWallet()
+  const { connected, disconnect } = useWallet()
   const [isRegistered, setIsRegistered] = useState<boolean | undefined>()
 
   useEffect(() => {
-    async function checkAccount() {
-      if (publicKey) {
-        const currentUser = await socialProtocol?.getUserByPublicKey(publicKey)
-        console.log('currentUser', currentUser)
-
-        if (currentUser) {
-          setIsRegistered(true)
-        } else {
-          setIsRegistered(false)
-        }
-      }
+    if (user) {
+      setIsRegistered(true)
+    } else {
+      setIsRegistered(false)
     }
-
-    checkAccount()
-  }, [socialProtocol, publicKey])
+  }, [user])
 
   const renderNavButtons = () => {
     switch (router.pathname) {
