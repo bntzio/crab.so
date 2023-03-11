@@ -1,9 +1,9 @@
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Group, User } from '@spling/social-protocol'
+import { User } from '@spling/social-protocol'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
-import { useSplingStore } from '@/stores'
+import { useSplingStore, useCommunityStore } from '@/stores'
 
 export default function Profile() {
   const wallet = useWallet()
@@ -11,7 +11,7 @@ export default function Profile() {
   const { socialProtocol } = useSplingStore()
   // TODO: Manage state in a store
   const [user, setUser] = useState<User>()
-  const [communities, setCommunities] = useState<Group[]>()
+  const { communities, fetchCommunities } = useCommunityStore()
 
   useEffect(() => {
     async function fetchUser() {
@@ -26,15 +26,12 @@ export default function Profile() {
   }, [socialProtocol, wallet, user])
 
   useEffect(() => {
-    async function fetchCommunities() {
-      const response = await fetch('/api/communities')
-      const data = await response.json()
-
-      setCommunities(data)
+    async function init() {
+      await fetchCommunities()
     }
 
-    fetchCommunities()
-  }, [])
+    init()
+  }, [fetchCommunities])
 
   if (!user || !communities?.length) return <p>Loading...</p>
 

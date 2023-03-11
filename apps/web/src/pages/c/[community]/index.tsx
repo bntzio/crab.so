@@ -1,6 +1,6 @@
 import { UserPlusIcon, UserMinusIcon } from '@heroicons/react/20/solid'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Group, User } from '@spling/social-protocol'
+import { User } from '@spling/social-protocol'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -8,13 +8,12 @@ import { Button } from 'ui'
 
 import { PostCard, PostForm } from '@/components'
 import { PostWithGroup } from '@/components/Feed'
-import { useSplingStore } from '@/stores'
+import { useSplingStore, useCommunityStore } from '@/stores'
 
 export default function Community() {
   const wallet = useWallet()
   const router = useRouter()
-  // TODO: Manage state in a store
-  const [communities, setCommunities] = useState<Group[]>([])
+  const { communities, fetchCommunities } = useCommunityStore()
   const [posts, setPosts] = useState<PostWithGroup[]>([])
   const { socialProtocol } = useSplingStore()
   // TODO: Manage state in a store
@@ -37,15 +36,12 @@ export default function Community() {
   }, [socialProtocol, wallet, user])
 
   useEffect(() => {
-    async function fetchCommunities() {
-      const response = await fetch('/api/communities')
-      const data = await response.json()
-
-      setCommunities(data)
+    async function init() {
+      await fetchCommunities()
     }
 
-    fetchCommunities()
-  }, [])
+    init()
+  }, [fetchCommunities])
 
   useEffect(() => {
     async function fetchPosts() {
@@ -71,8 +67,6 @@ export default function Community() {
       if (!communityData) throw new Error('Community not found')
 
       await socialProtocol?.joinGroup(communityData.groupId)
-
-      window.alert('You have joined the community! :)')
     } catch (e) {
       // TODO: Handle error
       console.error(e)
@@ -84,8 +78,6 @@ export default function Community() {
       if (!communityData) throw new Error('Community not found')
 
       await socialProtocol?.leaveGroup(communityData.groupId)
-
-      window.alert('You have left the community :(')
     } catch (e) {
       // TODO: Handle error
       console.error(e)
