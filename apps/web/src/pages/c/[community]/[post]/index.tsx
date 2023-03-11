@@ -52,7 +52,7 @@ export default function PostPage() {
           className="inline-block h-12 w-12 rounded-full border p-[2px]"
           // TODO: Add a default avatar as fallback
           src={reply.user.avatar || '/images/0xPegasus.png'}
-          alt={reply.user.nickname}
+          alt={`${reply.user.nickname} avatar`}
         />
         <p className="text-gray-800">{reply.text}</p>
       </div>

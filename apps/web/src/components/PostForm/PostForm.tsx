@@ -14,7 +14,7 @@ import { Fragment, useState } from 'react'
 import { Button } from 'ui'
 
 import { classNames } from '@/helpers'
-import { useSplingStore } from '@/stores'
+import { useSplingStore, useUserStore } from '@/stores'
 
 const postTypes = [
   { name: 'Announcement', value: 'announcement', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
@@ -44,8 +44,9 @@ interface Props {
 }
 
 export default function PostForm({ groupId }: Props) {
-  const [postType, setPostType] = useState(postTypes[postTypes.length - 1])
+  const { user } = useUserStore()
   const { socialProtocol } = useSplingStore()
+  const [postType, setPostType] = useState(postTypes[postTypes.length - 1])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -68,7 +69,12 @@ export default function PostForm({ groupId }: Props) {
   return (
     <div className="flex items-start space-x-4">
       <div className="flex-shrink-0">
-        <img className="inline-block h-10 w-10 rounded-full" src="/images/0xPegasus.png" alt="0xPegasus's Avatar" />
+        {/* TODO: Add a default avatar as fallback */}
+        <img
+          className="inline-block h-10 w-10 rounded-full"
+          src={user?.avatar || '/images/0xPegasus.png'}
+          alt={user?.nickname || '0xPegasus Avatar'}
+        />
       </div>
       <div className="min-w-0 flex-1">
         <form className="relative" onSubmit={handleSubmit}>

@@ -31,7 +31,12 @@ export default function ReplyForm({ postId }: Props) {
   return (
     <div className="flex items-start space-x-4">
       <div className="flex-shrink-0">
-        <img className="inline-block h-10 w-10 rounded-full" src={user?.avatar || '/images/0xPegasus.png'} alt="" />
+        {/* TODO: Add a default avatar as fallback */}
+        <img
+          className="inline-block h-10 w-10 rounded-full"
+          src={user?.avatar || '/images/0xPegasus.png'}
+          alt={user?.nickname || '0xPegasus avatar'}
+        />
       </div>
       <div className="min-w-0 flex-1">
         <form onSubmit={handleSubmit}>
