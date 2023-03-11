@@ -1,6 +1,6 @@
 import { ChevronUpIcon } from '@heroicons/react/24/solid'
 import { PublicKey } from '@solana/web3.js'
-import { Post, Reply } from '@spling/social-protocol'
+import { Post, Group, Reply } from '@spling/social-protocol'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
@@ -18,6 +18,7 @@ export default function PostPage() {
   const { user } = useUserStore()
   const { socialProtocol } = useSplingStore()
   const [post, setPost] = useState<Post | null>(null)
+  const [group, setGroup] = useState<Group | null>(null)
   const [replies, setReplies] = useState<Reply[] | null>(null)
   const [isUpvoted, setIsUpvoted] = useState(false)
   const [votes, setVotes] = useState<number | null>(null)
@@ -40,6 +41,12 @@ export default function PostPage() {
       if (postResult) {
         setPost(postResult)
         setVotes(postResult.likes.length)
+
+        const group = await socialProtocol?.getGroup(postResult.groupId)
+
+        if (group) {
+          setGroup(group)
+        }
       }
     }
 
@@ -146,6 +153,12 @@ export default function PostPage() {
               <time dateTime={dayjs(post.timestamp * 1000).toISOString()}>
                 {dayjs(post.timestamp * 1000).from(dayjs())}
               </time>
+              {group && (
+                <>
+                  {' '}
+                  on <span className="font-medium">{group?.name}</span>
+                </>
+              )}
             </span>
           </div>
           <div className="space-y-4">
