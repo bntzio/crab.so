@@ -123,9 +123,9 @@ export default function PostPage() {
       <br />
       <br />
 
-      <div className="flex items-start space-x-4">
+      <div className="flex items-start space-x-6">
         <div className="flex justify-between space-x-3 items-center">
-          <div className="-mt-3">
+          <div className="mt-5">
             <div className="rounded-full p-[2px]" onClick={handleVoteDownvote}>
               <span className="sr-only">Upvote</span>
               <ChevronUpIcon
@@ -139,9 +139,19 @@ export default function PostPage() {
           </div>
         </div>
 
-        <div className="flex flex-col space-y-4">
-          <h1 className="text-xl font-medium">{post.title}</h1>
-          <p>{post.text}</p>
+        <div className="space-y-2">
+          <div>
+            <span className="text-sm text-gray-500/90">
+              Published{' '}
+              <time dateTime={dayjs(post.timestamp * 1000).toISOString()}>
+                {dayjs(post.timestamp * 1000).from(dayjs())}
+              </time>
+            </span>
+          </div>
+          <div className="space-y-4">
+            <h1 className="text-xl font-medium">{post.title}</h1>
+            <p>{post.text}</p>
+          </div>
         </div>
       </div>
 
