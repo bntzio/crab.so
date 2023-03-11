@@ -1,6 +1,6 @@
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { PostWithGroup } from '@/components/Feed'
 import { useSplingStore, useUserStore } from '@/stores'
@@ -13,7 +13,15 @@ const PostCard = ({ post }: Props) => {
   const router = useRouter()
   const { user } = useUserStore()
   const { socialProtocol } = useSplingStore()
+  const [isUpvoted, setIsUpvoted] = useState(false)
   const [votes, setVotes] = useState(post.likes.length)
+
+  useEffect(() => {
+    if (user) {
+      const hasLiked = post.likes.includes(user.userId)
+      setIsUpvoted(hasLiked)
+    }
+  }, [user, post])
 
   const handleNavigate = () => router.push(`/c/${router.query.community}/${post.publicKey.toString()}`)
 
@@ -23,12 +31,11 @@ const PostCard = ({ post }: Props) => {
     try {
       await socialProtocol?.likePost(post.publicKey)
       setVotes(prevState => prevState + 1)
+      setIsUpvoted(true)
     } catch (e) {
       console.error(e)
     }
   }
-
-  const currentUserHasLiked = user ? post.likes.includes(user.userId) : false
 
   return (
     <div className="hover:cursor-pointer" onClick={handleNavigate}>
@@ -39,7 +46,7 @@ const PostCard = ({ post }: Props) => {
             <div className="rounded-full p-[2px]" onClick={handleVoteDownvote}>
               <span className="sr-only">Upvote</span>
               <ChevronUpIcon
-                className={`h-5 w-5 ${currentUserHasLiked ? 'text-orange-400' : 'text-gray-400'}`}
+                className={`h-5 w-5 ${isUpvoted ? 'text-orange-400' : 'text-gray-400'}`}
                 aria-hidden="true"
               />
             </div>
