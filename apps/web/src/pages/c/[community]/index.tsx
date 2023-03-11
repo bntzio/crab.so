@@ -12,6 +12,7 @@ import { useSplingStore, useCommunityStore, useUserStore } from '@/stores'
 export default function Community() {
   const wallet = useWallet()
   const router = useRouter()
+  const [joined, setJoined] = useState<boolean | null>(null)
   const { communities, fetchCommunities } = useCommunityStore()
   const [posts, setPosts] = useState<PostWithGroup[]>([])
   const { socialProtocol } = useSplingStore()
@@ -37,6 +38,14 @@ export default function Community() {
 
     init()
   }, [fetchCommunities])
+
+  useEffect(() => {
+    if (user && communityData) {
+      const hasJoined = user.groups.includes(communityData?.groupId)
+
+      setJoined(hasJoined)
+    }
+  }, [user, communityData])
 
   useEffect(() => {
     async function fetchPosts() {
@@ -67,16 +76,14 @@ export default function Community() {
         await socialProtocol?.leaveGroup(communityData.groupId)
       }
 
-      setTimeout(async () => {
-        if (wallet?.publicKey) await fetchUser(wallet.publicKey)
-      }, 3000)
+      setJoined(action === 'join')
     } catch (e) {
       // TODO: Handle error
       console.error(e)
     }
   }
 
-  if (communities.length === 0 || !communityData || !user) return <div>Loading...</div>
+  if (communities.length === 0 || !communityData || !user || joined === null) return <div>Loading...</div>
 
   return (
     <main className="mt-16">
@@ -98,7 +105,7 @@ export default function Community() {
               <h2 className="text-gray-600">{communityData.bio}</h2>
             </div>
             <div>
-              {user.groups.includes(communityData.groupId) ? (
+              {joined ? (
                 <Button
                   className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400"
                   onClick={() => handleGroupAction({ action: 'leave' })}
