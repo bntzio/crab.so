@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react'
 import { Button } from 'ui'
 
+import { isProd } from '@/helpers'
+import { supabase } from '@/lib'
 import { useSplingStore } from '@/stores'
 import { fileToBase64 } from '@/utils'
 
@@ -9,6 +11,7 @@ export default function SignupForm() {
   const inputFile = useRef<HTMLInputElement | null>(null)
   const { socialProtocol } = useSplingStore()
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -35,13 +38,38 @@ export default function SignupForm() {
     }
   }
 
+  const signInWithEmail = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const formData = new FormData(event.target as HTMLFormElement)
+
+    const email = formData.get('email') as string
+
+    if (!email) return
+
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: isProd ? 'https://crab.so?action=welcome' : 'http://localhost:3000?action=welcome',
+      },
+    })
+
+    if (error) {
+      console.log(error)
+    }
+
+    if (data) {
+      console.log(data)
+    }
+  }
+
   const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     setFile(file)
   }
 
   return (
-    <form className="space-y-8 divide-y divide-gray-200" onSubmit={handleSubmit}>
+    <form className="space-y-8 divide-y divide-gray-200" onSubmit={signInWithEmail}>
       <div className="space-y-8 divide-y divide-gray-200">
         <div>
           <div>
@@ -61,6 +89,21 @@ export default function SignupForm() {
                   type="text"
                   name="nickname"
                   id="nickname"
+                  autoComplete="off"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="sm:col-span-3">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <div className="mt-1">
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
                   autoComplete="off"
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 />
