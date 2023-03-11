@@ -55,7 +55,10 @@ export default function PostPage() {
           alt={`${reply.user.nickname} avatar`}
         />
         <div className="flex flex-col space-y-2 justify-center">
-          <p className="text-xs font-medium">{reply.user.nickname}</p>
+          <div className="flex items-center text-xs space-x-1">
+            <p className="font-medium">{reply.user.nickname}</p>
+            <time>at {reply.timestamp}</time>
+          </div>
           <p className="text-sm text-gray-800">{reply.text}</p>
         </div>
       </div>
