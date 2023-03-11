@@ -57,26 +57,15 @@ export default function Community() {
     fetchPosts()
   }, [communityData, socialProtocol])
 
-  const handleJoinGroup = async () => {
+  const handleGroupAction = async ({ action }: { action: 'join' | 'leave' }) => {
     try {
       if (!communityData) throw new Error('Community not found')
 
-      await socialProtocol?.joinGroup(communityData.groupId)
-
-      setTimeout(async () => {
-        if (wallet?.publicKey) await fetchUser(wallet.publicKey)
-      }, 3000)
-    } catch (e) {
-      // TODO: Handle error
-      console.error(e)
-    }
-  }
-
-  const handleLeaveGroup = async () => {
-    try {
-      if (!communityData) throw new Error('Community not found')
-
-      await socialProtocol?.leaveGroup(communityData.groupId)
+      if (action === 'join') {
+        await socialProtocol?.joinGroup(communityData.groupId)
+      } else {
+        await socialProtocol?.leaveGroup(communityData.groupId)
+      }
 
       setTimeout(async () => {
         if (wallet?.publicKey) await fetchUser(wallet.publicKey)
@@ -110,12 +99,15 @@ export default function Community() {
             </div>
             <div>
               {user.groups.includes(communityData.groupId) ? (
-                <Button className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400" onClick={handleLeaveGroup}>
+                <Button
+                  className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400"
+                  onClick={() => handleGroupAction({ action: 'leave' })}
+                >
                   <UserMinusIcon className="w-4 h-4 mr-2 text-white" />
                   <span className="text-xs">Leave Community</span>
                 </Button>
               ) : (
-                <Button className="h-7" onClick={handleJoinGroup}>
+                <Button className="h-7" onClick={() => handleGroupAction({ action: 'join' })}>
                   <UserPlusIcon className="w-4 h-4 mr-2 text-white" />
                   <span className="text-xs">Join Community</span>
                 </Button>
