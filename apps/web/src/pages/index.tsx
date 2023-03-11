@@ -1,5 +1,4 @@
 import { useWallet } from '@solana/wallet-adapter-react'
-import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { useUser } from '@supabase/auth-helpers-react'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
@@ -13,7 +12,6 @@ export default function Index() {
   const user = useUser()
   const wallet = useWallet()
   const router = useRouter()
-  const { setVisible } = useWalletModal()
   const { activeModal } = useModalStore()
   const { getAllGroups, socialProtocol } = useSplingStore()
 
@@ -48,7 +46,7 @@ export default function Index() {
               Crab is a community-driven, open-source, decentralized network for thriving communities in Web3
             </h1>
             <div className="flex flex-col items-start space-y-3">
-              <Button buttonType="slate" onClick={() => setVisible(true)}>
+              <Button buttonType="slate" onClick={() => router.push('/login')}>
                 Join the network
               </Button>
               <p className="text-xs">
