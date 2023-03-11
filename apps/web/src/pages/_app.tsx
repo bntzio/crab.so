@@ -47,8 +47,6 @@ const App = ({ children }: { children: React.ReactNode }) => {
     saveCurrentUser()
   }, [socialProtocol, wallet, setUser])
 
-  if (!socialProtocol) return null
-
   return <div className="mt-4">{children}</div>
 }
 
