@@ -148,8 +148,8 @@ export default function PostPage() {
 
         <div className="space-y-2">
           <div>
-            <span className="text-sm text-gray-500/90">
-              Published{' '}
+            <span className="text-xs text-gray-500/90">
+              Posted by <span className="font-medium">{post.user.nickname}</span>{' '}
               <time dateTime={dayjs(post.timestamp * 1000).toISOString()}>
                 {dayjs(post.timestamp * 1000).from(dayjs())}
               </time>
