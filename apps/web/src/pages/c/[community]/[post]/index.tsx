@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { Button } from 'ui'
 
+import { ReplyForm } from '@/components'
 import { useSplingStore } from '@/stores'
 
 export default function PostPage() {
@@ -26,6 +27,18 @@ export default function PostPage() {
     init()
   }, [socialProtocol, router.query.post])
 
+  useEffect(() => {
+    async function getReplies() {
+      if (!post) return
+
+      const replies = await socialProtocol?.getAllPostReplies(post.postId)
+
+      console.log('Post replies:', replies)
+    }
+
+    getReplies()
+  }, [post, socialProtocol])
+
   if (!post) return <div>Loading...</div>
 
   return (
@@ -40,6 +53,11 @@ export default function PostPage() {
           </Link>
         </Button>
       </div>
+
+      <br />
+      <br />
+
+      <ReplyForm postId={post.postId} />
     </main>
   )
 }
