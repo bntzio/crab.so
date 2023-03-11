@@ -9,9 +9,12 @@ interface SplingStore {
 }
 
 const isProd = process.env.NODE_ENV === 'production'
+const heliusApiKey = process.env.NEXT_PUBLIC_HELIUS_API_KEY
+
+const rpcUrl = isProd ? 'https://crab.so/api/rpc' : `https://rpc.helius.xyz?api-key=${heliusApiKey}`
 
 const socialProtocolOptions = {
-  rpcUrl: isProd ? 'https://crab.so/api/rpc' : 'http://localhost:3000/api/rpc',
+  rpcUrl,
   useIndexer: true,
 } as ProtocolOptions
 
