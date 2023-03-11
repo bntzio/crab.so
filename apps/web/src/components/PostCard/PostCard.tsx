@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import { PostWithGroup } from '@/components/Feed'
-import { useSplingStore } from '@/stores'
+import { useSplingStore, useUserStore } from '@/stores'
 
 interface Props {
   post: PostWithGroup
@@ -11,6 +11,7 @@ interface Props {
 
 const PostCard = ({ post }: Props) => {
   const router = useRouter()
+  const { user } = useUserStore()
   const { socialProtocol } = useSplingStore()
   const [votes, setVotes] = useState(post.likes.length)
 
@@ -27,6 +28,8 @@ const PostCard = ({ post }: Props) => {
     }
   }
 
+  const currentUserHasLiked = user ? post.likes.includes(user.userId) : false
+
   return (
     <div className="hover:cursor-pointer" onClick={handleNavigate}>
       <li className="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 hover:bg-gray-50">
@@ -35,7 +38,10 @@ const PostCard = ({ post }: Props) => {
             {/* <span className="absolute inset-0" aria-hidden="true" /> */}
             <div className="rounded-full p-[2px]" onClick={handleVoteDownvote}>
               <span className="sr-only">Upvote</span>
-              <ChevronUpIcon className="h-5 w-5 text-orange-400" aria-hidden="true" />
+              <ChevronUpIcon
+                className={`h-5 w-5 ${currentUserHasLiked ? 'text-orange-400' : 'text-gray-400'}`}
+                aria-hidden="true"
+              />
             </div>
             <div className="flex justify-center">
               <span className="text-xs font-medium text-gray-500 py-1">{votes}</span>
