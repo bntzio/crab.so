@@ -62,6 +62,10 @@ export default function Community() {
       if (!communityData) throw new Error('Community not found')
 
       await socialProtocol?.joinGroup(communityData.groupId)
+
+      setTimeout(async () => {
+        if (wallet?.publicKey) await fetchUser(wallet.publicKey)
+      }, 3000)
     } catch (e) {
       // TODO: Handle error
       console.error(e)
@@ -73,6 +77,10 @@ export default function Community() {
       if (!communityData) throw new Error('Community not found')
 
       await socialProtocol?.leaveGroup(communityData.groupId)
+
+      setTimeout(async () => {
+        if (wallet?.publicKey) await fetchUser(wallet.publicKey)
+      }, 3000)
     } catch (e) {
       // TODO: Handle error
       console.error(e)
