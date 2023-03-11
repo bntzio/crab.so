@@ -9,7 +9,7 @@ interface Props {
 
 const isProd = process.env.NODE_ENV === 'production'
 
-const endpoint = isProd ? 'https://crab.so' : 'http://localhost:3000'
+const endpoint = isProd ? 'https://crab.so/api/rpc' : 'http://localhost:3000/api/rpc'
 
 const WalletAdapter = ({ children }: Props) => {
   const wallets = useMemo(() => [new GlowWalletAdapter(), new SolflareWalletAdapter()], [])
