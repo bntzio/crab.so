@@ -17,6 +17,8 @@
     "@solana/wallet-adapter-wallets": "^0.19.11",
     "@solana/web3.js": "^1.73.2",
     "@spling/social-protocol": "^1.5.9",
+    "@supabase/auth-helpers-nextjs": "^0.5.6",
+    "@supabase/auth-helpers-react": "^0.3.1",
     "@supabase/supabase-js": "^2.10.0",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",

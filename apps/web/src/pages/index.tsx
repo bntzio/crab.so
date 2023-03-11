@@ -1,5 +1,6 @@
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import { useUser } from '@supabase/auth-helpers-react'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -9,6 +10,7 @@ import { Feed, CommunityShowcase, CreateCommunityModal } from '@/components'
 import { useSplingStore, useModalStore } from '@/stores'
 
 export default function Index() {
+  const user = useUser()
   const wallet = useWallet()
   const router = useRouter()
   const { setVisible } = useWalletModal()
@@ -16,6 +18,10 @@ export default function Index() {
   const { getAllGroups, socialProtocol } = useSplingStore()
 
   const { connected } = wallet
+
+  useEffect(() => {
+    console.log('Supabase user:', user)
+  }, [user])
 
   useEffect(() => {
     async function fetchProtocolInfo() {

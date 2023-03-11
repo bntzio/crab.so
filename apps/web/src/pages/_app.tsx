@@ -1,23 +1,34 @@
 import '@/styles/globals.css'
 import '@solana/wallet-adapter-react-ui/styles.css'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
 import type { AppProps } from 'next/app'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 import { WalletAdapter, Navbar } from '@/components'
 import { MainLayout } from '@/layouts/MainLayout'
 import { useSplingStore, useUserStore } from '@/stores'
 
-function CrabApp({ Component, pageProps }: AppProps) {
+function CrabApp({
+  Component,
+  pageProps,
+}: AppProps<{
+  initialSession: Session
+}>) {
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient())
+
   return (
-    <MainLayout>
-      <WalletAdapter>
-        <App>
-          <Navbar />
-          <Component {...pageProps} />
-        </App>
-      </WalletAdapter>
-    </MainLayout>
+    <SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
+      <MainLayout>
+        <WalletAdapter>
+          <App>
+            <Navbar />
+            <Component {...pageProps} />
+          </App>
+        </WalletAdapter>
+      </MainLayout>
+    </SessionContextProvider>
   )
 }
 

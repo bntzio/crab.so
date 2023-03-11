@@ -33,6 +33,8 @@ importers:
       '@solana/wallet-adapter-wallets': ^0.19.11
       '@solana/web3.js': ^1.73.2
       '@spling/social-protocol': ^1.5.9
+      '@supabase/auth-helpers-nextjs': ^0.5.6
+      '@supabase/auth-helpers-react': ^0.3.1
       '@supabase/supabase-js': ^2.10.0
       '@tailwindcss/forms': ^0.5.3
       '@tailwindcss/line-clamp': ^0.4.2
@@ -63,6 +65,8 @@ importers:
       '@solana/wallet-adapter-wallets': 0.19.11_hywbkour6qqmkzgfql3wbr3nwm
       '@solana/web3.js': 1.73.2
       '@spling/social-protocol': 1.5.9_kst7debn4brhpolbuw4x2g3lr4_onqnqwb3ubg5opvemcqf7c2qhy
+      '@supabase/auth-helpers-nextjs': 0.5.6_ku2vntnma2imfrsyohnkxzette
+      '@supabase/auth-helpers-react': 0.3.1_ku2vntnma2imfrsyohnkxzette
       '@supabase/supabase-js': 2.10.0
       clsx: 1.2.1
       dayjs: 1.11.7
@@ -1960,6 +1964,31 @@ packages:
       - encoding
       - supports-color
       - utf-8-validate
+    dev: false
+
+  /@supabase/auth-helpers-nextjs/0.5.6_ku2vntnma2imfrsyohnkxzette:
+    resolution: {integrity: sha512-NiUGGnO9vRycMDnl/DzFbHCJhNV9DdH1vH61T1Fzgp2aRW8LfLRVlBQeGCg2AzyvAe0MiLbbRsGNcJmAmJPs9A==}
+    peerDependencies:
+      '@supabase/supabase-js': ^2.0.4
+    dependencies:
+      '@supabase/auth-helpers-shared': 0.3.0_ku2vntnma2imfrsyohnkxzette
+      '@supabase/supabase-js': 2.10.0
+    dev: false
+
+  /@supabase/auth-helpers-react/0.3.1_ku2vntnma2imfrsyohnkxzette:
+    resolution: {integrity: sha512-g3SFv08Dz9FapNif/ZY1b7qKGlMJDyTLSayHBz3kb3FuYxg7aLWgQtydDhm5AGbc0XtvpIBuhGTIOVevwpdosA==}
+    peerDependencies:
+      '@supabase/supabase-js': ^2.0.4
+    dependencies:
+      '@supabase/supabase-js': 2.10.0
+    dev: false
+
+  /@supabase/auth-helpers-shared/0.3.0_ku2vntnma2imfrsyohnkxzette:
+    resolution: {integrity: sha512-6lKhVMBZnGdFelpZyvQDBQSOY+pglS6a5U4ieAqfKQ/rx3rSjRASR3UGh7V+el1re3xYe3ddVBWXw16rdVAzrQ==}
+    peerDependencies:
+      '@supabase/supabase-js': ^2.0.4
+    dependencies:
+      '@supabase/supabase-js': 2.10.0
     dev: false
 
   /@supabase/functions-js/2.1.0:
