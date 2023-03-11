@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react'
 import { WalletAdapter, Navbar } from '@/components'
 import { MainLayout } from '@/layouts/MainLayout'
 import { useSplingStore, useUserStore } from '@/stores'
+import { Database } from '@/types/supabase'
 
 function CrabApp({
   Component,
@@ -16,7 +17,7 @@ function CrabApp({
 }: AppProps<{
   initialSession: Session
 }>) {
-  const [supabaseClient] = useState(() => createBrowserSupabaseClient())
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient<Database>())
 
   return (
     <SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
