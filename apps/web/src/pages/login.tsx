@@ -1,6 +1,31 @@
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 
+import { supabase } from '@/lib/supabase'
+
 export default function LoginPage() {
+  const handleSignIn = async (ev: React.FormEvent<HTMLFormElement>) => {
+    ev.preventDefault()
+
+    const formData = new FormData(ev.target as HTMLFormElement)
+
+    const email = formData.get('email') as string
+
+    if (!email) return
+
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        // TODO: Redirect to the welcome page if new user, otherwise, redirect to the dashboard
+        emailRedirectTo: 'http://localhost:3000',
+      },
+    })
+
+    // TODO: Render error toast
+    if (error) return console.error(error)
+
+    console.log(data)
+  }
+
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
@@ -14,7 +39,7 @@ export default function LoginPage() {
             to your inbox so you can sign in.
           </p>
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST">
+        <form className="mt-8 space-y-6" onSubmit={handleSignIn}>
           <div className="-space-y-px rounded-md shadow-sm">
             <div>
               <label htmlFor="email-address" className="sr-only">
