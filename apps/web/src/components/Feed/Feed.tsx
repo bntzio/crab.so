@@ -1,9 +1,9 @@
 import { useWallet } from '@solana/wallet-adapter-react'
-import { Post, User } from '@spling/social-protocol'
+import { Post } from '@spling/social-protocol'
 import { useState, useEffect } from 'react'
 
 import { PostCard } from '@/components'
-import { useSplingStore } from '@/stores'
+import { useUserStore } from '@/stores'
 
 export interface PostWithGroup extends Post {
   group?: {
@@ -14,21 +14,16 @@ export interface PostWithGroup extends Post {
 export default function Feed() {
   const wallet = useWallet()
   const [posts, setPosts] = useState<PostWithGroup[]>([])
-  const { socialProtocol } = useSplingStore()
-  // TODO: Manage state in a store
-  const [user, setUser] = useState<User>()
+  const { user, fetchUser } = useUserStore()
 
   useEffect(() => {
-    async function fetchUser() {
+    async function init() {
       if (!wallet.publicKey) return
-
-      const user = await socialProtocol?.getUserByPublicKey(wallet.publicKey)
-
-      if (user) setUser(user)
+      if (user) fetchUser(wallet.publicKey)
     }
 
-    if (!user) fetchUser()
-  }, [socialProtocol, wallet, user])
+    if (!user) init()
+  }, [fetchUser, wallet, user])
 
   useEffect(() => {
     async function fetchUserFeed() {

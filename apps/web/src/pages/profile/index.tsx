@@ -1,29 +1,24 @@
 import { useWallet } from '@solana/wallet-adapter-react'
-import { User } from '@spling/social-protocol'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
-import { useSplingStore, useCommunityStore } from '@/stores'
+import { useSplingStore, useCommunityStore, useUserStore } from '@/stores'
 
 export default function Profile() {
   const wallet = useWallet()
   const router = useRouter()
+  const { user, fetchUser } = useUserStore()
   const { socialProtocol } = useSplingStore()
-  // TODO: Manage state in a store
-  const [user, setUser] = useState<User>()
   const { communities, fetchCommunities } = useCommunityStore()
 
   useEffect(() => {
-    async function fetchUser() {
+    async function init() {
       if (!wallet.publicKey) return
-
-      const user = await socialProtocol?.getUserByPublicKey(wallet.publicKey)
-
-      if (user) setUser(user)
+      if (user) fetchUser(wallet.publicKey)
     }
 
-    if (!user) fetchUser()
-  }, [socialProtocol, wallet, user])
+    if (!user) init()
+  }, [fetchUser, wallet, user])
 
   useEffect(() => {
     async function init() {

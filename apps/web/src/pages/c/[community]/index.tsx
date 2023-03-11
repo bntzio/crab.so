@@ -1,6 +1,5 @@
 import { UserPlusIcon, UserMinusIcon } from '@heroicons/react/20/solid'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { User } from '@spling/social-protocol'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -8,7 +7,7 @@ import { Button } from 'ui'
 
 import { PostCard, PostForm } from '@/components'
 import { PostWithGroup } from '@/components/Feed'
-import { useSplingStore, useCommunityStore } from '@/stores'
+import { useSplingStore, useCommunityStore, useUserStore } from '@/stores'
 
 export default function Community() {
   const wallet = useWallet()
@@ -16,24 +15,20 @@ export default function Community() {
   const { communities, fetchCommunities } = useCommunityStore()
   const [posts, setPosts] = useState<PostWithGroup[]>([])
   const { socialProtocol } = useSplingStore()
-  // TODO: Manage state in a store
-  const [user, setUser] = useState<User>()
+  const { user, fetchUser } = useUserStore()
 
   const { community } = router.query
 
   const communityData = communities.find(c => c.metadata?.slug === community)
 
   useEffect(() => {
-    async function fetchUser() {
+    async function init() {
       if (!wallet.publicKey) return
-
-      const user = await socialProtocol?.getUserByPublicKey(wallet.publicKey)
-
-      if (user) setUser(user)
+      await fetchUser(wallet.publicKey)
     }
 
-    if (!user) fetchUser()
-  }, [socialProtocol, wallet, user])
+    if (!user) init()
+  }, [fetchUser, wallet, user])
 
   useEffect(() => {
     async function init() {

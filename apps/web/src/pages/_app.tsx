@@ -23,7 +23,7 @@ function CrabApp({ Component, pageProps }: AppProps) {
 
 const App = ({ children }: { children: React.ReactNode }) => {
   const wallet = useWallet()
-  const { startSocialProtocol } = useSplingStore()
+  const { socialProtocol, startSocialProtocol } = useSplingStore()
 
   useEffect(() => {
     async function start() {
@@ -32,6 +32,8 @@ const App = ({ children }: { children: React.ReactNode }) => {
 
     if (wallet?.publicKey) start()
   }, [wallet, startSocialProtocol])
+
+  if (!socialProtocol) return null
 
   return <div className="mt-4">{children}</div>
 }
