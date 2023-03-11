@@ -1,27 +1,43 @@
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { PostWithGroup } from '@/components/Feed'
+import { useSplingStore } from '@/stores'
 
 interface Props {
   post: PostWithGroup
 }
 
 const PostCard = ({ post }: Props) => {
+  const router = useRouter()
+  const { socialProtocol } = useSplingStore()
+
+  const handleNavigate = () => router.push(`/c/${router.query.community}/${post.publicKey.toString()}`)
+
+  const handleVoteDownvote = async (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    ev.stopPropagation()
+
+    try {
+      await socialProtocol?.likePost(post.publicKey)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
-    <Link key={post.publicKey.toString()} href={'#'}>
+    <div className="hover:cursor-pointer" onClick={handleNavigate}>
       <li className="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 hover:bg-gray-50">
         <div className="flex justify-between space-x-3 items-center">
           <div className="mb-1 mr-1">
-            <span className="absolute inset-0" aria-hidden="true" />
-            <div>
+            {/* <span className="absolute inset-0" aria-hidden="true" /> */}
+            <div className="rounded-full p-[2px]" onClick={handleVoteDownvote}>
               <span className="sr-only">Upvote</span>
               <ChevronUpIcon className="h-5 w-5 text-orange-400" aria-hidden="true" />
             </div>
             <div className="flex justify-center">
-              <span className="text-xs text-gray-500 py-1">{post.likes.length}</span>
+              <span className="text-xs font-medium text-gray-500 py-1">{post.likes.length}</span>
             </div>
-            <div>
+            <div className="rounded-full p-[2px]" onClick={handleVoteDownvote}>
               <span className="sr-only">Downvote</span>
               <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
             </div>
@@ -29,7 +45,7 @@ const PostCard = ({ post }: Props) => {
 
           <div className="min-w-0 flex-1 -mt-1">
             {/* <a href="#" className="block focus:outline-none"> */}
-            <span className="absolute inset-0" aria-hidden="true" />
+            {/* <span className="absolute inset-0" aria-hidden="true" /> */}
             <p className="truncate text-sm font-medium text-gray-900">{post.title}</p>
             <p className="truncate text-sm text-gray-500">
               {post.user.nickname} {post?.group ? `on ${post.group.name}` : ''}
@@ -46,7 +62,7 @@ const PostCard = ({ post }: Props) => {
           <p className="text-sm text-gray-600 line-clamp-2 text-ellipsis">{post.text}</p>
         </div>
       </li>
-    </Link>
+    </div>
   )
 }
 
