@@ -1,12 +1,14 @@
 import { PaperClipIcon } from '@heroicons/react/24/outline'
+import { Reply } from '@spling/social-protocol'
 
 import { useSplingStore, useUserStore } from '@/stores'
 
 interface Props {
   postId: number
+  onPublished: (comment: Reply) => void
 }
 
-export default function ReplyForm({ postId }: Props) {
+export default function ReplyForm({ postId, onPublished }: Props) {
   const { user } = useUserStore()
   const { socialProtocol } = useSplingStore()
 
@@ -20,7 +22,9 @@ export default function ReplyForm({ postId }: Props) {
     if (!comment) return alert('Please fill out all the fields.')
 
     try {
-      await socialProtocol?.createPostReply(postId, comment)
+      const reply = await socialProtocol?.createPostReply(postId, comment)
+
+      if (reply) onPublished(reply)
     } catch (error) {
       console.error(error)
     }

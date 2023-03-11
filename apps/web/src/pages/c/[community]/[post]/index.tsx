@@ -115,6 +115,14 @@ export default function PostPage() {
     })
   }
 
+  const handlePublishedReply = (reply: Reply) => {
+    if (replies && replies.length > 0) {
+      setReplies([...replies, reply])
+    } else {
+      setReplies([reply])
+    }
+  }
+
   if (!post) return <div>Loading...</div>
 
   return (
@@ -176,7 +184,7 @@ export default function PostPage() {
       <br />
       <br />
 
-      <ReplyForm postId={post.postId} />
+      <ReplyForm postId={post.postId} onPublished={handlePublishedReply} />
     </main>
   )
 }
