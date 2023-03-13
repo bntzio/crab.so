@@ -50,7 +50,7 @@ export default function SignupForm() {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: isProd ? 'https://crab.so?action=welcome' : 'http://localhost:3000?action=welcome',
+        emailRedirectTo: isProd ? 'https://crab.so/home' : 'http://localhost:3000/home',
       },
     })
 
