@@ -41,7 +41,8 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await disconnect()
-    supabaseClient.auth.signOut()
+    await supabaseClient.auth.signOut()
+    await router.push('/')
   }
 
   return (

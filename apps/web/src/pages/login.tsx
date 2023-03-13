@@ -1,5 +1,6 @@
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 
+import { isProd } from '@/helpers'
 import { supabase } from '@/lib/supabase'
 
 export default function LoginPage() {
@@ -15,8 +16,7 @@ export default function LoginPage() {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        // TODO: Redirect to the welcome page if new user, otherwise, redirect to the dashboard
-        emailRedirectTo: 'http://localhost:3000',
+        emailRedirectTo: isProd ? 'https://crab.so/home' : 'http://localhost:3000/home',
       },
     })
 
