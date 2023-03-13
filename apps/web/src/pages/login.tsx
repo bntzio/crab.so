@@ -16,7 +16,7 @@ export default function LoginPage() {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: isProd ? 'https://crab.so/home' : 'http://localhost:3000/home',
+        emailRedirectTo: isProd ? 'https://crab.so/auth' : 'http://localhost:3000/auth',
       },
     })
 
