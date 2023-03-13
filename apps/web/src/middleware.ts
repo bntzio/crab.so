@@ -15,7 +15,9 @@ export async function middleware(req: NextRequest) {
     const res = NextResponse.rewrite(url)
 
     return res
-  } else {
+  }
+
+  if (pathname === '/home') {
     const res = NextResponse.next()
 
     const supabase = createMiddlewareSupabaseClient({ req, res })
@@ -33,8 +35,26 @@ export async function middleware(req: NextRequest) {
 
     return NextResponse.redirect(redirectUrl)
   }
+
+  if (pathname === '/') {
+    const res = NextResponse.next()
+
+    const supabase = createMiddlewareSupabaseClient({ req, res })
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+
+    if (!session) return res
+
+    const redirectUrl = req.nextUrl.clone()
+
+    redirectUrl.pathname = '/home'
+
+    return NextResponse.redirect(redirectUrl)
+  }
 }
 
 export const config = {
-  matcher: ['/api/rpc', '/home'],
+  matcher: ['/api/rpc', '/home', '/'],
 }
