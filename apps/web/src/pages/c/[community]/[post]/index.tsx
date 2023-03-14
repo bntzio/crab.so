@@ -27,6 +27,12 @@ export default function PostPage() {
   const { community } = router.query
 
   useEffect(() => {
+    if (router.query?.deleted && router.query.deleted === 'true') {
+      router.push(`/c/${community}`)
+    }
+  }, [community, router])
+
+  useEffect(() => {
     if (user && post) {
       const hasLiked = post.likes.includes(user.userId)
       setIsUpvoted(hasLiked)
@@ -124,6 +130,8 @@ export default function PostPage() {
     })
   }
 
+  if (!post) return <div>Loading...</div>
+
   const handlePublishedReply = (reply: Reply) => {
     if (replies && replies.length > 0) {
       setReplies([...replies, reply])
@@ -132,7 +140,16 @@ export default function PostPage() {
     }
   }
 
-  if (!post) return <div>Loading...</div>
+  const handlePostDelete = async () => {
+    try {
+      const pk = post.publicKey
+      await socialProtocol?.deletePost(pk)
+      document.location.href = `/c/${community}/${pk}?deleted=true`
+    } catch (e) {
+      // TODO: Replace with a toast
+      console.error(e)
+    }
+  }
 
   return (
     <main>
@@ -182,6 +199,18 @@ export default function PostPage() {
                   </Link>
                 </>
               )}
+              <span>
+                <span className="mx-1">•</span>
+                <span className="cursor-pointer font-medium hover:text-blue-500">Share</span>
+                {user?.publicKey && post.user.publicKey.equals(user.publicKey) && (
+                  <>
+                    <span className="mx-1">•</span>
+                    <span className="cursor-pointer font-medium hover:text-red-500" onClick={handlePostDelete}>
+                      Delete
+                    </span>
+                  </>
+                )}
+              </span>
             </span>
           </div>
           <div className="space-y-4">
