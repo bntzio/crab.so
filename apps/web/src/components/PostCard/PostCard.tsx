@@ -1,6 +1,7 @@
 import { ChevronUpIcon } from '@heroicons/react/24/solid'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
@@ -58,7 +59,7 @@ const PostCard = ({ post }: Props) => {
             <div className="rounded-full p-[2px]" onClick={handleVoteDownvote}>
               <span className="sr-only">Upvote</span>
               <ChevronUpIcon
-                className={`h-5 w-5 ${isUpvoted ? 'text-orange-400' : 'text-gray-400'}`}
+                className={`h-5 w-5 ${isUpvoted ? 'text-orange-400' : 'text-gray-400'} hover:text-orange-600`}
                 aria-hidden="true"
               />
             </div>
@@ -71,8 +72,22 @@ const PostCard = ({ post }: Props) => {
             {/* <a href="#" className="block focus:outline-none"> */}
             {/* <span className="absolute inset-0" aria-hidden="true" /> */}
             <p className="truncate text-sm font-medium text-gray-900">{post.title}</p>
-            <p className="truncate text-sm text-gray-500">
-              {post.user.nickname} {post?.group ? `on ${post.group.name}` : ''}
+            <p className="truncate text-xs text-gray-500">
+              <Link
+                onClick={ev => ev.stopPropagation()}
+                href={`/u/${post.user.nickname}`}
+                className="hover:text-orange-500 font-medium"
+              >
+                {post.user.nickname}
+              </Link>{' '}
+              on{' '}
+              <Link
+                onClick={ev => ev.stopPropagation()}
+                href={`/c/${post.group?.slug}`}
+                className="hover:text-orange-500 font-medium"
+              >
+                /c/{post.group?.slug}
+              </Link>
             </p>
             {/* </a> */}
           </div>

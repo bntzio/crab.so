@@ -11,6 +11,8 @@ import {
 } from '@heroicons/react/20/solid'
 import { PaperClipIcon, ChatBubbleBottomCenterTextIcon } from '@heroicons/react/24/outline'
 import { Post } from '@spling/social-protocol'
+import Image from 'next/image'
+import Link from 'next/link'
 import { Fragment, useState } from 'react'
 import { Button } from 'ui'
 
@@ -72,12 +74,17 @@ export default function PostForm({ groupId, onPublished }: Props) {
   return (
     <div className="flex items-start space-x-4">
       <div className="flex-shrink-0">
-        {/* TODO: Add a default avatar as fallback */}
-        <img
-          className="inline-block h-10 w-10 rounded-full"
-          src={user?.avatar || '/images/0xPegasus.png'}
-          alt={user?.nickname || '0xPegasus Avatar'}
-        />
+        <Link href={`/u/${user?.nickname}`}>
+          <div className="relative h-10 w-10">
+            <Image
+              className="inline-block rounded-full"
+              // TODO: Add a default avatar as fallback
+              src={user?.avatar || '/images/0xPegasus.png'}
+              alt={user?.nickname || '0xPegasus Avatar'}
+              fill
+            />
+          </div>
+        </Link>
       </div>
       <div className="min-w-0 flex-1">
         <form className="relative" onSubmit={handleSubmit}>

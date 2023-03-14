@@ -109,7 +109,10 @@ export default function PostPage() {
           </Link>
           <div className="flex flex-col space-y-1 justify-center">
             <div className="flex items-center text-xs space-x-1">
-              <p className="font-medium mr-[1px]">{reply.user.nickname}</p>
+              <Link href={`/u/${reply.user.nickname}`}>
+                <p className="font-medium mr-[1px] hover:text-orange-500">{reply.user.nickname}</p>
+              </Link>
+
               <time dateTime={unix.toISOString()} className="text-gray-600/90">
                 {publishedAt}
               </time>

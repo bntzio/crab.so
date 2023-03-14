@@ -1,5 +1,7 @@
 import { PaperClipIcon } from '@heroicons/react/24/outline'
 import { Reply } from '@spling/social-protocol'
+import Image from 'next/image'
+import Link from 'next/link'
 
 import { useSplingStore, useUserStore } from '@/stores'
 
@@ -33,12 +35,17 @@ export default function ReplyForm({ postId, onPublished }: Props) {
   return (
     <div className="flex items-start space-x-4">
       <div className="flex-shrink-0">
-        {/* TODO: Add a default avatar as fallback */}
-        <img
-          className="inline-block h-12 w-12 rounded-full"
-          src={user?.avatar || '/images/0xPegasus.png'}
-          alt={user?.nickname || '0xPegasus avatar'}
-        />
+        <Link href={`/u/${user?.nickname}`}>
+          <div className="relative h-12 w-12">
+            <Image
+              className="inline-block rounded-full"
+              // TODO: Add a default avatar as fallback
+              src={user?.avatar || '/images/0xPegasus.png'}
+              alt={user?.nickname || '0xPegasus avatar'}
+              fill
+            />
+          </div>
+        </Link>
       </div>
       <div className="min-w-0 flex-1">
         <form onSubmit={handleSubmit}>
