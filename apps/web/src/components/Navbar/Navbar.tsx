@@ -4,40 +4,14 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
 import { Button } from 'ui'
-
-import { useModalStore, useUserStore } from '@/stores'
 
 export default function Navbar() {
   const router = useRouter()
   const authUser = useUser()
-  const { user } = useUserStore()
-  const { setVisible } = useWalletModal()
-  const { setActiveModal } = useModalStore()
   const { disconnect } = useWallet()
-  const [isRegistered, setIsRegistered] = useState<boolean | undefined>()
+  const { setVisible } = useWalletModal()
   const supabaseClient = useSupabaseClient()
-
-  useEffect(() => {
-    if (user) {
-      setIsRegistered(true)
-    } else {
-      setIsRegistered(false)
-    }
-  }, [user])
-
-  const renderNavButtons = () => {
-    switch (router.pathname) {
-      case '/':
-        if (isRegistered)
-          return <Button onClick={async () => setActiveModal('createCommunity')}>Create a community</Button>
-        else return <Button onClick={async () => router.push('/signup')}>Create your account</Button>
-      default:
-        if (!isRegistered) return <Button onClick={async () => router.push('/signup')}>Create your account</Button>
-        return null
-    }
-  }
 
   const handleLogout = async () => {
     await disconnect()
@@ -63,7 +37,6 @@ export default function Navbar() {
           </Button>
         ) : (
           <div className="space-x-4">
-            {renderNavButtons()}
             <Button buttonType="slate" onClick={handleLogout}>
               Logout
             </Button>

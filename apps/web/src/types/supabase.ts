@@ -27,12 +27,30 @@ export interface Database {
       profiles: {
         Row: {
           id: string
+          avatar: string | null
+          bio: string | null
+          created_at: string
+          user_id: number | null
+          updated_at: string | null
+          username: string | null
         }
         Insert: {
           id: string
+          avatar?: string | null
+          bio?: string | null
+          created_at?: string
+          user_id?: number | null
+          updated_at?: string | null
+          username?: string | null
         }
         Update: {
           id?: string
+          avatar?: string | null
+          bio?: string | null
+          created_at?: string
+          user_id?: number | null
+          updated_at?: string | null
+          username?: string | null
         }
       }
     }

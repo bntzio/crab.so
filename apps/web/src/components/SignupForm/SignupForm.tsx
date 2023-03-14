@@ -1,23 +1,25 @@
+import { useWallet } from '@solana/wallet-adapter-react'
+import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useState, useRef } from 'react'
 import { Button } from 'ui'
 
-import { isProd } from '@/helpers'
-import { supabase } from '@/lib'
 import { useSplingStore } from '@/stores'
 import { fileToBase64 } from '@/utils'
 
 export default function SignupForm() {
+  const user = useUser()
+  const wallet = useWallet()
   const [file, setFile] = useState<File>()
   const inputFile = useRef<HTMLInputElement | null>(null)
   const { socialProtocol } = useSplingStore()
+  const supabaseClient = useSupabaseClient()
 
-  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const formData = new FormData(event.target as HTMLFormElement)
 
-    const nickname = formData.get('nickname') as string
+    const username = formData.get('username') as string
     const file = formData.get('avatar') as File
     const bio = formData.get('bio') as string
 
@@ -31,35 +33,34 @@ export default function SignupForm() {
       }
 
       try {
-        await socialProtocol?.createUser(nickname, avatar, bio, null)
+        if (!user) throw new Error('User not authenticated')
+        if (!wallet?.publicKey) throw new Error('Wallet not connected')
+
+        const result = await socialProtocol?.createUser(username, avatar, bio)
+
+        if (result) {
+          await supabaseClient.auth.updateUser({
+            data: {
+              publicKey: wallet.publicKey?.toString(),
+            },
+          })
+
+          const { error } = await supabaseClient
+            .from('profiles')
+            .update({
+              username: result.nickname,
+              avatar: result.avatar,
+              bio: result.bio,
+              user_id: result.userId,
+              updated_at: new Date(),
+            })
+            .eq('id', user.id)
+
+          if (error) throw new Error(error.message)
+        }
       } catch (e) {
-        console.log(e) // TODO: Render error toast
+        console.log('error', e) // TODO: Render error toast
       }
-    }
-  }
-
-  const signInWithEmail = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    const formData = new FormData(event.target as HTMLFormElement)
-
-    const email = formData.get('email') as string
-
-    if (!email) return
-
-    const { data, error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: isProd ? 'https://crab.so/home' : 'http://localhost:3000/home',
-      },
-    })
-
-    if (error) {
-      console.log(error)
-    }
-
-    if (data) {
-      console.log(data)
     }
   }
 
@@ -69,7 +70,7 @@ export default function SignupForm() {
   }
 
   return (
-    <form className="space-y-8 divide-y divide-gray-200" onSubmit={signInWithEmail}>
+    <form className="space-y-8 divide-y divide-gray-200" onSubmit={handleSubmit}>
       <div className="space-y-8 divide-y divide-gray-200">
         <div>
           <div>
@@ -79,35 +80,36 @@ export default function SignupForm() {
             </p>
           </div>
 
+          <div className="flex my-6 items-center">
+            <p className="text-xs text-slate-500">
+              Connected as <span className="font-medium">{wallet.publicKey?.toString()}</span>
+            </p>
+            <a
+              className="text-gray-500 hover:text-gray-700 cursor-pointer text-xs font-semibold"
+              onClick={async ev => {
+                ev.preventDefault()
+                await wallet.disconnect()
+              }}
+            >
+              Disconnect
+            </a>
+          </div>
+
           <div className="mt-8 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-            <div className="sm:col-span-3">
-              <label htmlFor="nickname" className="block text-sm font-medium text-gray-700">
-                Nickname
+            <div className="sm:col-span-6">
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                Username
               </label>
               <div className="mt-1">
                 <input
                   type="text"
-                  name="nickname"
-                  id="nickname"
+                  name="username"
+                  id="username"
                   autoComplete="off"
                   className="block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 />
               </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <div className="mt-1">
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  autoComplete="off"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
-                />
-              </div>
+              <p className="mt-2 text-sm text-gray-500">Choose wisely, you won't be able to change it later.</p>
             </div>
 
             <div className="sm:col-span-6">

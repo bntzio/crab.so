@@ -26,6 +26,10 @@ export async function middleware(req: NextRequest) {
       data: { session },
     } = await supabase.auth.getSession()
 
+    console.log(session?.user)
+    console.log('***')
+    console.log(session?.user.last_sign_in_at)
+
     if (session) return res
 
     const redirectUrl = req.nextUrl.clone()
