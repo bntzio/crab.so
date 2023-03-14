@@ -30,8 +30,8 @@ export interface Database {
           avatar: string | null
           bio: string | null
           created_at: string
-          user_id: number | null
           updated_at: string | null
+          user_id: number | null
           username: string | null
         }
         Insert: {
@@ -39,8 +39,8 @@ export interface Database {
           avatar?: string | null
           bio?: string | null
           created_at?: string
-          user_id?: number | null
           updated_at?: string | null
+          user_id?: number | null
           username?: string | null
         }
         Update: {
@@ -48,8 +48,8 @@ export interface Database {
           avatar?: string | null
           bio?: string | null
           created_at?: string
-          user_id?: number | null
           updated_at?: string | null
+          user_id?: number | null
           username?: string | null
         }
       }
