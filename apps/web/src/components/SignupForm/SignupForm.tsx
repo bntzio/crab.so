@@ -1,5 +1,5 @@
 import { useWallet } from '@solana/wallet-adapter-react'
-import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useUser } from '@supabase/auth-helpers-react'
 import { useState, useRef } from 'react'
 import { Button } from 'ui'
 
@@ -12,7 +12,6 @@ export default function SignupForm() {
   const [file, setFile] = useState<File>()
   const inputFile = useRef<HTMLInputElement | null>(null)
   const { socialProtocol } = useSplingStore()
-  const supabaseClient = useSupabaseClient()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -39,24 +38,16 @@ export default function SignupForm() {
         const result = await socialProtocol?.createUser(username, avatar, bio)
 
         if (result) {
-          await supabaseClient.auth.updateUser({
-            data: {
-              publicKey: wallet.publicKey?.toString(),
+          await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
             },
-          })
-
-          const { error } = await supabaseClient
-            .from('profiles')
-            .update({
+            body: JSON.stringify({
               username: result.nickname,
-              avatar: result.avatar,
-              bio: result.bio,
-              user_id: result.userId,
-              updated_at: new Date(),
-            })
-            .eq('id', user.id)
-
-          if (error) throw new Error(error.message)
+              publicKey: wallet.publicKey.toString(),
+            }),
+          })
         }
       } catch (e) {
         console.log('error', e) // TODO: Render error toast
