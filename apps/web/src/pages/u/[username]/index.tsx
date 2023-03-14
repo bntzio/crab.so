@@ -1,9 +1,10 @@
-import { User } from '@spling/social-protocol'
+import { User, Post } from '@spling/social-protocol'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
+import { ProfileFeed } from '@/components'
 import { useSplingStore } from '@/stores'
 import { Database } from '@/types/supabase'
 
@@ -12,7 +13,8 @@ export default function UserProfile() {
   const { socialProtocol } = useSplingStore()
   const supabaseClient = useSupabaseClient<Database>()
   const [user, setUser] = useState<User | null>()
-  const [profile, setProfile] = useState<Database['public']['Tables']['profiles']['Row'] | null>()
+  const [posts, setPosts] = useState<Post[]>()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function init() {
@@ -24,23 +26,34 @@ export default function UserProfile() {
 
       if (supabaseProfile.data?.user_id) {
         const usr = await socialProtocol?.getUser(supabaseProfile.data?.user_id)
+        const usrPosts = await socialProtocol?.getAllPostsByUserId(supabaseProfile.data?.user_id)
 
         if (usr) {
           setUser(usr)
         } else {
           setUser(null)
         }
-      }
 
-      setProfile(supabaseProfile.data)
+        if (usrPosts && usrPosts.length > 0) {
+          setPosts(usrPosts)
+        } else {
+          setPosts([])
+        }
+      } else {
+        setUser(null)
+      }
     }
 
     init()
   }, [supabaseClient, socialProtocol, router])
 
-  if (profile === undefined || user === undefined) return <div>Loading...</div>
+  useEffect(() => {
+    if (user !== undefined) setLoading(false)
+  }, [user])
 
-  if (profile === null || user === null) return <div>User not found</div>
+  if (loading) return <div>Loading...</div>
+
+  if (!user) return <div>User not found</div>
 
   return (
     <main className="mt-16">
@@ -72,6 +85,10 @@ export default function UserProfile() {
             <span className="font-semibold">{0}</span>
           </div>
         </div>
+      </section>
+      <section className="flex flex-col mt-12 space-y-4">
+        <p className="text-gray-500/90 text-sm">Latest activity</p>
+        {posts && <ProfileFeed posts={posts} />}
       </section>
     </main>
   )
