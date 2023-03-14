@@ -86,10 +86,12 @@ export default function UserProfile() {
           </div>
         </div>
       </section>
-      <section className="flex flex-col mt-12 space-y-4">
-        <p className="text-gray-500/90 text-sm">Latest activity</p>
-        {posts && <ProfileFeed posts={posts} />}
-      </section>
+      {!posts?.length ? null : (
+        <section className="flex flex-col mt-12 space-y-4">
+          <p className="text-gray-500/90 text-sm">Latest activity</p>
+          <ProfileFeed posts={posts} />
+        </section>
+      )}
     </main>
   )
 }

@@ -3,6 +3,7 @@ import { PublicKey } from '@solana/web3.js'
 import { Post, Group, Reply } from '@spling/social-protocol'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -95,12 +96,17 @@ export default function PostPage() {
 
       return (
         <div key={reply.publicKey.toString()} className="flex space-x-3 border-b border-gray-200/90 py-6">
-          <img
-            className="inline-block h-10 w-10 rounded-full border p-[1px]"
-            // TODO: Add a default avatar as fallback
-            src={reply.user.avatar || '/images/0xPegasus.png'}
-            alt={`${reply.user.nickname} avatar`}
-          />
+          <Link href={`/u/${reply.user.nickname}`}>
+            <div className="relative h-10 w-10">
+              <Image
+                className="inline-block rounded-full border p-[1px]"
+                // TODO: Add a default avatar as fallback
+                src={reply.user.avatar || '/images/0xPegasus.png'}
+                alt={`${reply.user.nickname} avatar`}
+                fill
+              />
+            </div>
+          </Link>
           <div className="flex flex-col space-y-1 justify-center">
             <div className="flex items-center text-xs space-x-1">
               <p className="font-medium mr-[1px]">{reply.user.nickname}</p>
@@ -157,14 +163,20 @@ export default function PostPage() {
         <div className="space-y-2">
           <div>
             <span className="text-xs text-gray-500/90">
-              Posted by <span className="font-medium">{post.user.nickname}</span>{' '}
+              Posted by{' '}
+              <Link href={`/u/${post.user.nickname}`} className="font-medium hover:text-orange-500">
+                {post.user.nickname}
+              </Link>{' '}
               <time dateTime={dayjs(post.timestamp * 1000).toISOString()}>
                 {dayjs(post.timestamp * 1000).from(dayjs())}
               </time>
               {group && (
                 <>
                   {' '}
-                  on <span className="font-medium">{group?.name}</span>
+                  on{' '}
+                  <Link href={`/c/${group?.metadata?.slug}`} className="font-medium hover:text-orange-500">
+                    /c/{group?.metadata?.slug}
+                  </Link>
                 </>
               )}
             </span>
