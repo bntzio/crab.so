@@ -1,0 +1,78 @@
+import { User } from '@spling/social-protocol'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
+
+import { useSplingStore } from '@/stores'
+import { Database } from '@/types/supabase'
+
+export default function UserProfile() {
+  const router = useRouter()
+  const { socialProtocol } = useSplingStore()
+  const supabaseClient = useSupabaseClient<Database>()
+  const [user, setUser] = useState<User | null>()
+  const [profile, setProfile] = useState<Database['public']['Tables']['profiles']['Row'] | null>()
+
+  useEffect(() => {
+    async function init() {
+      const supabaseProfile = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('username', router.query.username)
+        .single()
+
+      if (supabaseProfile.data?.user_id) {
+        const usr = await socialProtocol?.getUser(supabaseProfile.data?.user_id)
+
+        if (usr) {
+          setUser(usr)
+        } else {
+          setUser(null)
+        }
+      }
+
+      setProfile(supabaseProfile.data)
+    }
+
+    init()
+  }, [supabaseClient, socialProtocol, router])
+
+  if (profile === undefined || user === undefined) return <div>Loading...</div>
+
+  if (profile === null || user === null) return <div>User not found</div>
+
+  return (
+    <main className="mt-16">
+      <section className="flex flex-col items-center space-y-5">
+        <div className="relative w-32 h-32">
+          <Image
+            // TODO: Add default empty avatar image
+            src={user.avatar || ''}
+            alt={`${user.nickname} avatar`}
+            className="rounded-full"
+            fill
+          />
+        </div>
+        <div className="flex flex-col items-center space-y-1">
+          <h1 className="text-xl font-semibold text-gray-800">{user.nickname}</h1>
+          <h2 className="text-gray-600/90">{user.bio}</h2>
+        </div>
+        <div className="flex items-center space-x-5 pt-2">
+          <div className="flex flex-col items-center space-y-1 text-sm text-gray-600/90 w-20">
+            <p className="">Following</p>
+            <span className="font-semibold">{user.following.length}</span>
+          </div>
+          <div className="flex flex-col items-center space-y-1 text-sm text-gray-600/90 w-20">
+            <p className="">Communities</p>
+            <span className="font-semibold">{user.groups.length}</span>
+          </div>
+          <div className="flex flex-col items-center space-y-1 text-sm text-gray-600/90 w-20">
+            <p className="">Publications</p>
+            <span className="font-semibold">{0}</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
+}

@@ -47,6 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   await supabaseClient.auth.updateUser({
     data: {
+      username,
       publicKey,
     },
   })
