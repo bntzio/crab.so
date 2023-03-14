@@ -1,5 +1,5 @@
 import { useWallet } from '@solana/wallet-adapter-react'
-import { useUser } from '@supabase/auth-helpers-react'
+import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/router'
 import { useState, useRef } from 'react'
 import { Button } from 'ui'
@@ -14,6 +14,7 @@ export default function SignupForm() {
   const [file, setFile] = useState<File>()
   const inputFile = useRef<HTMLInputElement | null>(null)
   const { socialProtocol } = useSplingStore()
+  const supabaseClient = useSupabaseClient()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -36,6 +37,13 @@ export default function SignupForm() {
       try {
         if (!user) throw new Error('User not authenticated')
         if (!wallet?.publicKey) throw new Error('Wallet not connected')
+
+        // Check username availability before creating user on the social protocol.
+        const { data, error } = await supabaseClient.from('profiles').select('username').eq('username', username)
+
+        if (error) throw new Error(error.message)
+
+        if (data.length) throw new Error('Username already taken')
 
         const result = await socialProtocol?.createUser(username, avatar, bio)
 

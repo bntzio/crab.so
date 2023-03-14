@@ -38,6 +38,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (error) return res.status(500).json({ error: error.message })
 
+  const { error: profileError } = await serviceSupabase.from('profiles').update({ username }).eq('id', session.user.id)
+
+  if (profileError) return res.status(500).json({ error: profileError.message })
+
   await supabaseClient.auth.updateUser({
     data: {
       publicKey,
