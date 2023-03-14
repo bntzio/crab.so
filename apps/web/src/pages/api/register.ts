@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { error: profileError } = await serviceSupabase
     .from('profiles')
-    .update({ username, avatar, bio, userId: Number(userId), updated_at: new Date().toISOString() })
+    .update({ username, avatar, bio, user_id: Number(userId), updated_at: new Date().toISOString() })
     .eq('id', session.user.id)
 
   if (profileError) return res.status(500).json({ error: profileError.message })
