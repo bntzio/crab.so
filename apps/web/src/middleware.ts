@@ -71,8 +71,30 @@ export async function middleware(req: NextRequest) {
 
     return NextResponse.redirect(redirectUrl)
   }
+
+  if (pathname === '/welcome') {
+    const res = NextResponse.next()
+
+    const supabase = createMiddlewareSupabaseClient({ req, res })
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (session && !user?.user_metadata.publicKey) return res
+
+    const redirectUrl = req.nextUrl.clone()
+
+    redirectUrl.pathname = '/home'
+
+    return NextResponse.redirect(redirectUrl)
+  }
 }
 
 export const config = {
-  matcher: ['/api/rpc', '/home', '/'],
+  matcher: ['/api/rpc', '/home', '/', '/welcome'],
 }

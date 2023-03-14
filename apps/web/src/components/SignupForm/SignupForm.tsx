@@ -1,5 +1,6 @@
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useUser } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
 import { useState, useRef } from 'react'
 import { Button } from 'ui'
 
@@ -9,6 +10,7 @@ import { fileToBase64 } from '@/utils'
 export default function SignupForm() {
   const user = useUser()
   const wallet = useWallet()
+  const router = useRouter()
   const [file, setFile] = useState<File>()
   const inputFile = useRef<HTMLInputElement | null>(null)
   const { socialProtocol } = useSplingStore()
@@ -48,6 +50,8 @@ export default function SignupForm() {
               publicKey: wallet.publicKey.toString(),
             }),
           })
+
+          router.push('/home')
         }
       } catch (e) {
         console.log('error', e) // TODO: Render error toast
