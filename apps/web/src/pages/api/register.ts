@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { serviceSupabase } from '@/lib/supabase'
+import { getServiceSupabase } from '@/lib/supabase'
 import { Database } from '@/types/supabase'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -9,6 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!username || !publicKey) return res.status(400).json({ error: 'Missing user data' })
 
+  const serviceSupabase = getServiceSupabase()
   const supabaseClient = createServerSupabaseClient<Database>({ req, res })
 
   const {

@@ -13,8 +13,9 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   },
 })
 
-export const serviceSupabase = createClient<Database>(supabaseUrl, supabaseServiceRoleKey, {
-  db: {
-    schema: 'public',
-  },
-})
+export const getServiceSupabase = () =>
+  createClient<Database>(supabaseUrl, supabaseServiceRoleKey, {
+    db: {
+      schema: 'public',
+    },
+  })
