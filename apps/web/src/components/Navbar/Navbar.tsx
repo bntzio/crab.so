@@ -10,7 +10,7 @@ import { Button } from 'ui'
 export default function Navbar() {
   const user = useUser()
   const router = useRouter()
-  const { disconnect } = useWallet()
+  const wallet = useWallet()
   const { setVisible } = useWalletModal()
   const supabaseClient = useSupabaseClient()
   const [supabaseUser, setSupabaseUser] = useState<User>()
@@ -27,9 +27,11 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await supabaseClient.auth.signOut()
-    await disconnect()
+    await wallet.disconnect()
     await router.push('/')
   }
+
+  if (router.pathname === '/auth') return null
 
   return (
     <nav className="flex justify-between items-center">
@@ -39,9 +41,6 @@ export default function Navbar() {
         </span>
       </Link>
       <div className="flex space-x-6">
-        <Button buttonType="slate">
-          <Link href="/c">See more communities</Link>
-        </Button>
         {!user ? (
           <Button onClick={() => setVisible(true)}>
             <UserGroupIcon className="h-5 w-5 text-white mr-2" aria-hidden="true" />
@@ -49,14 +48,25 @@ export default function Navbar() {
           </Button>
         ) : (
           <div className="space-x-4">
-            {supabaseUser?.user_metadata?.username && (
-              <Link href={`/u/${supabaseUser.user_metadata.username}`}>
-                <Button buttonType="slate">My Profile</Button>
-              </Link>
+            {wallet.connected ? (
+              <>
+                {supabaseUser?.user_metadata?.username && (
+                  <>
+                    <Button buttonType="slate">
+                      <Link href="/c">See more communities</Link>
+                    </Button>
+                    <Link href={`/u/${supabaseUser.user_metadata.username}`}>
+                      <Button buttonType="slate">My Profile</Button>
+                    </Link>
+                  </>
+                )}
+                <Button buttonType="slate" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button onClick={() => setVisible(true)}>Connect wallet</Button>
             )}
-            <Button buttonType="slate" onClick={handleLogout}>
-              Logout
-            </Button>
           </div>
         )}
       </div>

@@ -2,8 +2,9 @@ import '@/styles/globals.css'
 import '@solana/wallet-adapter-react-ui/styles.css'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider, Session } from '@supabase/auth-helpers-react'
+import { SessionContextProvider, Session, useSupabaseClient } from '@supabase/auth-helpers-react'
 import type { AppProps } from 'next/app'
+import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
 import { WalletAdapter, Navbar } from '@/components'
@@ -35,17 +36,38 @@ function CrabApp({
 
 const App = ({ children }: { children: React.ReactNode }) => {
   const wallet = useWallet()
+  const router = useRouter()
   const { setUser } = useUserStore()
+  const supabaseClient = useSupabaseClient()
   const { socialProtocol, startSocialProtocol } = useSplingStore()
 
   useEffect(() => {
     async function start() {
       if (!wallet?.publicKey) return
-      await startSocialProtocol({ wallet })
+
+      // Check that the logged in user is using the same wallet as the one they used to create their account.
+      const {
+        data: { session },
+      } = await supabaseClient.auth.getSession()
+
+      const {
+        data: { user },
+      } = await supabaseClient.auth.getUser()
+
+      if (session && user) {
+        console.log('user.user_metadata?.publicKey', user.user_metadata?.publicKey)
+        if (user.user_metadata?.publicKey !== wallet.publicKey.toString()) {
+          await supabaseClient.auth.signOut()
+          await wallet.disconnect()
+          await router.push('/')
+        } else {
+          await startSocialProtocol({ wallet })
+        }
+      }
     }
 
     start()
-  }, [wallet, startSocialProtocol])
+  }, [router, wallet, startSocialProtocol, supabaseClient])
 
   useEffect(() => {
     async function saveCurrentUser() {
