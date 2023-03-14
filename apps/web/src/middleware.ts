@@ -2,6 +2,8 @@ import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+import { Database } from '@/types/supabase'
+
 const heliusApiKey = process.env.HELIUS_API_KEY
 
 export async function middleware(req: NextRequest) {
@@ -20,24 +22,36 @@ export async function middleware(req: NextRequest) {
   if (pathname === '/home') {
     const res = NextResponse.next()
 
-    const supabase = createMiddlewareSupabaseClient({ req, res })
+    const supabase = createMiddlewareSupabaseClient<Database>({ req, res })
 
     const {
       data: { session },
     } = await supabase.auth.getSession()
 
-    console.log(session?.user)
-    console.log('***')
-    console.log(session?.user.last_sign_in_at)
+    if (!session) {
+      const redirectUrl = req.nextUrl.clone()
 
-    if (session) return res
+      redirectUrl.pathname = '/'
+      redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname)
 
-    const redirectUrl = req.nextUrl.clone()
+      return NextResponse.redirect(redirectUrl)
+    }
 
-    redirectUrl.pathname = '/'
-    redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname)
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
-    return NextResponse.redirect(redirectUrl)
+    const pk = user?.user_metadata?.publicKey
+
+    if (!pk) {
+      const redirectUrl = req.nextUrl.clone()
+
+      redirectUrl.pathname = '/welcome'
+
+      return NextResponse.redirect(redirectUrl)
+    }
+
+    return res
   }
 
   if (pathname === '/') {
