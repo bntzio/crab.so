@@ -80,19 +80,21 @@ export default function UserProfile() {
           <h1 className="text-xl font-semibold text-gray-800">{user.nickname}</h1>
           <h2 className="text-gray-600/90">{user.bio}</h2>
         </div>
-        <div>
-          {currentUser?.following.includes(user.userId) ? (
-            <Button className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400" onClick={handleFollowUser}>
-              <UserMinusIcon className="w-4 h-4 mr-2 text-white" />
-              <span className="text-xs">Unfollow {user.nickname}</span>
-            </Button>
-          ) : (
-            <Button className="h-7" onClick={handleUnfollowUser}>
-              <UserPlusIcon className="w-4 h-4 mr-2 text-white" />
-              <span className="text-xs">Follow {user.nickname}</span>
-            </Button>
-          )}
-        </div>
+        {currentUser?.userId === user.userId ? null : (
+          <div>
+            {currentUser?.following.includes(user.userId) ? (
+              <Button className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400" onClick={handleFollowUser}>
+                <UserMinusIcon className="w-4 h-4 mr-2 text-white" />
+                <span className="text-xs">Unfollow {user.nickname}</span>
+              </Button>
+            ) : (
+              <Button className="h-7" onClick={handleUnfollowUser}>
+                <UserPlusIcon className="w-4 h-4 mr-2 text-white" />
+                <span className="text-xs">Follow {user.nickname}</span>
+              </Button>
+            )}
+          </div>
+        )}
         <div className="flex items-center space-x-5 pt-2">
           <div className="flex flex-col items-center space-y-1 text-sm text-gray-600/90 w-20">
             <p className="">Following</p>
