@@ -5,9 +5,9 @@ import { getServiceSupabase } from '@/lib/supabase'
 import { Database } from '@/types/supabase'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { username, publicKey } = req.body
+  const { username, publicKey, userId, avatar, bio } = req.body
 
-  if (!username || !publicKey) return res.status(400).json({ error: 'Missing user data' })
+  if (!username || !publicKey || !userId || !avatar || !bio) return res.status(400).json({ error: 'Missing user data' })
 
   const serviceSupabase = getServiceSupabase()
   const supabaseClient = createServerSupabaseClient<Database>({ req, res })
@@ -38,7 +38,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (error) return res.status(500).json({ error: error.message })
 
-  const { error: profileError } = await serviceSupabase.from('profiles').update({ username }).eq('id', session.user.id)
+  const { error: profileError } = await serviceSupabase
+    .from('profiles')
+    .update({ username, avatar, bio, userId: Number(userId), updated_at: new Date().toISOString() })
+    .eq('id', session.user.id)
 
   if (profileError) return res.status(500).json({ error: profileError.message })
 

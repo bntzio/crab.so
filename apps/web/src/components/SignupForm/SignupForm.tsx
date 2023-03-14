@@ -54,6 +54,9 @@ export default function SignupForm() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+              bio: result.bio,
+              avatar: result.avatar,
+              userId: result.userId,
               username: result.nickname,
               publicKey: wallet.publicKey.toString(),
             }),
