@@ -106,16 +106,18 @@ export default function UserProfile() {
           </div>
           <div className="flex flex-col items-center space-y-1 text-sm text-gray-600/90 w-20">
             <p className="">Publications</p>
-            <span className="font-semibold">{0}</span>
+            <span className="font-semibold">{posts?.length}</span>
           </div>
         </div>
       </section>
-      {!posts?.length ? null : (
-        <section className="flex flex-col mt-12 space-y-4">
-          <p className="text-gray-500/90 text-sm">Latest activity</p>
+      <section className="flex flex-col mt-12 space-y-4">
+        <p className="text-gray-500/90 text-sm">Latest activity</p>
+        {!posts?.length ? (
+          <div className="text-gray-400/90 text-sm">No activity from {user.nickname}</div>
+        ) : (
           <ProfileFeed posts={posts} />
-        </section>
-      )}
+        )}
+      </section>
     </main>
   )
 }
