@@ -83,12 +83,12 @@ export default function UserProfile() {
         {currentUser?.userId === user.userId ? null : (
           <div>
             {currentUser?.following.includes(user.userId) ? (
-              <Button className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400" onClick={handleFollowUser}>
+              <Button className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400" onClick={handleUnfollowUser}>
                 <UserMinusIcon className="w-4 h-4 mr-2 text-white" />
                 <span className="text-xs">Unfollow {user.nickname}</span>
               </Button>
             ) : (
-              <Button className="h-7" onClick={handleUnfollowUser}>
+              <Button className="h-7" onClick={handleFollowUser}>
                 <UserPlusIcon className="w-4 h-4 mr-2 text-white" />
                 <span className="text-xs">Follow {user.nickname}</span>
               </Button>
