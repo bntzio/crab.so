@@ -7,7 +7,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-import { Button } from 'ui'
 
 import { ReplyForm } from '@/components'
 import { useSplingStore, useUserStore } from '@/stores'
@@ -153,24 +152,15 @@ export default function PostPage() {
 
   return (
     <main>
-      <div className="mt-6">
-        <Button buttonType="slate">
-          <Link href="/c/[community]" as={`/c/${community}`}>
-            Back to community
-          </Link>
-        </Button>
-      </div>
-
-      <br />
-      <br />
-
-      <div className="flex items-start space-x-6">
+      <div className="flex items-start space-x-6 mt-16">
         <div className="flex justify-between space-x-3 items-center">
           <div className="mt-5">
             <div className="rounded-full p-[2px]" onClick={handleVoteDownvote}>
               <span className="sr-only">Upvote</span>
               <ChevronUpIcon
-                className={`h-5 w-5 ${isUpvoted ? 'text-orange-400' : 'text-gray-400'}`}
+                className={`h-5 w-5 ${
+                  isUpvoted ? 'text-orange-400' : 'text-gray-400'
+                } cursor-pointer hover:text-orange-600`}
                 aria-hidden="true"
               />
             </div>

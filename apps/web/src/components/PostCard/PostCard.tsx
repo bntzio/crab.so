@@ -52,7 +52,7 @@ const PostCard = ({ post }: Props) => {
 
   return (
     <div className="hover:cursor-pointer" onClick={handleNavigate}>
-      <li className="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 hover:bg-gray-50">
+      <li className="relative py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 hover:bg-gray-50 rounded-lg">
         <div className="flex justify-between space-x-3 items-center">
           <div className="mb-1 mr-1">
             {/* <span className="absolute inset-0" aria-hidden="true" /> */}

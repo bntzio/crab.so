@@ -1,4 +1,4 @@
-import { UserPlusIcon, UserMinusIcon } from '@heroicons/react/20/solid'
+import { UserPlusIcon, UserMinusIcon, BoltIcon } from '@heroicons/react/20/solid'
 import { User, Post } from '@spling/social-protocol'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import Image from 'next/image'
@@ -98,8 +98,8 @@ export default function UserProfile() {
           />
         </div>
         <div className="flex flex-col items-center space-y-1">
-          <h1 className="text-xl font-semibold text-gray-800">{user.nickname}</h1>
-          <h2 className="text-gray-600/90">{user.bio}</h2>
+          <h1 className="text-lg font-semibold text-gray-800">{user.nickname}</h1>
+          <h2 className="text-sm text-gray-600/90">{user.bio}</h2>
         </div>
         {!currentUser || currentUser?.userId === user.userId ? null : (
           <div>
@@ -117,22 +117,25 @@ export default function UserProfile() {
           </div>
         )}
         <div className="flex items-center space-x-5 pt-2">
-          <div className="flex flex-col items-center space-y-1 text-sm text-gray-600/90 w-20">
+          <div className="flex flex-col items-center space-y-1 text-sm text-gray-500/90 w-20">
             <p className="">Following</p>
             <span className="font-semibold">{user.following.length}</span>
           </div>
-          <div className="flex flex-col items-center space-y-1 text-sm text-gray-600/90 w-20">
+          <div className="flex flex-col items-center space-y-1 text-sm text-gray-500/90 w-20">
             <p className="">Communities</p>
             <span className="font-semibold">{user.groups.length}</span>
           </div>
-          <div className="flex flex-col items-center space-y-1 text-sm text-gray-600/90 w-20">
+          <div className="flex flex-col items-center space-y-1 text-sm text-gray-500/90 w-20">
             <p className="">Publications</p>
             <span className="font-semibold">{posts?.length}</span>
           </div>
         </div>
       </section>
       <section className="flex flex-col mt-12 space-y-4">
-        <p className="text-gray-500/90 text-sm">Latest activity</p>
+        <p className="text-gray-500/90 text-sm flex items-center">
+          <BoltIcon className="w-4 h-4 mr-1" />
+          <span>Latest activity</span>
+        </p>
         {!posts?.length ? (
           <div className="text-gray-400/90 text-sm">No activity from {user.nickname}</div>
         ) : (

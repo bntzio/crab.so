@@ -49,7 +49,7 @@ export default function ProfileFeed({ posts }: Props) {
       {posts.map(post => (
         <li
           key={post.postId}
-          className="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 hover:bg-gray-50"
+          className="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-orange-600 hover:bg-gray-50 rounded-lg"
         >
           <div className="flex justify-between space-x-3">
             <div className="min-w-0 flex-1">
@@ -63,7 +63,7 @@ export default function ProfileFeed({ posts }: Props) {
                 <p className="truncate text-xs text-gray-600 font-medium">
                   <span>/c/{groups && groups.find(g => g.groupId === post.groupId)?.metadata?.slug}</span>
                 </p>
-                <p className="truncate text-gray-600 font-semibold">{post.title}</p>
+                <p className="truncate text-sm font-medium text-gray-900">{post.title}</p>
               </Link>
             </div>
             <span className="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
