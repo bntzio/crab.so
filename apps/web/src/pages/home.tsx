@@ -13,9 +13,10 @@ export default function Home() {
   const user = useUser()
   const wallet = useWallet()
   const router = useRouter()
+  const supabase = useSupabaseClient()
   const { activeModal } = useModalStore()
   const { setVisible } = useWalletModal()
-  const supabase = useSupabaseClient()
+  const [loading, setLoading] = useState(true)
   const [linkedWallet, setLinkedWallet] = useState()
   const { getAllGroups, socialProtocol } = useSplingStore()
 
@@ -24,10 +25,21 @@ export default function Home() {
   useEffect(() => {
     async function init() {
       const {
-        data: { user },
-      } = await supabase.auth.getUser()
+        data: { session },
+      } = await supabase.auth.getSession()
 
-      if (user) setLinkedWallet(user.user_metadata?.publicKey)
+      if (session) {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
+
+        if (user) {
+          setLinkedWallet(user.user_metadata?.publicKey)
+          setLoading(false)
+        }
+      } else {
+        setLoading(false)
+      }
     }
 
     init()
@@ -49,11 +61,13 @@ export default function Home() {
     fetchProtocolInfo()
   }, [wallet, socialProtocol, getAllGroups, router])
 
+  if (loading) return null
+
   return (
     <main>
       <section className={clsx(!connected ? 'mt-0' : 'mt-16', 'space-y-12')}>
         <CreateCommunityModal isOpen={activeModal === 'createCommunity'} />
-        {user && connected ? (
+        {user ? (
           <Feed />
         ) : (
           <div className="mt-28 flex flex-col justify-center items-center">
