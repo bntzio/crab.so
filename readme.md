@@ -1,73 +1,80 @@
-# Turborepo starter
+# crab 🦀
 
-This is an official pnpm starter turborepo.
+> Decentralized Communities in Web3
 
-## What's inside?
+### What is crab?
 
-This turborepo uses [pnpm](https://pnpm.io) as a package manager. It includes the following packages/apps:
+Crab is a community-driven, open-source, decentralized network for thriving communities in Web3.
 
-### Apps and Packages
+Read the presentation [here](https://docs.google.com/presentation/d/1apHGhAi0vjjzXP3wOY_CjpcNB6juKrjgtqNXub_vzXI/edit?usp=sharing).
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+### How does crab work?
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+Crab utilizes the [Spling Social Protocol](https://www.splinglabs.com) to interact with the Shadow Drive, a decentralized file system by [GenesysGo](https://shadow.cloud) in the [Solana](https://solana.com) blockchain.
 
-### Utilities
+You can try the official and most recent version of crab at [crab.so](https://crab.so) 🦀
 
-This turborepo has some additional tools already setup for you:
+### Development
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+Crab is open-source and you can contribute to the project by opening a pull request or an issue.
 
-### Build
+It is built with [Next.js](https://nextjs.org) and [Tailwind CSS](https://tailwindcss.com).
 
-To build all apps and packages, run the following command:
+#### Requirements
 
-```
-cd my-turborepo
-pnpm run build
-```
+- [Docker](https://www.docker.com)
+- [Node.js](https://nodejs.org) (`>= v14`)
+- [pnpm](https://pnpm.io) (`npm install -g pnpm` using [Homebrew](https://brew.sh) 🍺)
+- [Supabase CLI](https://supabase.com/docs/guides/cli) (`brew install supabase/tap/supabase` using [Homebrew](https://brew.sh) 🍺)
+- [Solana Wallet](https://docs.solana.com/wallet-guide) (we recommend [Phantom](https://phantom.app) or [Backpack](https://www.backpack.app))
 
-### Develop
+#### Setup
 
-To develop all apps and packages, run the following command:
+##### 1. Clone the repository
 
-```
-cd my-turborepo
-pnpm run dev
+```bash
+git clone git@github.com:bntzio/crab.so.git
 ```
 
-### Remote Caching
+##### 2. Start Docker and the Supabase container
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-pnpm dlx turbo login
+```bash
+# inside apps/web directory
+supabase start
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+##### 3. Install dependencies
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
-
+```bash
+# inside the root directory
+pnpm install
 ```
-pnpm dlx turbo link
+
+##### 4. Add and fill the environment variables
+
+```bash
+# create a .env.local file inside apps/web directory
+HELIUS_API_KEY=
+NEXT_PUBLIC_HELIUS_API_KEY=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
 ```
 
-## Useful Links
+##### 5. Start the development server
 
-Learn more about the power of Turborepo:
+```bash
+pnpm run dev --filter web
+```
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+##### 6. Start developing
+
+Go to [http://localhost:3000](http://localhost:3000) with your browser to see the app running.
+
+**Happy hacking!** 🦀
+
+#### Getting the environment variables
+
+- `HELIUS_API_KEY` and `NEXT_PUBLIC_HELIUS_API_KEY` are the API keys required to run the RPC, you can get one by creating an account in [helius labs](https://helius.xyz).
+
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` can be found in your terminal right after you start the Supabase container.
