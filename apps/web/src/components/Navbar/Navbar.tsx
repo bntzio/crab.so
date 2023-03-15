@@ -1,3 +1,4 @@
+import { HomeIcon, RocketLaunchIcon } from '@heroicons/react/20/solid'
 import { UserGroupIcon } from '@heroicons/react/24/outline'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
@@ -7,12 +8,16 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { Button } from 'ui'
 
+import { DropdownMenu } from '@/components'
+import { useUserStore } from '@/stores'
+
 export default function Navbar() {
   const user = useUser()
   const router = useRouter()
   const wallet = useWallet()
   const { setVisible } = useWalletModal()
   const supabaseClient = useSupabaseClient()
+  const { user: splingUser } = useUserStore()
   const [supabaseUser, setSupabaseUser] = useState<User>()
 
   useEffect(() => {
@@ -40,32 +45,43 @@ export default function Navbar() {
           🦀
         </span>
       </Link>
-      <div className="flex space-x-6">
-        {!user ? (
+      <div className={`flex w-full ${!user && router.pathname === '/' ? 'justify-end' : ''}`}>
+        {user === null && router.pathname === '/' ? (
           <Button onClick={() => setVisible(true)}>
             <UserGroupIcon className="h-5 w-5 text-white mr-2" aria-hidden="true" />
             Create a community
           </Button>
         ) : (
-          <div className="space-x-4">
-            {wallet.connected ? (
+          <div className="w-full flex justify-center relative">
+            {wallet.connected && (
               <>
                 {supabaseUser?.user_metadata?.username && (
-                  <>
-                    <Button buttonType="slate">
-                      <Link href="/c">See more communities</Link>
-                    </Button>
-                    <Link href={`/u/${supabaseUser.user_metadata.username}`}>
-                      <Button buttonType="slate">My Profile</Button>
+                  <div className="flex items-center justify-center space-x-6">
+                    <Link href="/home" className="flex flex-col items-center group">
+                      <HomeIcon className="h-5 w-5 text-gray-400 group-hover:text-orange-500" aria-hidden="true" />
+                      <span className="text-gray-600/90 text-sm group-hover:text-orange-500 mt-[2px]">Home</span>
                     </Link>
-                  </>
+                    <Link href="/discover" className="flex flex-col items-center group">
+                      <RocketLaunchIcon
+                        className="h-5 w-5 text-gray-400 group-hover:text-orange-500"
+                        aria-hidden="true"
+                      />
+                      <span className="text-gray-600/90 text-sm group-hover:text-orange-500 mt-[2px]">Discover</span>
+                    </Link>
+                  </div>
                 )}
-                <Button buttonType="slate" onClick={handleLogout}>
-                  Logout
-                </Button>
               </>
-            ) : (
-              <Button onClick={() => setVisible(true)}>Connect wallet</Button>
+            )}
+            {supabaseUser?.email && supabaseUser.user_metadata?.username && splingUser?.avatar && wallet?.publicKey && (
+              <div className="absolute right-0">
+                <DropdownMenu
+                  avatar={splingUser.avatar}
+                  username={supabaseUser.user_metadata.username}
+                  email={supabaseUser.email}
+                  wallet={wallet.publicKey.toString()}
+                  onLogout={handleLogout}
+                />
+              </div>
             )}
           </div>
         )}
