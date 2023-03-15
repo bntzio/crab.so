@@ -52,17 +52,26 @@ export default function Community() {
     async function fetchPosts() {
       if (!communityData || !communityData.metadata?.slug) return
 
-      const posts = await socialProtocol?.getAllPosts(communityData.groupId)
-
-      const postsWithGroup = posts?.map(post => ({
-        ...post,
-        group: {
-          name: communityData.name,
-          slug: communityData.metadata.slug,
+      const response = await fetch(`/api/posts?groupId=${communityData.groupId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      }))
+      })
 
-      if (postsWithGroup) setPosts(postsWithGroup)
+      const posts: Post[] = await response.json()
+
+      if (posts && posts.length) {
+        const postsWithGroup = posts.map(post => ({
+          ...post,
+          group: {
+            name: communityData.name,
+            slug: communityData.metadata.slug,
+          },
+        }))
+
+        if (postsWithGroup) setPosts(postsWithGroup)
+      }
     }
 
     fetchPosts()
@@ -100,7 +109,7 @@ export default function Community() {
     }
   }
 
-  if (communities.length === 0 || !communityData || !user || joined === null) return <div>Loading...</div>
+  if (communities.length === 0 || !communityData) return <div>Loading...</div>
 
   return (
     <main className="mt-16">
@@ -122,19 +131,23 @@ export default function Community() {
               <h2 className="text-gray-600">{communityData.bio}</h2>
             </div>
             <div>
-              {joined ? (
-                <Button
-                  className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400"
-                  onClick={() => handleGroupAction({ action: 'leave' })}
-                >
-                  <UserMinusIcon className="w-4 h-4 mr-2 text-white" />
-                  <span className="text-xs">Leave Community</span>
-                </Button>
-              ) : (
-                <Button className="h-7" onClick={() => handleGroupAction({ action: 'join' })}>
-                  <UserPlusIcon className="w-4 h-4 mr-2 text-white" />
-                  <span className="text-xs">Join Community</span>
-                </Button>
+              {user && joined !== null && (
+                <>
+                  {joined ? (
+                    <Button
+                      className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400"
+                      onClick={() => handleGroupAction({ action: 'leave' })}
+                    >
+                      <UserMinusIcon className="w-4 h-4 mr-2 text-white" />
+                      <span className="text-xs">Leave Community</span>
+                    </Button>
+                  ) : (
+                    <Button className="h-7" onClick={() => handleGroupAction({ action: 'join' })}>
+                      <UserPlusIcon className="w-4 h-4 mr-2 text-white" />
+                      <span className="text-xs">Join Community</span>
+                    </Button>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -142,7 +155,7 @@ export default function Community() {
       </div>
 
       <section className="my-10">
-        <PostForm groupId={communityData.groupId} onPublished={handlePublishedPost} />
+        {user && <PostForm groupId={communityData.groupId} onPublished={handlePublishedPost} />}
       </section>
 
       <div className="mt-6">
