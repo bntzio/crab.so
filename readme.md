@@ -78,3 +78,7 @@ Go to [http://localhost:3000](http://localhost:3000) with your browser to see th
 - `HELIUS_API_KEY` and `NEXT_PUBLIC_HELIUS_API_KEY` are the API keys required to run the RPC, you can get one by creating an account in [helius labs](https://helius.xyz).
 
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` can be found in your terminal right after you start the Supabase container.
+
+#### Getting login emails locally
+
+Supabase starts a local [inbucket](https://github.com/inbucket/inbucket) SMTP server that you can use to get login emails locally at [http://localhost:54324](http://localhost:54324).
