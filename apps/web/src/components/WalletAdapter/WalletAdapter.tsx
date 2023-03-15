@@ -9,7 +9,7 @@ interface Props {
   children: ReactNode
 }
 
-const endpoint = isProd ? 'https://crab.so/api/rpc' : 'http://localhost:3000/api/rpc'
+const endpoint = isProd ? 'https://www.crab.so/api/rpc' : 'http://localhost:3000/api/rpc'
 
 const WalletAdapter = ({ children }: Props) => {
   const wallets = useMemo(() => [new GlowWalletAdapter(), new SolflareWalletAdapter()], [])
