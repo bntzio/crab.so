@@ -52,14 +52,20 @@ export default function Community() {
     async function fetchPosts() {
       if (!communityData || !communityData.metadata?.slug) return
 
-      const response = await fetch(`/api/posts?groupId=${communityData.groupId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      let posts: Post[] | undefined
 
-      const posts: Post[] = await response.json()
+      if (user) {
+        posts = await socialProtocol?.getAllPosts(communityData.groupId)
+      } else {
+        const response = await fetch(`/api/posts?groupId=${communityData.groupId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+
+        posts = await response.json()
+      }
 
       if (posts && posts.length) {
         const postsWithGroup = posts.map(post => ({
@@ -75,7 +81,7 @@ export default function Community() {
     }
 
     fetchPosts()
-  }, [communityData, socialProtocol])
+  }, [communityData, socialProtocol, user])
 
   const handleGroupAction = async ({ action }: { action: 'join' | 'leave' }) => {
     try {

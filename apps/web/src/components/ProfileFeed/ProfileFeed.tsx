@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
-import { useSplingStore } from '@/stores'
+import { useSplingStore, useUserStore } from '@/stores'
 
 interface Props {
   posts: Post[]
@@ -12,12 +12,26 @@ interface Props {
 export default function ProfileFeed({ posts }: Props) {
   const now = dayjs()
   const { socialProtocol } = useSplingStore()
+  const { user } = useUserStore()
   // NOTE: Storing all groups is not an issue now, but it will be in the future, we need to refactor this.
   const [groups, setGroups] = useState<Pick<Group, 'name' | 'groupId' | 'metadata'>[]>()
 
   useEffect(() => {
     async function getAllGroups() {
-      const groups = await socialProtocol?.getAllGroups()
+      let groups: Group[] | undefined
+
+      if (user) {
+        groups = await socialProtocol?.getAllGroups()
+      } else {
+        const response = await fetch('/api/communities?type=direct', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+
+        groups = await response.json()
+      }
 
       if (groups) {
         const filteredGroups = groups.map(g => ({ name: g.name, groupId: g.groupId, metadata: g.metadata }))
@@ -26,7 +40,7 @@ export default function ProfileFeed({ posts }: Props) {
     }
 
     getAllGroups()
-  }, [socialProtocol])
+  }, [socialProtocol, user])
 
   if (!groups) return <div>Something went wrong</div>
 

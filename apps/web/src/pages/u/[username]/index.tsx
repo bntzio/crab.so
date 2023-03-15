@@ -28,8 +28,31 @@ export default function UserProfile() {
         .single()
 
       if (supabaseProfile.data?.user_id) {
-        const usr = await socialProtocol?.getUser(supabaseProfile.data?.user_id)
-        const usrPosts = await socialProtocol?.getAllPostsByUserId(supabaseProfile.data?.user_id)
+        let usr: User | null | undefined
+        let usrPosts: Post[] | null | undefined
+
+        if (currentUser) {
+          usr = await socialProtocol?.getUser(supabaseProfile.data.user_id)
+          usrPosts = await socialProtocol?.getAllPostsByUserId(supabaseProfile.data.user_id)
+        } else {
+          const userResponse = await fetch(`/api/user?id=${supabaseProfile.data.user_id}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+
+          usr = (await userResponse.json()) as User
+
+          const userPostsResponse = await fetch(`/api/user/posts?id=${supabaseProfile.data.user_id}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+
+          usrPosts = (await userPostsResponse.json()) as Post[]
+        }
 
         if (usr) {
           setUser(usr)
@@ -48,15 +71,13 @@ export default function UserProfile() {
     }
 
     init()
-  }, [supabaseClient, socialProtocol, router])
+  }, [supabaseClient, socialProtocol, currentUser, router])
 
   useEffect(() => {
     if (user !== undefined) setLoading(false)
   }, [user])
 
-  if (loading) return <div>Loading...</div>
-
-  if (!user) return <div>User not found</div>
+  if (loading || !user) return null
 
   const handleFollowUser = async () => await socialProtocol?.followUser(user?.userId)
 
@@ -80,7 +101,7 @@ export default function UserProfile() {
           <h1 className="text-xl font-semibold text-gray-800">{user.nickname}</h1>
           <h2 className="text-gray-600/90">{user.bio}</h2>
         </div>
-        {currentUser?.userId === user.userId ? null : (
+        {!currentUser || currentUser?.userId === user.userId ? null : (
           <div>
             {currentUser?.following.includes(user.userId) ? (
               <Button className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400" onClick={handleUnfollowUser}>
