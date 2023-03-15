@@ -24,7 +24,7 @@ It is built with [Next.js](https://nextjs.org) and [Tailwind CSS](https://tailwi
 
 - [Docker](https://www.docker.com)
 - [Node.js](https://nodejs.org) (`>= v14`)
-- [pnpm](https://pnpm.io) (`npm install -g pnpm` using [Homebrew](https://brew.sh) 🍺)
+- [pnpm](https://pnpm.io) (`brew install pnpm` using [Homebrew](https://brew.sh) 🍺)
 - [Supabase CLI](https://supabase.com/docs/guides/cli) (`brew install supabase/tap/supabase` using [Homebrew](https://brew.sh) 🍺)
 - [Solana Wallet](https://docs.solana.com/wallet-guide) (we recommend [Phantom](https://phantom.app) or [Backpack](https://www.backpack.app))
 
@@ -69,7 +69,7 @@ pnpm run dev --filter web
 
 ##### 6. Start developing
 
-Go to [http://localhost:3000](http://localhost:3000) with your browser to see the app running.
+Go to [http://localhost:3000](http://localhost:3000) with your browser to see the app up and running.
 
 **Happy hacking!** 🦀
 
