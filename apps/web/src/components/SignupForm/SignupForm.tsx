@@ -1,7 +1,6 @@
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useRouter } from 'next/router'
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Button } from 'ui'
 
 import { useSplingStore } from '@/stores'
@@ -10,11 +9,30 @@ import { fileToBase64 } from '@/utils'
 export default function SignupForm() {
   const user = useUser()
   const wallet = useWallet()
-  const router = useRouter()
   const [file, setFile] = useState<File>()
   const inputFile = useRef<HTMLInputElement | null>(null)
   const { socialProtocol } = useSplingStore()
   const supabaseClient = useSupabaseClient()
+  const [userAlert, setUserAlert] = useState<boolean>()
+
+  useEffect(() => {
+    async function check() {
+      if (wallet?.publicKey) {
+        const response = await fetch(`/api/user?publicKey=${wallet.publicKey.toString()}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+
+        const data = await response.json()
+
+        if (data) setUserAlert(true)
+      }
+    }
+
+    if (!userAlert) check()
+  }, [wallet, userAlert])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -62,7 +80,7 @@ export default function SignupForm() {
             }),
           })
 
-          router.push('/home')
+          window.location.href = '/home'
         }
       } catch (e) {
         console.error(e) // TODO: Render error toast
@@ -100,6 +118,25 @@ export default function SignupForm() {
               Disconnect
             </a>
           </div>
+
+          {userAlert && (
+            <div className="bg-red-50 px-4 py-3 rounded-md">
+              <p className="text-sm text-red-500/90">
+                You already have an account associated with this wallet. Please use another wallet or{' '}
+                <span
+                  className="cursor-pointer text-red-500 font-medium hover:underline"
+                  onClick={async () => {
+                    await socialProtocol?.deleteUser()
+                    setUserAlert(false)
+                  }}
+                >
+                  delete your existing account
+                </span>
+                .
+              </p>
+              {/* TODO: Render existing user details */}
+            </div>
+          )}
 
           <div className="mt-8 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
             <div className="sm:col-span-6">
