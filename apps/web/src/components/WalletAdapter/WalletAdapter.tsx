@@ -3,13 +3,13 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import { GlowWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { useMemo, ReactNode } from 'react'
 
-import { isProd } from '@/helpers'
-
 interface Props {
   children: ReactNode
 }
 
-const endpoint = isProd ? 'https://www.crab.so/api/rpc' : 'http://localhost:3000/api/rpc'
+const heliusApiKey = process.env.NEXT_PUBLIC_HELIUS_API_KEY
+
+const endpoint = `https://rpc.helius.xyz?api-key=${heliusApiKey}`
 
 const WalletAdapter = ({ children }: Props) => {
   const wallets = useMemo(() => [new GlowWalletAdapter(), new SolflareWalletAdapter()], [])
