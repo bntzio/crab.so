@@ -83,8 +83,6 @@ export default function UserProfile() {
 
   const handleUnfollowUser = async () => await socialProtocol?.unfollowUser(user?.userId)
 
-  console.log('currentUser', currentUser)
-
   return (
     <main className="mt-16">
       <section className="flex flex-col items-center space-y-5">

@@ -65,8 +65,6 @@ export default function PostPage() {
 
       const replies = await socialProtocol?.getAllPostReplies(post.postId)
 
-      console.log('Post replies:', replies)
-
       if (replies) setReplies(replies)
     }
 

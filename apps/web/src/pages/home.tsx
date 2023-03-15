@@ -48,12 +48,10 @@ export default function Home() {
   useEffect(() => {
     async function fetchProtocolInfo() {
       setTimeout(async () => {
-        const allGroups = await getAllGroups()
-        console.log('all groups', allGroups)
+        await getAllGroups()
 
         if (wallet?.publicKey) {
-          const user = await socialProtocol?.getUserByPublicKey(wallet.publicKey)
-          console.log('my user', user)
+          await socialProtocol?.getUserByPublicKey(wallet.publicKey)
         }
       }, 1200)
     }

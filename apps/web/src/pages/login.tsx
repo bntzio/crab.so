@@ -13,7 +13,7 @@ export default function LoginPage() {
 
     if (!email) return
 
-    const { data, error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
         emailRedirectTo: isProd ? 'https://crab.so/auth' : 'http://localhost:3000/auth',
@@ -22,8 +22,6 @@ export default function LoginPage() {
 
     // TODO: Render error toast
     if (error) return console.error(error)
-
-    console.log(data)
   }
 
   return (

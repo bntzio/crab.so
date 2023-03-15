@@ -65,7 +65,7 @@ export default function SignupForm() {
           router.push('/home')
         }
       } catch (e) {
-        console.log('error', e) // TODO: Render error toast
+        console.error(e) // TODO: Render error toast
       }
     }
   }

@@ -38,12 +38,11 @@ export default function CreateCommunityModal({ isOpen }: { isOpen: boolean }) {
       }
 
       try {
-        const group = await socialProtocol?.createGroup(name, bio, avatar, metadata)
-        console.log('created group: ', group)
+        await socialProtocol?.createGroup(name, bio, avatar, metadata)
         alert('Group created!') // TODO: Render success toast
         setActiveModal(null)
       } catch (e) {
-        console.log(e) // TODO: Render error toast
+        console.error(e) // TODO: Render error toast
       }
     }
   }

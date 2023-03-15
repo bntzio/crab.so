@@ -29,7 +29,7 @@ export default function PostForm({ groupId, onPublished }: Props) {
 
       if (post) onPublished(post)
     } catch (e) {
-      console.log(e)
+      console.error(e)
     }
   }
 

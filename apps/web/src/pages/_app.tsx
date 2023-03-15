@@ -55,7 +55,6 @@ const App = ({ children }: { children: React.ReactNode }) => {
       } = await supabaseClient.auth.getUser()
 
       if (session && user) {
-        console.log('user.user_metadata?.publicKey', user.user_metadata?.publicKey)
         if (
           user.user_metadata?.publicKey !== undefined &&
           user.user_metadata?.publicKey !== wallet.publicKey.toString()
