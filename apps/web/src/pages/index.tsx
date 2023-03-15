@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { Button } from 'ui'
 
-import { CommunityShowcase, Feed } from '@/components'
+import { CommunityShowcase } from '@/components'
 import { useSplingStore } from '@/stores'
 
 export default function Index() {
@@ -51,10 +51,10 @@ export default function Index() {
           </div>
         </div>
       </section>
-      <section className="space-y-6 flex flex-col items-center">
+      {/* <section className="space-y-6 flex flex-col items-center">
         <h4 className="text-xl font-semibold">See what's happening around</h4>
         <Feed />
-      </section>
+      </section> */}
     </main>
   )
 }

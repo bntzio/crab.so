@@ -67,7 +67,7 @@ export default function Home() {
     <main>
       <section className={clsx(!connected ? 'mt-0' : 'mt-16', 'space-y-12')}>
         <CreateCommunityModal isOpen={activeModal === 'createCommunity'} />
-        {user ? (
+        {user && wallet?.publicKey ? (
           <>
             <div className="mb-4">
               <p className="text-gray-600 font-medium text-sm">Your feed</p>
