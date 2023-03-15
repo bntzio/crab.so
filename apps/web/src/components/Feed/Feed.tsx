@@ -49,7 +49,19 @@ export default function Feed() {
   return (
     <section>
       <ul role="list" className="divide-y divide-gray-200">
-        {posts.length === 0 ? <li className="text-gray-500">No posts yet!</li> : renderPosts()}
+        {posts.length === 0 ? (
+          <li className="text-gray-500/90 text-sm">
+            It's empty here{' '}
+            <span role="img" aria-label="leaves">
+              🍃
+            </span>
+            <br />
+            <br />
+            Start following users & communities to see their posts here.
+          </li>
+        ) : (
+          renderPosts()
+        )}
       </ul>
     </section>
   )
