@@ -1,7 +1,6 @@
 import { HomeIcon, RocketLaunchIcon } from '@heroicons/react/20/solid'
 import { UserGroupIcon } from '@heroicons/react/24/outline'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 import { useUser, useSupabaseClient, User } from '@supabase/auth-helpers-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -15,7 +14,6 @@ export default function Navbar() {
   const user = useUser()
   const router = useRouter()
   const wallet = useWallet()
-  const { setVisible } = useWalletModal()
   const supabaseClient = useSupabaseClient()
   const { user: splingUser } = useUserStore()
   const [supabaseUser, setSupabaseUser] = useState<User>()
@@ -47,7 +45,7 @@ export default function Navbar() {
       </Link>
       <div className={`flex w-full ${!user && router.pathname === '/' ? 'justify-end' : ''}`}>
         {user === null && router.pathname === '/' ? (
-          <Button onClick={() => setVisible(true)}>
+          <Button onClick={() => router.push('/login')}>
             <UserGroupIcon className="h-5 w-5 text-white mr-2" aria-hidden="true" />
             Create a community
           </Button>

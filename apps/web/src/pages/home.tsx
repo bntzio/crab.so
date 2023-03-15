@@ -68,7 +68,12 @@ export default function Home() {
       <section className={clsx(!connected ? 'mt-0' : 'mt-16', 'space-y-12')}>
         <CreateCommunityModal isOpen={activeModal === 'createCommunity'} />
         {user ? (
-          <Feed />
+          <>
+            <div className="mb-4">
+              <p className="text-gray-600 font-medium text-sm">Your feed</p>
+            </div>
+            <Feed />
+          </>
         ) : (
           <div className="mt-28 flex flex-col justify-center items-center">
             <div className="space-y-1 flex flex-col items-center mb-6">

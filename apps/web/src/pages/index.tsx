@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { Button } from 'ui'
 
-import { CommunityShowcase } from '@/components'
+import { CommunityShowcase, Feed } from '@/components'
 import { useSplingStore } from '@/stores'
 
 export default function Index() {
@@ -31,6 +31,7 @@ export default function Index() {
     <main>
       <section>
         <div className="flex flex-col space-y-6 py-20">
+          <CommunityShowcase />
           <h1 className="text-xl font-medium leading-normal">
             Crab is a community-driven, open-source, decentralized network for thriving communities in Web3
           </h1>
@@ -50,7 +51,10 @@ export default function Index() {
           </div>
         </div>
       </section>
-      <CommunityShowcase />
+      <section className="space-y-6 flex flex-col items-center">
+        <h4 className="text-xl font-semibold">See what's happening around</h4>
+        <Feed />
+      </section>
     </main>
   )
 }

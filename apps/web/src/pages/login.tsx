@@ -32,11 +32,8 @@ export default function LoginPage() {
         <div>
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            We'll send you a{' '}
-            <a href="#" className="font-medium text-orange-600 hover:text-orange-500">
-              magic link
-            </a>{' '}
-            to your inbox so you can sign in.
+            We'll send you a <span className="font-medium text-orange-600">magic link</span> to your inbox so you can
+            sign in.
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSignIn}>
@@ -64,7 +61,7 @@ export default function LoginPage() {
               <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                 <LockClosedIcon className="h-5 w-5 text-orange-500 group-hover:text-orange-400" aria-hidden="true" />
               </span>
-              Sign in
+              Send magic link
             </button>
           </div>
         </form>
