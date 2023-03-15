@@ -57,7 +57,7 @@ export default function DropdownMenu({ avatar, username, email, wallet, onLogout
             <Menu.Item>
               {({ active }) => (
                 <a
-                  href="https://github.com/bntzio/crab"
+                  href="https://github.com/bntzio/crab.so"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={classNames(
