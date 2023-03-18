@@ -11,11 +11,13 @@ const variantStyles = {
     primary: 'bg-orange-500 text-white hover:bg-orange-600 focus:ring-orange-400',
     white:
       'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 active:bg-slate-200 active:text-slate-600 focus-visible:outline-white',
+    danger:
+      'bg-red-500 text-white border-none hover:bg-red-600 active:bg-red-600 active:text-white focus-visible:outline-white focus:ring-red-400',
   },
 }
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  buttonType?: 'slate' | 'primary' | 'white'
+  buttonType?: 'slate' | 'primary' | 'white' | 'danger'
   variant?: 'solid'
 }
 
