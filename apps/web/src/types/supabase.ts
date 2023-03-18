@@ -24,6 +24,32 @@ export interface Database {
           public_key?: string
         }
       }
+      community_requests: {
+        Row: {
+          id: string
+          created_at: string | null
+          name: string
+          slug: string
+          about: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string | null
+          name: string
+          slug: string
+          about: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          created_at?: string | null
+          name?: string
+          slug?: string
+          about?: string
+          user_id?: string
+        }
+      }
       profiles: {
         Row: {
           id: string

@@ -2,9 +2,13 @@ import { Group } from '@spling/social-protocol'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { Button } from 'ui'
 
-export default function Communities() {
+import { SubmitCommunityModal } from '@/components'
+
+export default function Discover() {
   const [communities, setCommunities] = useState<Group[]>([])
+  const [isSubmitCommunityModalOpen, setIsSubmitCommunityModalOpen] = useState(false)
 
   useEffect(() => {
     async function getCommunities() {
@@ -23,7 +27,10 @@ export default function Communities() {
 
   return (
     <main>
-      <h1 className="text-xl font-medium mt-10">Discover Communities</h1>
+      <div className="flex items-center mt-10 justify-between">
+        <h1 className="text-xl font-medium">Discover Communities</h1>
+        <Button onClick={() => setIsSubmitCommunityModalOpen(true)}>Create a community</Button>
+      </div>
 
       <div className="mt-6">
         <ul className="space-y-3">
@@ -52,6 +59,7 @@ export default function Communities() {
           ))}
         </ul>
       </div>
+      <SubmitCommunityModal open={isSubmitCommunityModalOpen} setOpen={setIsSubmitCommunityModalOpen} />
     </main>
   )
 }
