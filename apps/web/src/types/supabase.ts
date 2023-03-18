@@ -10,18 +10,24 @@ export interface Database {
           updated_at: string | null
           id: string
           public_key: string
+          owner: string
+          slug: string
         }
         Insert: {
           name: string
           updated_at?: string | null
           id?: string
           public_key: string
+          owner: string
+          slug: string
         }
         Update: {
           name?: string
           updated_at?: string | null
           id?: string
           public_key?: string
+          owner?: string
+          slug?: string
         }
       }
       community_requests: {
