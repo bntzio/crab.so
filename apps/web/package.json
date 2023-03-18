@@ -30,6 +30,7 @@
     "react-hook-form": "^7.43.5",
     "react-hot-toast": "^2.4.0",
     "ui": "workspace:*",
+    "use-clipboard-copy": "^0.2.0",
     "zustand": "^4.3.3"
   },
   "devDependencies": {

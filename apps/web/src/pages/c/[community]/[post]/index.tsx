@@ -6,8 +6,9 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import toast from 'react-hot-toast'
+import { useClipboard } from 'use-clipboard-copy'
 
 import { ReplyForm } from '@/components'
 import { useSplingStore, useUserStore } from '@/stores'
@@ -17,6 +18,7 @@ dayjs.extend(relativeTime)
 export default function PostPage() {
   const router = useRouter()
   const { user } = useUserStore()
+  const clipboard = useClipboard()
   const { socialProtocol } = useSplingStore()
   const [post, setPost] = useState<Post | null>(null)
   const [group, setGroup] = useState<Group | null>(null)
@@ -71,6 +73,16 @@ export default function PostPage() {
 
     getReplies()
   }, [post, socialProtocol])
+
+  const handleShareClick = useCallback(() => {
+    const url = window.location.href
+
+    clipboard.copy(url)
+
+    toast.success('Copied post URL!', {
+      position: 'bottom-center',
+    })
+  }, [clipboard])
 
   const handleVoteDownvote = async (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     ev.stopPropagation()
@@ -201,7 +213,9 @@ export default function PostPage() {
               )}
               <span>
                 <span className="mx-1">•</span>
-                <span className="cursor-pointer font-medium hover:text-blue-500">Share</span>
+                <span className="cursor-pointer font-medium hover:text-blue-500" onClick={handleShareClick}>
+                  Share
+                </span>
                 {user?.publicKey && post.user.publicKey.equals(user.publicKey) && (
                   <>
                     <span className="mx-1">•</span>
