@@ -43,7 +43,12 @@ const App = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     async function start() {
-      if (!wallet?.publicKey) return
+      // This prevents a user with a current connected wallet from being logged out when entering this page.
+      if (router.pathname === '/home?action=connect') {
+        await wallet.disconnect()
+      }
+
+      if (!wallet?.connected || !wallet.publicKey) return
 
       // Check that the logged in user is using the same wallet as the one they used to create their account.
       const {
@@ -59,9 +64,9 @@ const App = ({ children }: { children: React.ReactNode }) => {
           user.user_metadata?.publicKey !== undefined &&
           user.user_metadata?.publicKey !== wallet.publicKey.toString()
         ) {
-          await supabaseClient.auth.signOut()
           await wallet.disconnect()
-          await router.push('/')
+          await supabaseClient.auth.signOut()
+          window.location.reload()
         } else {
           await startSocialProtocol({ wallet })
         }

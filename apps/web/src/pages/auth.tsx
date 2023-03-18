@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 export default function AuthPage() {
   useEffect(() => {
     setTimeout(() => {
-      window.location.href = '/home'
+      window.location.href = '/home?action=connect'
     }, 2000)
   }, [])
 
