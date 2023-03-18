@@ -1,5 +1,6 @@
 import { useWallet } from '@solana/wallet-adapter-react'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Button } from 'ui'
 
 import { SignupForm } from '@/components'
@@ -7,6 +8,17 @@ import { SignupForm } from '@/components'
 export default function WelcomePage() {
   const wallet = useWallet()
   const { setVisible } = useWalletModal()
+  const supabaseClient = useSupabaseClient()
+
+  const onLogout = async () => {
+    try {
+      await supabaseClient.auth.signOut()
+    } catch (e) {
+      console.error(e) // TODO: Add error toast
+    } finally {
+      window.location.href = '/'
+    }
+  }
 
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -28,6 +40,14 @@ export default function WelcomePage() {
               <p className="text-slate-500">Connect your Solana wallet to your account</p>
               <div className="flex items-center justify-center">
                 <Button onClick={() => setVisible(true)}>Connect wallet</Button>
+              </div>
+              <div className="text-center">
+                <p className="text-slate-500 text-sm">
+                  or{' '}
+                  <span className="underline cursor-pointer hover:text-slate-900" onClick={onLogout}>
+                    sign out
+                  </span>
+                </p>
               </div>
             </div>
           ) : (

@@ -29,10 +29,14 @@ export default function Navbar() {
   }, [supabaseClient])
 
   const handleLogout = async () => {
-    await supabaseClient.auth.signOut()
-    await wallet.disconnect()
-
-    window.location.href = '/'
+    try {
+      await wallet.disconnect()
+      await supabaseClient.auth.signOut()
+    } catch (e) {
+      console.error(e) // TODO: Add error toast
+    } finally {
+      window.location.href = '/'
+    }
   }
 
   if (router.pathname === '/auth') return null
