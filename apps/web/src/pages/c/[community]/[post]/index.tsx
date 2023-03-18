@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
 
 import { ReplyForm } from '@/components'
 import { useSplingStore, useUserStore } from '@/stores'
@@ -79,8 +80,19 @@ export default function PostPage() {
     try {
       await socialProtocol?.likePost(post.publicKey)
 
-      if (isUpvoted) setVotes(votes - 1)
-      else setVotes(votes + 1)
+      if (isUpvoted) {
+        setVotes(votes - 1)
+
+        toast.success('Removed vote!', {
+          position: 'bottom-center',
+        })
+      } else {
+        setVotes(votes + 1)
+
+        toast.success('Added vote!', {
+          position: 'bottom-center',
+        })
+      }
 
       setIsUpvoted(!isUpvoted)
     } catch (e) {

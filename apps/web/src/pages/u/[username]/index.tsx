@@ -4,6 +4,7 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
 import { Button } from 'ui'
 
 import { ProfileFeed } from '@/components'
@@ -18,6 +19,7 @@ export default function UserProfile() {
   const { user: currentUser } = useUserStore()
   const [posts, setPosts] = useState<Post[]>()
   const [loading, setLoading] = useState(true)
+  const [following, setFollowing] = useState<boolean | null>(null)
 
   useEffect(() => {
     async function init() {
@@ -74,14 +76,48 @@ export default function UserProfile() {
   }, [supabaseClient, socialProtocol, currentUser, router])
 
   useEffect(() => {
+    if (user?.userId && currentUser?.following.includes(user.userId)) {
+      setFollowing(true)
+    } else {
+      setFollowing(false)
+    }
+  }, [currentUser, user])
+
+  useEffect(() => {
     if (user !== undefined) setLoading(false)
   }, [user])
 
   if (loading || !user) return null
 
-  const handleFollowUser = async () => await socialProtocol?.followUser(user?.userId)
+  const handleFollowUser = async () => {
+    try {
+      await socialProtocol?.followUser(user?.userId)
 
-  const handleUnfollowUser = async () => await socialProtocol?.unfollowUser(user?.userId)
+      setFollowing(true)
+
+      toast.success(`You are now following ${user?.nickname}!`, {
+        position: 'bottom-center',
+      })
+    } catch (e) {
+      // TODO: Add error toast
+      console.error(e)
+    }
+  }
+
+  const handleUnfollowUser = async () => {
+    try {
+      await socialProtocol?.unfollowUser(user?.userId)
+
+      setFollowing(false)
+
+      toast.success(`You have unfollowed ${user?.nickname}!`, {
+        position: 'bottom-center',
+      })
+    } catch (e) {
+      // TODO: Add error toast
+      console.error(e)
+    }
+  }
 
   return (
     <main className="mt-16">
@@ -101,7 +137,7 @@ export default function UserProfile() {
         </div>
         {!currentUser || currentUser?.userId === user.userId ? null : (
           <div>
-            {currentUser?.following.includes(user.userId) ? (
+            {following ? (
               <Button className="h-7 bg-red-500 hover:bg-red-600 focus:ring-red-400" onClick={handleUnfollowUser}>
                 <UserMinusIcon className="w-4 h-4 mr-2 text-white" />
                 <span className="text-xs">Unfollow {user.nickname}</span>

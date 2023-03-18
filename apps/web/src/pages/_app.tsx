@@ -6,6 +6,7 @@ import { SessionContextProvider, Session, useSupabaseClient } from '@supabase/au
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import { Toaster } from 'react-hot-toast'
 
 import { WalletAdapter, Navbar } from '@/components'
 import { MainLayout } from '@/layouts/MainLayout'
@@ -88,7 +89,12 @@ const App = ({ children }: { children: React.ReactNode }) => {
     saveCurrentUser()
   }, [socialProtocol, wallet, setUser])
 
-  return <div className="mt-4">{children}</div>
+  return (
+    <div className="mt-4">
+      {children}
+      <Toaster />
+    </div>
+  )
 }
 
 export default CrabApp

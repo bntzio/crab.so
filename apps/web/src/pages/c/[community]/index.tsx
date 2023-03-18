@@ -4,6 +4,7 @@ import { Post } from '@spling/social-protocol'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
 import { Button } from 'ui'
 
 import { PostCard, PostForm } from '@/components'
@@ -89,8 +90,16 @@ export default function Community() {
 
       if (action === 'join') {
         await socialProtocol?.joinGroup(communityData.groupId)
+
+        toast.success(`You've joined ${communityData.name}!`, {
+          position: 'bottom-center',
+        })
       } else {
         await socialProtocol?.leaveGroup(communityData.groupId)
+
+        toast.success(`You've leaved ${communityData.name}!`, {
+          position: 'bottom-center',
+        })
       }
 
       setJoined(action === 'join')

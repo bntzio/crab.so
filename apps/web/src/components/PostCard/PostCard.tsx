@@ -4,6 +4,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
 
 import { PostWithGroup } from '@/components/Feed'
 import { useSplingStore, useUserStore } from '@/stores'
@@ -37,8 +38,19 @@ const PostCard = ({ post }: Props) => {
     try {
       await socialProtocol?.likePost(post.publicKey)
 
-      if (isUpvoted) setVotes(prevState => prevState - 1)
-      else setVotes(prevState => prevState + 1)
+      if (isUpvoted) {
+        setVotes(prevState => prevState - 1)
+
+        toast.success('Removed vote!', {
+          position: 'bottom-center',
+        })
+      } else {
+        setVotes(prevState => prevState + 1)
+
+        toast.success('Added vote!', {
+          position: 'bottom-center',
+        })
+      }
 
       setIsUpvoted(!isUpvoted)
     } catch (e) {
