@@ -31,7 +31,8 @@ export default function Navbar() {
   const handleLogout = async () => {
     await supabaseClient.auth.signOut()
     await wallet.disconnect()
-    await router.push('/')
+
+    window.location.href = '/'
   }
 
   if (router.pathname === '/auth') return null
