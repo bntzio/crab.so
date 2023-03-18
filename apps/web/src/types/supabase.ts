@@ -32,28 +32,28 @@ export interface Database {
       }
       community_requests: {
         Row: {
-          id: string
-          created_at: string | null
           name: string
           slug: string
           about: string
           user_id: string
+          created_at: string | null
+          id: string
         }
         Insert: {
-          id?: string
-          created_at?: string | null
           name: string
           slug: string
           about: string
           user_id: string
+          created_at?: string | null
+          id?: string
         }
         Update: {
-          id?: string
-          created_at?: string | null
           name?: string
           slug?: string
           about?: string
           user_id?: string
+          created_at?: string | null
+          id?: string
         }
       }
       profiles: {
@@ -95,6 +95,7 @@ export interface Database {
           created_at: string | null
           username: string | null
           nickname: string | null
+          email: string
         }
         Insert: {
           id: string
@@ -102,6 +103,7 @@ export interface Database {
           created_at?: string | null
           username?: string | null
           nickname?: string | null
+          email: string
         }
         Update: {
           id?: string
@@ -109,6 +111,7 @@ export interface Database {
           created_at?: string | null
           username?: string | null
           nickname?: string | null
+          email?: string
         }
       }
     }
