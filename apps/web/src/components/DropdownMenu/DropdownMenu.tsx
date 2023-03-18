@@ -7,13 +7,14 @@ import { classNames } from '@/helpers'
 
 interface Props {
   avatar: string
-  username: string
+  nickname: string
+  userId: number
   email: string
   wallet: string
   onLogout: () => Promise<void>
 }
 
-export default function DropdownMenu({ avatar, username, email, wallet, onLogout }: Props) {
+export default function DropdownMenu({ avatar, nickname, userId, email, wallet, onLogout }: Props) {
   const shortWallet = `${wallet.slice(0, 4)}...${wallet.slice(-4)}`
 
   return (
@@ -21,7 +22,7 @@ export default function DropdownMenu({ avatar, username, email, wallet, onLogout
       <div>
         <Menu.Button className="inline-flex w-full justify-center text-sm font-semibold text-gray-900">
           <div className="relative w-10 h-10">
-            <Image src={avatar} alt={`${username} avatar`} fill className="rounded-full" />
+            <Image src={avatar} alt={`${nickname} avatar`} fill className="rounded-full" />
           </div>
         </Menu.Button>
       </div>
@@ -44,7 +45,7 @@ export default function DropdownMenu({ avatar, username, email, wallet, onLogout
             <Menu.Item>
               {({ active }) => (
                 <Link
-                  href={`/u/${username}`}
+                  href={`/u/${userId}`}
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm',

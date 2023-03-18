@@ -54,7 +54,7 @@ export default function Navbar() {
           <div className="w-full flex justify-center relative">
             {wallet.connected && (
               <>
-                {supabaseUser?.user_metadata?.username && (
+                {supabaseUser?.user_metadata?.nickname && (
                   <div className="flex items-center justify-center space-x-6">
                     <Link href="/home" className="flex flex-col items-center group">
                       <HomeIcon className="h-5 w-5 text-gray-400 group-hover:text-orange-500" aria-hidden="true" />
@@ -71,11 +71,12 @@ export default function Navbar() {
                 )}
               </>
             )}
-            {supabaseUser?.email && supabaseUser.user_metadata?.username && splingUser?.avatar && wallet?.publicKey && (
+            {supabaseUser?.email && supabaseUser.user_metadata?.nickname && splingUser?.avatar && wallet?.publicKey && (
               <div className="absolute right-0">
                 <DropdownMenu
                   avatar={splingUser.avatar}
-                  username={supabaseUser.user_metadata.username}
+                  nickname={supabaseUser.user_metadata.nickname}
+                  userId={splingUser.userId}
                   email={supabaseUser.email}
                   wallet={wallet.publicKey.toString()}
                   onLogout={handleLogout}

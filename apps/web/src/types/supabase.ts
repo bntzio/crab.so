@@ -6,21 +6,21 @@ export interface Database {
     Tables: {
       communities: {
         Row: {
-          id: string
-          updated_at: string | null
           name: string
+          updated_at: string | null
+          id: string
           public_key: string
         }
         Insert: {
-          id?: string
-          updated_at?: string | null
           name: string
+          updated_at?: string | null
+          id?: string
           public_key: string
         }
         Update: {
-          id?: string
-          updated_at?: string | null
           name?: string
+          updated_at?: string | null
+          id?: string
           public_key?: string
         }
       }
@@ -33,6 +33,7 @@ export interface Database {
           updated_at: string | null
           user_id: number | null
           username: string | null
+          nickname: string | null
         }
         Insert: {
           id: string
@@ -42,6 +43,7 @@ export interface Database {
           updated_at?: string | null
           user_id?: number | null
           username?: string | null
+          nickname?: string | null
         }
         Update: {
           id?: string
@@ -51,6 +53,30 @@ export interface Database {
           updated_at?: string | null
           user_id?: number | null
           username?: string | null
+          nickname?: string | null
+        }
+      }
+      users: {
+        Row: {
+          id: string
+          public_key: string | null
+          created_at: string | null
+          username: string | null
+          nickname: string | null
+        }
+        Insert: {
+          id: string
+          public_key?: string | null
+          created_at?: string | null
+          username?: string | null
+          nickname?: string | null
+        }
+        Update: {
+          id?: string
+          public_key?: string | null
+          created_at?: string | null
+          username?: string | null
+          nickname?: string | null
         }
       }
     }
