@@ -3,6 +3,7 @@ import '@solana/wallet-adapter-react-ui/styles.css'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider, Session, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { Analytics } from '@vercel/analytics/react'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -93,6 +94,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
     <div className="mt-4">
       {children}
       <Toaster />
+      <Analytics />
     </div>
   )
 }

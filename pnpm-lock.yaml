@@ -41,6 +41,7 @@ importers:
       '@types/node': ^17.0.12
       '@types/react': ^18.0.22
       '@types/react-dom': ^18.0.7
+      '@vercel/analytics': ^0.1.11
       autoprefixer: ^10.4.13
       clsx: ^1.2.1
       dayjs: ^1.11.7
@@ -70,6 +71,7 @@ importers:
       '@supabase/auth-helpers-nextjs': 0.5.6_ku2vntnma2imfrsyohnkxzette
       '@supabase/auth-helpers-react': 0.3.1_ku2vntnma2imfrsyohnkxzette
       '@supabase/supabase-js': 2.10.0
+      '@vercel/analytics': 0.1.11_react@18.2.0
       clsx: 1.2.1
       dayjs: 1.11.7
       graphql: 16.6.0
@@ -2514,6 +2516,14 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.51.0
       eslint-visitor-keys: 3.3.0
+    dev: false
+
+  /@vercel/analytics/0.1.11_react@18.2.0:
+    resolution: {integrity: sha512-mj5CPR02y0BRs1tN3oZcBNAX9a8NxsIUl9vElDPcqxnMfP0RbRc9fI9Ud7+QDg/1Izvt5uMumsr+6YsmVHcyuw==}
+    peerDependencies:
+      react: ^16.8||^17||^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@wallet-standard/app/1.0.1:
