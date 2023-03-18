@@ -4,9 +4,11 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { Button } from 'ui'
 
-import { SubmitCommunityModal } from '@/components'
+import { CreateCommunityModal, SubmitCommunityModal } from '@/components'
+import { useModalStore } from '@/stores'
 
 export default function Discover() {
+  const { activeModal, setActiveModal } = useModalStore()
   const [communities, setCommunities] = useState<Group[]>([])
   const [isSubmitCommunityModalOpen, setIsSubmitCommunityModalOpen] = useState(false)
 
@@ -24,6 +26,20 @@ export default function Discover() {
 
     getCommunities()
   }, [])
+
+  useEffect(() => {
+    function cmdk(e: KeyboardEvent) {
+      if (e.metaKey && e.key === 'k') {
+        setActiveModal('createCommunity')
+      }
+    }
+
+    addEventListener('keydown', cmdk)
+
+    return () => {
+      removeEventListener('keydown', cmdk)
+    }
+  }, [setActiveModal])
 
   return (
     <main>
@@ -59,6 +75,7 @@ export default function Discover() {
           ))}
         </ul>
       </div>
+      <CreateCommunityModal isOpen={activeModal === 'createCommunity'} />
       <SubmitCommunityModal open={isSubmitCommunityModalOpen} setOpen={setIsSubmitCommunityModalOpen} />
     </main>
   )

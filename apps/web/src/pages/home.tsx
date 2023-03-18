@@ -6,15 +6,14 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { Button } from 'ui'
 
-import { Feed, CreateCommunityModal } from '@/components'
-import { useSplingStore, useModalStore } from '@/stores'
+import { Feed } from '@/components'
+import { useSplingStore } from '@/stores'
 
 export default function Home() {
   const user = useUser()
   const wallet = useWallet()
   const router = useRouter()
   const supabase = useSupabaseClient()
-  const { activeModal } = useModalStore()
   const { setVisible } = useWalletModal()
   const [loading, setLoading] = useState(true)
   const [linkedWallet, setLinkedWallet] = useState()
@@ -64,7 +63,6 @@ export default function Home() {
   return (
     <main>
       <section className={clsx(!connected ? 'mt-0' : 'mt-16', 'space-y-12')}>
-        <CreateCommunityModal isOpen={activeModal === 'createCommunity'} />
         {user && wallet?.publicKey ? (
           <>
             <div className="mb-4">
