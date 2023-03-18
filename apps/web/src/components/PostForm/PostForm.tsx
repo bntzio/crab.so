@@ -41,7 +41,7 @@ export default function PostForm({ groupId, onPublished }: Props) {
   return (
     <div className="flex items-start space-x-4">
       <div className="flex-shrink-0">
-        <Link href={`/u/${user?.nickname}`}>
+        <Link href={`/u/${user?.userId}`}>
           <div className="relative h-10 w-10">
             <Image
               className="inline-block rounded-full"

@@ -111,7 +111,7 @@ export default function PostPage() {
 
       return (
         <div key={reply.publicKey.toString()} className="flex space-x-3 border-b border-gray-200/90 py-6">
-          <Link href={`/u/${reply.user.nickname}`}>
+          <Link href={`/u/${reply.userId}`}>
             <div className="relative h-10 w-10">
               <Image
                 className="inline-block rounded-full border p-[1px]"
@@ -124,7 +124,7 @@ export default function PostPage() {
           </Link>
           <div className="flex flex-col space-y-1 justify-center">
             <div className="flex items-center text-xs space-x-1">
-              <Link href={`/u/${reply.user.nickname}`}>
+              <Link href={`/u/${reply.userId}`}>
                 <p className="font-medium mr-[1px] hover:text-orange-500">{reply.user.nickname}</p>
               </Link>
 
@@ -184,7 +184,7 @@ export default function PostPage() {
           <div>
             <span className="text-xs text-gray-500/90">
               Posted by{' '}
-              <Link href={`/u/${post.user.nickname}`} className="font-medium hover:text-orange-500">
+              <Link href={`/u/${post.userId}`} className="font-medium hover:text-orange-500">
                 {post.user.nickname}
               </Link>{' '}
               <time dateTime={dayjs(post.timestamp * 1000).toISOString()}>

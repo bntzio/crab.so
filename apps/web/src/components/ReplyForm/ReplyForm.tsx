@@ -39,7 +39,7 @@ export default function ReplyForm({ postId, onPublished }: Props) {
   return (
     <div className="flex items-start space-x-4">
       <div className="flex-shrink-0">
-        <Link href={`/u/${user?.nickname}`}>
+        <Link href={`/u/${user?.userId}`}>
           <div className="relative h-12 w-12">
             <Image
               className="inline-block rounded-full"

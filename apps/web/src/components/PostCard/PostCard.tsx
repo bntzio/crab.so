@@ -87,7 +87,7 @@ const PostCard = ({ post }: Props) => {
             <p className="truncate text-xs text-gray-500">
               <Link
                 onClick={ev => ev.stopPropagation()}
-                href={`/u/${post.user.nickname}`}
+                href={`/u/${post.userId}`}
                 className="hover:text-orange-500 font-medium"
               >
                 {post.user.nickname}
