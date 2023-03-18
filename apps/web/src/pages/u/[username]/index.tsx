@@ -1,6 +1,5 @@
 import { UserPlusIcon, UserMinusIcon, BoltIcon } from '@heroicons/react/20/solid'
 import { User, Post } from '@spling/social-protocol'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -9,35 +8,30 @@ import { Button } from 'ui'
 
 import { ProfileFeed } from '@/components'
 import { useSplingStore, useUserStore } from '@/stores'
-import { Database } from '@/types/supabase'
 
 export default function UserProfile() {
   const router = useRouter()
   const { socialProtocol } = useSplingStore()
-  const supabaseClient = useSupabaseClient<Database>()
   const [user, setUser] = useState<User | null>()
   const { user: currentUser } = useUserStore()
   const [posts, setPosts] = useState<Post[]>()
   const [loading, setLoading] = useState(true)
   const [following, setFollowing] = useState<boolean | null>(null)
 
+  // We'll use the username query as the user id, for now 👀
+  const { username: userId } = router.query
+
   useEffect(() => {
     async function init() {
-      const supabaseProfile = await supabaseClient
-        .from('profiles')
-        .select('*')
-        .eq('username', router.query.username)
-        .single()
-
-      if (supabaseProfile.data?.user_id) {
+      if (userId) {
         let usr: User | null | undefined
         let usrPosts: Post[] | null | undefined
 
         if (currentUser) {
-          usr = await socialProtocol?.getUser(supabaseProfile.data.user_id)
-          usrPosts = await socialProtocol?.getAllPostsByUserId(supabaseProfile.data.user_id)
+          usr = await socialProtocol?.getUser(Number(userId))
+          usrPosts = await socialProtocol?.getAllPostsByUserId(Number(userId))
         } else {
-          const userResponse = await fetch(`/api/user?id=${supabaseProfile.data.user_id}`, {
+          const userResponse = await fetch(`/api/user?id=${Number(userId)}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -46,7 +40,7 @@ export default function UserProfile() {
 
           usr = (await userResponse.json()) as User
 
-          const userPostsResponse = await fetch(`/api/user/posts?id=${supabaseProfile.data.user_id}`, {
+          const userPostsResponse = await fetch(`/api/user/posts?id=${Number(userId)}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -73,7 +67,7 @@ export default function UserProfile() {
     }
 
     init()
-  }, [supabaseClient, socialProtocol, currentUser, router])
+  }, [socialProtocol, currentUser, userId])
 
   useEffect(() => {
     if (user?.userId && currentUser?.following.includes(user.userId)) {
